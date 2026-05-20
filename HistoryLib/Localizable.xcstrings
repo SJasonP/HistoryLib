@@ -1,0 +1,645 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+      "shouldTranslate" : false
+    },
+    "%@  (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@  (%2$@)"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "%@  (%lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@  (%2$lld)"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "%lld" : {
+      "shouldTranslate" : false
+    },
+    "%lld. %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld. %2$@"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "Auto Detect" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动检测"
+          }
+        }
+      }
+    },
+    "Average Per Day" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "平均每天"
+          }
+        }
+      }
+    },
+    "Average Per Month" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "平均每月"
+          }
+        }
+      }
+    },
+    "Average Per Year" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "平均每年"
+          }
+        }
+      }
+    },
+    "Batch Delete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "批量删除"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        }
+      }
+    },
+    "Cancel Export" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消导出"
+          }
+        }
+      }
+    },
+    "Cancelling..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在取消……"
+          }
+        }
+      }
+    },
+    "Check iCloud Sync" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "检查iCloud云同步"
+          }
+        }
+      }
+    },
+    "Clear Cache" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除缓存"
+          }
+        }
+      }
+    },
+    "Cloud Sync Unavailable" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "云同步暂不可用"
+          }
+        }
+      }
+    },
+    "CloudKit is unavailable. History changes are currently blocked." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CloudKit当前不可用。已暂时禁止进行修改。"
+          }
+        }
+      }
+    },
+    "CloudKit unavailable. History changes are blocked." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CloudKit不可用。已禁止修改。"
+          }
+        }
+      }
+    },
+    "Confirm Batch Delete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确认批量删除"
+          }
+        }
+      }
+    },
+    "Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数据"
+          }
+        }
+      }
+    },
+    "Default Expand To" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "默认展开至"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除"
+          }
+        }
+      }
+    },
+    "Delete %lld Records" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除 %lld 条记录"
+          }
+        }
+      }
+    },
+    "Delete Result" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除记录"
+          }
+        }
+      }
+    },
+    "Delete Time Range" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除的时间范围"
+          }
+        }
+      }
+    },
+    "Display" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示"
+          }
+        }
+      }
+    },
+    "End" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "结束"
+          }
+        }
+      }
+    },
+    "Export" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导出"
+          }
+        }
+      }
+    },
+    "Export Result" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导出结果"
+          }
+        }
+      }
+    },
+    "Format" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "格式"
+          }
+        }
+      }
+    },
+    "HistoryLib export always uses one optimized .hlz archive format." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HistoryLib导出格式为固定的优化过的.hlz存档格式。"
+          }
+        }
+      }
+    },
+    "Import" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入"
+          }
+        }
+      }
+    },
+    "Import (Auto Detect)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入（自动识别）"
+          }
+        }
+      }
+    },
+    "Import as HistoryLib Archive" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入HistoryLib存档"
+          }
+        }
+      }
+    },
+    "Import as Safari Export" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入Safari导出结果"
+          }
+        }
+      }
+    },
+    "Import history to generate a summary snapshot." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入历史记录以生成概览。"
+          }
+        }
+      }
+    },
+    "Import Result" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入结果"
+          }
+        }
+      }
+    },
+    "Import Safari JSON/folder/ZIP files or a HistoryLib .hlz archive." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入Safari的JSON/文件夹/ZIP文件或者HistoryLib .hlz存档文件。"
+          }
+        }
+      }
+    },
+    "Last Modified" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最后修改于"
+          }
+        }
+      }
+    },
+    "Layout" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "布局"
+          }
+        }
+      }
+    },
+    "Library" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "库"
+          }
+        }
+      }
+    },
+    "Load More" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加载更多"
+          }
+        }
+      }
+    },
+    "Loading directory..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在加载目录……"
+          }
+        }
+      }
+    },
+    "Loading records..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在加载记录……"
+          }
+        }
+      }
+    },
+    "Loading..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在加载……"
+          }
+        }
+      }
+    },
+    "Manage" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "管理"
+          }
+        }
+      }
+    },
+    "No History Records" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有历史记录"
+          }
+        }
+      }
+    },
+    "No Matching Results" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有匹配的记录"
+          }
+        }
+      }
+    },
+    "No records loaded." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有已加载数据。"
+          }
+        }
+      }
+    },
+    "No site data." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有站点数据。"
+          }
+        }
+      }
+    },
+    "No Summary Snapshot" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有概览"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Opening" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在打开"
+          }
+        }
+      }
+    },
+    "Preparing Export..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在准备导出……"
+          }
+        }
+      }
+    },
+    "Search" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索"
+          }
+        }
+      }
+    },
+    "Search keywords" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索关键词"
+          }
+        }
+      }
+    },
+    "Searching..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在搜索……"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置"
+          }
+        }
+      }
+    },
+    "Start" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始"
+          }
+        }
+      }
+    },
+    "Summary" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "概览"
+          }
+        }
+      }
+    },
+    "Sync Result" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同步结果"
+          }
+        }
+      }
+    },
+    "This action cannot be undone." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此操作无法撤销。"
+          }
+        }
+      }
+    },
+    "Top 10 Most Visited Sites" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最常访问10大站点"
+          }
+        }
+      }
+    },
+    "Total Records" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全部记录"
+          }
+        }
+      }
+    },
+    "Try a different keyword." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "换一个关键词试试。"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.2"
+}
