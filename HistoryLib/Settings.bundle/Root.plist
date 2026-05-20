@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Show Visit Time</string>
+			<key>Key</key>
+			<string>show_history_time</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Show Site Icons</string>
+			<key>Key</key>
+			<string>show_site_icons</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Enable Deletion</string>
+			<key>Key</key>
+			<string>enable_delete</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Enable iCloud Sync</string>
+			<key>Key</key>
+			<string>enable_icloud_sync</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Show Results Directly While Searching</string>
+			<key>SupportedUserInterfaceIdioms</key>
+			<array>
+				<string>Phone</string>
+			</array>
+			<key>Key</key>
+			<string>show_direct_search_results_on_iphone</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Open Link On Tap/Click</string>
+			<key>Key</key>
+			<string>open_record_in_browser_on_click</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Default Expand To</string>
+			<key>SupportedUserInterfaceIdioms</key>
+			<array>
+				<string>Pad</string>
+			</array>
+			<key>Key</key>
+			<string>default_expand_level</string>
+			<key>DefaultValue</key>
+			<string>day</string>
+			<key>Titles</key>
+			<array>
+				<string>Do Not Expand</string>
+				<string>Year</string>
+				<string>Month</string>
+				<string>Day</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>none</string>
+				<string>year</string>
+				<string>month</string>
+				<string>day</string>
+			</array>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+</dict>
+</plist>
