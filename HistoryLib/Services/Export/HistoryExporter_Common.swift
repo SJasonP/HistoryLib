@@ -52,13 +52,13 @@ extension HistoryExporter {
         progress: ((HistoryExportProgress) -> Void)?
     ) {
         guard total > 0 else {
-            progress?(.init(phase: phase, fraction: end, message: "Exporting records..."))
+            progress?(.init(phase: phase, fraction: end, message: String(localized: "Exporting records...")))
             return
         }
 
         let ratio = min(max(Double(processed) / Double(total), 0), 1)
         let fraction = start + (end - start) * ratio
-        progress?(.init(phase: phase, fraction: fraction, message: "Exporting records (\(processed)/\(total))..."))
+        progress?(.init(phase: phase, fraction: fraction, message: String(localized: "Exporting records (\(processed)/\(total))...")))
     }
 
     func safariGroupedRelativePath(for date: Date, split: HistoryExportSplit) -> String {

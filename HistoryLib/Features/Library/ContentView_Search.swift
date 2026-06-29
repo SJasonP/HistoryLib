@@ -4,18 +4,18 @@ import SwiftData
 extension ContentView {
     func scheduleSearchReload() {
         searchReloadTask?.cancel()
-        searchReloadTask = Task {
+        searchReloadTask = Task { @MainActor in
             try? await Task.sleep(nanoseconds: 250_000_000)
             guard !Task.isCancelled else { return }
-            await MainActor.run {
-                resetSearchPaginationAndMaybeReload()
-            }
+            resetSearchPaginationAndMaybeReload()
         }
     }
 
     func resetSearchPaginationAndMaybeReload() {
+        searchLoadTask?.cancel()
         searchResults.removeAll(keepingCapacity: false)
         searchScanOffset = 0
+        isLoadingSearchResults = false
         hasMoreSearchResults = isSearching
         if isSearching {
             loadNextSearchPage()
@@ -28,62 +28,71 @@ extension ContentView {
         }
 
         isLoadingSearchResults = true
-        defer { isLoadingSearchResults = false }
-
-        do {
-            let fetched = try fetchNextSearchPage(query: normalizedSearchText)
-            searchResults.append(contentsOf: fetched)
-        } catch {
-            hasMoreSearchResults = false
-            deleteFeedbackMessage = "Failed to load search results: \(error.localizedDescription)"
-            showingDeleteFeedback = true
+        let query = normalizedSearchText
+        searchLoadTask = Task { @MainActor in
+            defer { isLoadingSearchResults = false }
+            await appendNextSearchPage(query: query)
         }
     }
 
-    func fetchNextSearchPage(query: String) throws -> [Item] {
+    // Scans the store in chunks until a full page of matches is collected or the
+    // end is reached. It yields between chunks so the UI never blocks, and it
+    // never truncates a chunk's matches, so no match is silently skipped.
+    private func appendNextSearchPage(query: String) async {
         guard !query.isEmpty else {
             hasMoreSearchResults = false
-            return []
+            return
         }
 
-        var matchedItems: [Item] = []
-        var reachedEnd = false
-        var scannedChunkCount = 0
+        var collected = 0
 
-        while matchedItems.count < searchPageSize, scannedChunkCount < maxSearchChunksPerPage {
-            var descriptor = FetchDescriptor<Item>(
-                sortBy: [SortDescriptor(\Item.visitedAt, order: .reverse)]
-            )
-            descriptor.fetchLimit = searchScanChunkSize
-            descriptor.fetchOffset = searchScanOffset
+        do {
+            while true {
+                try Task.checkCancellation()
 
-            let scanned = try modelContext.fetch(descriptor)
-            if scanned.isEmpty {
-                reachedEnd = true
-                break
+                var descriptor = FetchDescriptor<Item>(
+                    sortBy: [SortDescriptor(\Item.visitedAt, order: .reverse)]
+                )
+                descriptor.fetchLimit = searchScanChunkSize
+                descriptor.fetchOffset = searchScanOffset
+
+                let scanned = try modelContext.fetch(descriptor)
+                if scanned.isEmpty {
+                    hasMoreSearchResults = false
+                    return
+                }
+
+                searchScanOffset += scanned.count
+
+                let matches = scanned.filter { item in
+                    item.url.localizedCaseInsensitiveContains(query)
+                        || item.title.localizedCaseInsensitiveContains(query)
+                }
+                if !matches.isEmpty {
+                    searchResults.append(contentsOf: matches)
+                    collected += matches.count
+                }
+
+                if scanned.count < searchScanChunkSize {
+                    // Reached the end of the store.
+                    hasMoreSearchResults = false
+                    return
+                }
+
+                if collected >= searchPageSize {
+                    // Page filled; keep the cursor for the next page.
+                    hasMoreSearchResults = true
+                    return
+                }
+
+                await Task.yield()
             }
-
-            searchScanOffset += scanned.count
-
-            let filtered = scanned.filter { item in
-                item.url.localizedCaseInsensitiveContains(query)
-                    || item.title.localizedCaseInsensitiveContains(query)
-            }
-
-            let remaining = searchPageSize - matchedItems.count
-            if remaining > 0 {
-                matchedItems.append(contentsOf: filtered.prefix(remaining))
-            }
-
-            if scanned.count < searchScanChunkSize {
-                reachedEnd = true
-                break
-            }
-
-            scannedChunkCount += 1
+        } catch is CancellationError {
+            return
+        } catch {
+            hasMoreSearchResults = false
+            deleteFeedbackMessage = String(localized: "Failed to load search results: \(error.localizedDescription)")
+            showingDeleteFeedback = true
         }
-
-        hasMoreSearchResults = !reachedEnd
-        return matchedItems
     }
 }

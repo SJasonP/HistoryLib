@@ -52,12 +52,29 @@ extension ContentView {
         }
     }
 
-    private func blockedMutationMessage(for action: String) -> String {
-        let details = persistenceError.trimmingCharacters(in: .whitespacesAndNewlines)
-        if details.isEmpty {
-            return "Cannot \(action) because CloudKit is unavailable. History changes are blocked to prevent data divergence."
+    enum BlockedAction {
+        case importHistory
+        case deleteRecords
+        case checkSync
+
+        var localized: String {
+            switch self {
+            case .importHistory:
+                return String(localized: "import")
+            case .deleteRecords:
+                return String(localized: "delete records")
+            case .checkSync:
+                return String(localized: "check iCloud sync")
+            }
         }
-        return "Cannot \(action) because CloudKit is unavailable. History changes are blocked to prevent data divergence.\n\nError: \(details)"
+    }
+
+    private func blockedMutationMessage(for action: BlockedAction) -> String {
+        let actionText = action.localized
+        if pendingSyncRelaunch {
+            return String(localized: "Cannot \(actionText) until you relaunch HistoryLib to apply the iCloud Sync change. History changes are blocked until then so on-device data does not diverge.")
+        }
+        return String(localized: "Cannot \(actionText) because iCloud is unavailable. Changes are paused to keep your history consistent.")
     }
 
     func startImportAutoDetect() {
@@ -75,47 +92,124 @@ extension ContentView {
         isFileImporterPresented = true
     }
 
+    /// Copies a picked file or folder into the app's own temporary container and
+    /// returns the local copy's URL. Uses a coordinated read inside the
+    /// security-scoped access window so iCloud items are materialized and the
+    /// sandbox permits the copy. The caller owns cleanup of the returned URL's
+    /// parent staging directory.
+    func stageImportedItem(_ sourceURL: URL) throws -> URL {
+        let fileManager = FileManager.default
+        let stagingRoot = fileManager.temporaryDirectory
+            .appendingPathComponent("HistoryLibStaging", isDirectory: true)
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try fileManager.createDirectory(at: stagingRoot, withIntermediateDirectories: true)
+        let destinationURL = stagingRoot.appendingPathComponent(sourceURL.lastPathComponent)
+
+        let didStartAccessing = sourceURL.startAccessingSecurityScopedResource()
+        defer {
+            if didStartAccessing {
+                sourceURL.stopAccessingSecurityScopedResource()
+            }
+        }
+
+        var coordinatorError: NSError?
+        var copyError: Error?
+        NSFileCoordinator().coordinate(readingItemAt: sourceURL, options: [], error: &coordinatorError) { readURL in
+            do {
+                if fileManager.fileExists(atPath: destinationURL.path) {
+                    try fileManager.removeItem(at: destinationURL)
+                }
+                try fileManager.copyItem(at: readURL, to: destinationURL)
+            } catch {
+                copyError = error
+            }
+        }
+        if let copyError { throw copyError }
+        if let coordinatorError { throw coordinatorError }
+        return destinationURL
+    }
+
     func handleImporterResult(_ result: Result<URL, Error>) {
         guard canMutateHistoryData else {
-            importFeedbackMessage = blockedMutationMessage(for: "import")
+            importFeedbackMessage = blockedMutationMessage(for: .importHistory)
+            showingImportFeedback = true
+            return
+        }
+        guard !isImporting else { return }
+
+        let url: URL
+        do {
+            url = try result.get()
+        } catch {
+            importFeedbackMessage = error.localizedDescription
             showingImportFeedback = true
             return
         }
 
-        do {
-            let url = try result.get()
-            let didStartAccessing = url.startAccessingSecurityScopedResource()
+        let preferredFormat = importFormatPreference
+        isImporting = true
+        isCancellingImport = false
+        importProgressFraction = nil
+        importProgressMessage = String(localized: "Preparing import...")
+
+        importTask = Task { @MainActor in
             defer {
-                if didStartAccessing {
-                    url.stopAccessingSecurityScopedResource()
-                }
+                isImporting = false
+                isCancellingImport = false
+                importTask = nil
             }
 
-            let report = try importer.importFrom(
-                url: url,
-                modelContext: modelContext,
-                preferredFormat: importFormatPreference
-            )
-            importFeedbackMessage = [
-                "Detected format: \(report.format.title)",
-                "Scanned files: \(report.scannedFileCount)",
-                "Valid files: \(report.validFileCount)",
-                "Imported records: \(report.importedRecordCount)",
-                "Skipped records: \(report.skippedRecordCount)",
-                report.failures.isEmpty ? nil : "Failed files: \(report.failures.count)"
-            ]
-            .compactMap { $0 }
-            .joined(separator: "\n")
-            showingImportFeedback = true
+            // Let the progress overlay paint before the (potentially heavy) copy.
+            await Task.yield()
 
-            refreshSummaryStats()
-            rebuildDirectorySkeleton()
-            resetSearchPaginationAndMaybeReload()
-            generateAndPersistSummarySnapshot()
-        } catch {
-            importFeedbackMessage = error.localizedDescription
-            showingImportFeedback = true
+            do {
+                // Copy the picked item into our own container first, then import
+                // from the local copy. The picked URL is security-scoped and lives
+                // elsewhere (Files / iCloud Drive); reading or memory-mapping it in
+                // place can be denied by the sandbox on iOS. Working on a local
+                // copy avoids that and any security-scope lifetime issues.
+                let stagedURL = try stageImportedItem(url)
+                defer { try? FileManager.default.removeItem(at: stagedURL.deletingLastPathComponent()) }
+
+                let report = try await importer.importFrom(
+                    url: stagedURL,
+                    modelContext: modelContext,
+                    preferredFormat: preferredFormat,
+                    progress: { progress in
+                        importProgressFraction = progress.fraction
+                        importProgressMessage = progress.message
+                    }
+                )
+
+                importFeedbackMessage = [
+                    String(localized: "Detected format: \(report.format.title)"),
+                    String(localized: "Scanned files: \(report.scannedFileCount)"),
+                    String(localized: "Valid files: \(report.validFileCount)"),
+                    String(localized: "Imported records: \(report.importedRecordCount)"),
+                    String(localized: "Skipped records: \(report.skippedRecordCount)"),
+                    report.failures.isEmpty ? nil : String(localized: "Failed files: \(report.failures.count)")
+                ]
+                .compactMap { $0 }
+                .joined(separator: "\n")
+                showingImportFeedback = true
+
+                scheduleDerivedDataRefresh()
+            } catch is CancellationError {
+                // User cancelled. Any records imported before cancellation remain;
+                // re-importing is safe because import deduplicates.
+                scheduleDerivedDataRefresh()
+            } catch {
+                importFeedbackMessage = error.localizedDescription
+                showingImportFeedback = true
+            }
         }
+    }
+
+    func cancelImport() {
+        guard isImporting, !isCancellingImport else { return }
+        isCancellingImport = true
+        importProgressMessage = String(localized: "Cancelling import...")
+        importTask?.cancel()
     }
 
     func openRecordInBrowserIfNeeded(_ item: Item) {
@@ -142,13 +236,13 @@ extension ContentView {
             defer { isSyncing = false }
 
             guard enableICloudSync else {
-                syncFeedbackMessage = "iCloud sync is disabled in Settings."
+                syncFeedbackMessage = String(localized: "iCloud sync is disabled in Settings.")
                 showingSyncFeedback = true
                 return
             }
 
             guard persistenceBackend == "cloudKit" else {
-                syncFeedbackMessage = blockedMutationMessage(for: "check iCloud sync")
+                syncFeedbackMessage = blockedMutationMessage(for: .checkSync)
                 showingSyncFeedback = true
                 return
             }
@@ -160,23 +254,19 @@ extension ContentView {
                 let syncLine: String
                 switch networkStatus {
                 case .satisfied:
-                    syncLine = "Network: online. Cloud sync should proceed automatically."
+                    syncLine = String(localized: "Online. iCloud sync should proceed automatically.")
                 case .unsatisfied:
-                    syncLine = "Network: offline. Changes are queued locally and will sync when network is restored."
+                    syncLine = String(localized: "Offline. Changes are saved on this device and will sync when you are back online.")
                 case .requiresConnection:
-                    syncLine = "Network: connection required. Changes are queued locally until connectivity is available."
+                    syncLine = String(localized: "A connection is required. Changes are saved on this device until you are back online.")
                 @unknown default:
-                    syncLine = "Network: unknown status. Cloud sync remains system-managed."
+                    syncLine = String(localized: "Sync status is unknown. iCloud sync is managed by the system.")
                 }
-                syncFeedbackMessage = """
-                CloudKit backend is configured.
-                Local record count: \(recordCount)
-                \(syncLine)
-                """
+                syncFeedbackMessage = String(localized: "iCloud sync is on.\nRecords on this device: \(recordCount)\n\(syncLine)")
                 showingSyncFeedback = true
                 scheduleBackgroundDedupIfNeeded(reason: "manual sync check")
             } catch {
-                syncFeedbackMessage = "Sync failed: \(error.localizedDescription)"
+                syncFeedbackMessage = String(localized: "Sync failed: \(error.localizedDescription)")
                 showingSyncFeedback = true
             }
         }
@@ -218,10 +308,7 @@ extension ContentView {
             guard !Task.isCancelled else { return }
             guard report.removedCount > 0 else { return }
 
-            refreshSummaryStats()
-            rebuildDirectorySkeleton()
-            resetSearchPaginationAndMaybeReload()
-            generateAndPersistSummarySnapshot()
+            scheduleDerivedDataRefresh()
         } catch is CancellationError {
             return
         } catch {
@@ -233,7 +320,7 @@ extension ContentView {
 
     func deleteSingleRecord(_ item: Item) {
         guard canMutateHistoryData else {
-            deleteFeedbackMessage = blockedMutationMessage(for: "delete records")
+            deleteFeedbackMessage = blockedMutationMessage(for: .deleteRecords)
             showingDeleteFeedback = true
             return
         }
@@ -249,7 +336,7 @@ extension ContentView {
                 generateAndPersistSummarySnapshot()
             } catch {
                 rollbackOptimisticSingleDelete(item, dayStart: dayStart, dayWasRemoved: removedDayFromDirectory)
-                deleteFeedbackMessage = "Delete failed: \(error.localizedDescription)"
+                deleteFeedbackMessage = String(localized: "Delete failed: \(error.localizedDescription)")
                 showingDeleteFeedback = true
             }
         }
@@ -354,7 +441,7 @@ extension ContentView {
 
     func deleteRecordsInRange(_ range: ClosedRange<Date>) -> Int {
         guard canMutateHistoryData else {
-            deleteFeedbackMessage = blockedMutationMessage(for: "delete records")
+            deleteFeedbackMessage = blockedMutationMessage(for: .deleteRecords)
             showingDeleteFeedback = true
             return 0
         }
@@ -386,13 +473,10 @@ extension ContentView {
                 deletedTotal += records.count
             }
 
-            refreshSummaryStats()
-            rebuildDirectorySkeleton()
-            resetSearchPaginationAndMaybeReload()
-            generateAndPersistSummarySnapshot()
+            scheduleDerivedDataRefresh()
             return deletedTotal
         } catch {
-            deleteFeedbackMessage = "Batch delete failed: \(error.localizedDescription)"
+            deleteFeedbackMessage = String(localized: "Batch delete failed: \(error.localizedDescription)")
             showingDeleteFeedback = true
             return deletedTotal
         }
@@ -410,7 +494,7 @@ extension ContentView {
         isPreparingExport = true
         isCancellingExport = false
         exportProgressFraction = 0.02
-        exportProgressMessage = "Preparing export..."
+        exportProgressMessage = String(localized: "Preparing export...")
 
         let task = Task {
             defer {
@@ -441,7 +525,7 @@ extension ContentView {
                 cleanupPreparedExportFiles()
             } catch {
                 cleanupPreparedExportFiles()
-                exportFeedbackMessage = "Export failed: \(error.localizedDescription)"
+                exportFeedbackMessage = String(localized: "Export failed: \(error.localizedDescription)")
                 showingExportFeedback = true
             }
         }
@@ -452,7 +536,7 @@ extension ContentView {
     func cancelExportPreparation() {
         guard isPreparingExport, !isCancellingExport else { return }
         isCancellingExport = true
-        exportProgressMessage = "Cancelling export..."
+        exportProgressMessage = String(localized: "Cancelling export...")
         exportPreparationTask?.cancel()
     }
 
@@ -461,13 +545,13 @@ extension ContentView {
 
         switch result {
         case .success:
-            exportFeedbackMessage = "Export completed."
+            exportFeedbackMessage = String(localized: "Export completed.")
             showingExportFeedback = true
         case .failure(let error):
             if isUserCancelledFileExport(error) {
                 return
             }
-            exportFeedbackMessage = "Export failed: \(error.localizedDescription)"
+            exportFeedbackMessage = String(localized: "Export failed: \(error.localizedDescription)")
             showingExportFeedback = true
         }
     }

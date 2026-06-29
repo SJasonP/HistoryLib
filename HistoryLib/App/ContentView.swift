@@ -18,13 +18,13 @@ enum HistoryDefaultExpandLevel: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .none:
-            return "Do Not Expand"
+            return String(localized: "Do Not Expand")
         case .year:
-            return "Year"
+            return String(localized: "Year")
         case .month:
-            return "Month"
+            return String(localized: "Month")
         case .day:
-            return "Day"
+            return String(localized: "Day")
         }
     }
 }
@@ -46,10 +46,11 @@ struct ContentView: View {
     @AppStorage("open_record_in_browser_on_click") var openRecordInBrowserOnDoubleClick = true
     @AppStorage("default_expand_level") var defaultExpandLevelRaw = HistoryDefaultExpandLevel.day.rawValue
     @AppStorage("show_direct_search_results_on_iphone") var showDirectSearchResultsOnIPhone = true
-    @AppStorage("enable_icloud_sync") var enableICloudSync = true
+    @AppStorage("enable_icloud_sync") var enableICloudSync = false
     @AppStorage("last_selected_tab") var lastSelectedTabRaw = AppTab.summary.rawValue
     @AppStorage("persistence_backend") var persistenceBackend = "unknown"
     @AppStorage("persistence_error") var persistenceError = ""
+    @AppStorage("persistence_launch_icloud_enabled") var launchICloudEnabled = false
 
 #if os(macOS)
     @Environment(\.openSettings) var openSettings
@@ -78,15 +79,22 @@ struct ContentView: View {
     @State var exportCleanupDirectoryURL: URL?
     @State var isPreparingExport = false
     @State var exportProgressFraction = 0.0
-    @State var exportProgressMessage = "Preparing export..."
+    @State var exportProgressMessage = String(localized: "Preparing export...")
     @State var isCancellingExport = false
     @State var exportPreparationTask: Task<Void, Never>?
+
+    @State var isImporting = false
+    @State var importProgressFraction: Double?
+    @State var importProgressMessage = String(localized: "Preparing import...")
+    @State var isCancellingImport = false
+    @State var importTask: Task<Void, Never>?
 
     @State var searchResults: [Item] = []
     @State var hasMoreSearchResults = false
     @State var isLoadingSearchResults = false
     @State var searchScanOffset = 0
     @State var searchReloadTask: Task<Void, Never>?
+    @State var searchLoadTask: Task<Void, Never>?
 
     @State var directoryDayStarts: [Date] = []
     @State var isDirectoryLoading = false
@@ -110,22 +118,24 @@ struct ContentView: View {
     @State var isBackgroundDedupRunning = false
     @State var backgroundDedupTask: Task<Void, Never>?
     @State var lastBackgroundDedupRunAt: Date = .distantPast
+    @State var derivedRefreshTask: Task<Void, Never>?
 
     let importer = HistoryImporter()
     let exporter = HistoryExporter()
     let calendar = Calendar.current
     let searchPageSize = 300
     let searchScanChunkSize = 1_000
-    let maxSearchChunksPerPage = 6
     let directoryScanChunkSize = 2_000
     let dayItemsPageSize = 200
 
     var body: some View {
         mainTabView
-            .allowsHitTesting(!isPreparingExport)
+            .allowsHitTesting(!isPreparingExport && !isImporting)
             .overlay {
                 if isPreparingExport {
                     exportProgressOverlay
+                } else if isImporting {
+                    importProgressOverlay
                 }
             }
             .fileImporter(
@@ -212,7 +222,7 @@ struct ContentView: View {
             }
             .onChange(of: enableICloudSync) { _, _ in
                 AppSettingsCloudSync.shared.refreshActivationState()
-                if shouldEnforceCloudWriteProtection && !canMutateHistoryData {
+                if !canMutateHistoryData {
                     showingStorageModeAlert = true
                 }
             }
@@ -227,6 +237,10 @@ struct ContentView: View {
             .onDisappear {
                 exportPreparationTask?.cancel()
                 backgroundDedupTask?.cancel()
+                searchReloadTask?.cancel()
+                searchLoadTask?.cancel()
+                derivedRefreshTask?.cancel()
+                importTask?.cancel()
             }
     }
 }

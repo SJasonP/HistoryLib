@@ -49,7 +49,7 @@ extension ContentView {
                 }
             } catch {
                 if !Task.isCancelled, generation == directoryBuildGeneration {
-                    deleteFeedbackMessage = "Failed to load directory: \(error.localizedDescription)"
+                    deleteFeedbackMessage = String(localized: "Failed to load directory: \(error.localizedDescription)")
                     showingDeleteFeedback = true
                 }
             }
@@ -198,10 +198,10 @@ extension ContentView {
 
     func dayHeaderTitle(for dayStart: Date) -> String {
         if calendar.isDateInToday(dayStart) {
-            return "Today"
+            return String(localized: "Today")
         }
         if calendar.isDateInYesterday(dayStart) {
-            return "Yesterday"
+            return String(localized: "Yesterday")
         }
         return dayStart.formatted(
             Date.FormatStyle()

@@ -5,36 +5,54 @@ extension ContentView {
         enableICloudSync
     }
 
+    /// The persistence backend is selected once, when the store is created at
+    /// launch. If the saved iCloud Sync setting no longer matches the mode the
+    /// store was actually built with, a relaunch is required before the setting
+    /// can take effect.
+    var pendingSyncRelaunch: Bool {
+        enableICloudSync != launchICloudEnabled
+    }
+
     var canMutateHistoryData: Bool {
-        !shouldEnforceCloudWriteProtection || persistenceBackend == "cloudKit"
+        // Block writes until a relaunch reconciles the store with the setting,
+        // so the active store never receives writes that contradict the chosen
+        // mode (e.g. writing to a CloudKit store after sync was turned off).
+        if pendingSyncRelaunch {
+            return false
+        }
+        return !shouldEnforceCloudWriteProtection || persistenceBackend == "cloudKit"
     }
 
     var storageModeMessage: String {
+        if pendingSyncRelaunch {
+            return enableICloudSync
+                ? String(localized: "iCloud Sync was turned on. Relaunch HistoryLib to apply the change. History changes are blocked until then so on-device data does not diverge.")
+                : String(localized: "iCloud Sync was turned off. Relaunch HistoryLib to apply the change. History changes are blocked until then so on-device data does not diverge.")
+        }
+
         if !shouldEnforceCloudWriteProtection {
-            return "iCloud sync is disabled in Settings. History changes are stored locally on this device."
+            return String(localized: "iCloud sync is disabled in Settings. History changes are stored locally on this device.")
         }
 
         if persistenceBackend == "cloudKit" {
-            return "CloudKit backend is configured."
+            return String(localized: "iCloud sync is on.")
         }
 
-        let details = persistenceError.trimmingCharacters(in: .whitespacesAndNewlines)
-        if details.isEmpty {
-            return "CloudKit storage is unavailable. History changes are blocked to prevent data divergence across devices."
-        }
-        return """
-        CloudKit storage is unavailable. History changes are blocked to prevent data divergence across devices.
+        return String(localized: "iCloud is currently unavailable. Changes are paused so your history stays consistent across your devices.")
+    }
 
-        Backend: \(persistenceBackend)
-        Error: \(details)
-        """
+    var storageModeBannerText: String {
+        if pendingSyncRelaunch {
+            return String(localized: "Relaunch required to apply the iCloud Sync change. History changes are blocked.")
+        }
+        return String(localized: "iCloud unavailable. Changes are paused.")
     }
 
     var storageModeBanner: some View {
         HStack(alignment: .center, spacing: 8) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundStyle(.yellow)
-            Text("CloudKit unavailable. History changes are blocked.")
+            Text(storageModeBannerText)
                 .font(.footnote.weight(.medium))
                 .foregroundStyle(.primary)
             Spacer(minLength: 0)
@@ -124,7 +142,7 @@ extension ContentView {
     }
 
     func navigationContainer<Content: View>(
-        title: String,
+        title: LocalizedStringKey,
         @ViewBuilder content: () -> Content
     ) -> some View {
         NavigationStack {
@@ -311,6 +329,46 @@ extension ContentView {
                 }
             }
             .disabled(isCancellingExport)
+        }
+        .padding(20)
+        .frame(maxWidth: 420)
+        .exportProgressSurface()
+    }
+
+    var importProgressOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.22)
+                .ignoresSafeArea()
+
+            importProgressPanel
+            .padding(.horizontal, 24)
+        }
+    }
+
+    var importProgressPanel: some View {
+        VStack(spacing: 16) {
+            if let fraction = importProgressFraction {
+                ProgressView(value: fraction)
+                    .progressViewStyle(.linear)
+            } else {
+                ProgressView()
+                    .progressViewStyle(.linear)
+            }
+
+            Text(importProgressMessage)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            Button(role: .destructive) {
+                cancelImport()
+            } label: {
+                if isCancellingImport {
+                    Label("Cancelling...", systemImage: "hourglass")
+                } else {
+                    Label("Cancel Import", systemImage: "xmark.circle")
+                }
+            }
+            .disabled(isCancellingImport)
         }
         .padding(20)
         .frame(maxWidth: 420)

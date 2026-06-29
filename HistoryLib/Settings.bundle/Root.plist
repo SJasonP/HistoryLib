@@ -42,7 +42,7 @@
 			<key>Key</key>
 			<string>enable_icloud_sync</string>
 			<key>DefaultValue</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Type</key>

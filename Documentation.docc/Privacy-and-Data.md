@@ -11,7 +11,8 @@ History records are stored as SwiftData `Item` models. A record can contain:
 - URL
 - title
 - visit timestamp
-- visit count
+- visit count (when records are deduplicated, counts are merged/summed rather
+  than discarded)
 - source browser
 - source file name
 - original timestamp in microseconds
@@ -25,9 +26,11 @@ aggregate counts and top-site statistics derived from the imported records.
 
 ## Local Storage
 
-When iCloud sync is disabled, HistoryLib uses a local SwiftData store. Data
-remains on the current device unless the user exports it, includes it in a
-backup, or shares the app container through system tools.
+iCloud sync is opt-in and off by default. Out of the box, HistoryLib uses a
+local SwiftData store, and browser history stays on the current device unless
+the user exports it, includes it in a backup, or shares the app container
+through system tools. Syncing history to iCloud only happens after the user
+explicitly turns it on.
 
 If local persistent storage cannot be initialized, the app can fall back to an
 in-memory store to remain launchable. In-memory data is not durable.
@@ -37,6 +40,11 @@ in-memory store to remain launchable. In-memory data is not durable.
 When iCloud sync is enabled, HistoryLib tries to initialize SwiftData with
 CloudKit. In this mode, imported history records can sync through the user's
 iCloud account.
+
+The storage backend is selected when the store is created at launch. Changing
+the iCloud Sync setting takes effect on the next launch, and the app tells the
+user a relaunch is needed. Until then, history mutations stay protected so the
+on-disk data never diverges from the selected mode.
 
 If CloudKit is unavailable while iCloud sync is enabled, HistoryLib blocks
 history mutations such as import and delete. This prevents the app from creating
@@ -52,7 +60,8 @@ When site icons are enabled, HistoryLib may request favicon resources for hosts
 found in history records. The favicon service can:
 
 - fetch HTML from a page URL or site root to discover icon links;
-- request standard icon paths such as `/favicon.ico`;
+- request standard icon paths such as `/favicon.ico`,
+  `/apple-touch-icon.png`, and `/apple-touch-icon-precomposed.png`;
 - cache valid image data on disk and in memory;
 - remember temporary misses to avoid repeated failed requests.
 

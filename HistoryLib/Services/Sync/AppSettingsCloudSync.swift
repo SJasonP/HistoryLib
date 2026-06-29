@@ -77,7 +77,7 @@ final class AppSettingsCloudSync {
     }
 
     private var isICloudSyncEnabled: Bool {
-        defaults.object(forKey: iCloudToggleKey) as? Bool ?? true
+        defaults.object(forKey: iCloudToggleKey) as? Bool ?? false
     }
 
     @objc private func handleDefaultsDidChange() {

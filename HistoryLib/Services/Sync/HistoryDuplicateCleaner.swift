@@ -21,6 +21,11 @@ actor HistoryDuplicateCleaner {
         self.pruneInterval = max(500, pruneInterval)
     }
 
+    private struct KeptRecord {
+        let visitedSecond: Int64
+        let id: PersistentIdentifier
+    }
+
     func deduplicate(
         modelContainer: ModelContainer,
         dedupOptions: ImportDedupOptions = ImportDedupOptions()
@@ -31,7 +36,8 @@ actor HistoryDuplicateCleaner {
             : 0
 
         var duplicateIDs: [PersistentIdentifier] = []
-        var latestKeptSecondByKey: [String: Int64] = [:]
+        var mergeVisitsByKeptID: [PersistentIdentifier: Int] = [:]
+        var keptByKey: [String: KeptRecord] = [:]
         var scanOffset = 0
         var scannedCount = 0
         var sinceLastPrune = 0
@@ -57,11 +63,14 @@ actor HistoryDuplicateCleaner {
                     browserName: item.sourceBrowser
                 )
 
-                if let previousKeptSecond = latestKeptSecondByKey[dedupKey],
-                   previousKeptSecond >= (visitedSecond - toleranceSeconds) {
+                if let kept = keptByKey[dedupKey],
+                   kept.visitedSecond >= (visitedSecond - toleranceSeconds) {
+                    // Duplicate: merge its visit count into the kept record instead
+                    // of discarding it, then mark it for removal.
                     duplicateIDs.append(item.persistentModelID)
+                    mergeVisitsByKeptID[kept.id, default: 0] += max(1, item.visitCount)
                 } else {
-                    latestKeptSecondByKey[dedupKey] = visitedSecond
+                    keptByKey[dedupKey] = KeptRecord(visitedSecond: visitedSecond, id: item.persistentModelID)
                 }
 
                 scannedCount += 1
@@ -69,7 +78,7 @@ actor HistoryDuplicateCleaner {
 
                 if sinceLastPrune >= pruneInterval {
                     let threshold = visitedSecond - toleranceSeconds
-                    latestKeptSecondByKey = latestKeptSecondByKey.filter { $0.value >= threshold }
+                    keptByKey = keptByKey.filter { $0.value.visitedSecond >= threshold }
                     sinceLastPrune = 0
                     await Task.yield()
                 }
@@ -81,24 +90,36 @@ actor HistoryDuplicateCleaner {
             }
         }
 
+        // Merge the accumulated visit counts into the kept records.
+        for (keptID, addedVisits) in mergeVisitsByKeptID {
+            if let kept = modelContext.model(for: keptID) as? Item {
+                kept.visitCount = max(1, kept.visitCount + addedVisits)
+            }
+        }
+
         var removedCount = 0
         for chunk in duplicateIDs.chunked(into: deleteBatchSize) {
             try Task.checkCancellation()
-            var deletedInChunk = false
+            var changed = false
 
             for id in chunk {
                 if let model = modelContext.model(for: id) as? Item {
                     modelContext.delete(model)
                     removedCount += 1
-                    deletedInChunk = true
+                    changed = true
                 }
             }
 
-            if deletedInChunk {
+            if changed {
                 try modelContext.save()
             }
 
             await Task.yield()
+        }
+
+        // Persist any merged visit counts that the delete loop did not already save.
+        if modelContext.hasChanges {
+            try modelContext.save()
         }
 
         return HistoryDuplicateCleanupReport(
@@ -108,56 +129,10 @@ actor HistoryDuplicateCleaner {
     }
 
     private static func makeDedupKey(url rawURL: String, browserName: String) -> String {
-        let normalizedURL = normalizeURLForDedup(rawURL)
+        let normalizedURL = ImportDedup.normalizeURLForDedup(rawURL)
         let normalizedBrowser = browserName
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .lowercased()
         return "\(normalizedURL)|\(normalizedBrowser)"
-    }
-
-    private static func normalizeURLForDedup(_ rawURL: String) -> String {
-        let trimmed = rawURL.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return trimmed }
-
-        guard let initialURL = URL(string: trimmed),
-              var components = URLComponents(url: initialURL, resolvingAgainstBaseURL: false) else {
-            return trimmed.lowercased()
-        }
-
-        components.scheme = components.scheme?.lowercased()
-        components.host = components.host?.lowercased()
-        components.fragment = nil
-
-        if let scheme = components.scheme,
-           let port = components.port,
-           (scheme == "http" && port == 80) || (scheme == "https" && port == 443) {
-            components.port = nil
-        }
-
-        if components.path.isEmpty {
-            components.path = "/"
-        } else if components.path.count > 1 && components.path.hasSuffix("/") {
-            components.path.removeLast()
-        }
-
-        return components.string ?? trimmed.lowercased()
-    }
-}
-
-private extension Array {
-    nonisolated func chunked(into size: Int) -> [ArraySlice<Element>] {
-        guard size > 0 else { return [self[...]] }
-
-        var chunks: [ArraySlice<Element>] = []
-        chunks.reserveCapacity((count / size) + 1)
-
-        var start = startIndex
-        while start < endIndex {
-            let end = index(start, offsetBy: size, limitedBy: endIndex) ?? endIndex
-            chunks.append(self[start..<end])
-            start = end
-        }
-
-        return chunks
     }
 }

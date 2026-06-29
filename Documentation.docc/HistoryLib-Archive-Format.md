@@ -68,6 +68,9 @@ Required and read first.
 }
 ```
 
+`app_version` is the app's marketing version, read from the app bundle at export
+time (not a hard-coded literal). Importers treat it as informational only.
+
 ## 4. Chunk and Record Rules
 
 Chunk file naming:
@@ -82,18 +85,94 @@ Rules:
 5. Every chunk must have an entry in `indexes/chunks.json`.
 6. `sha256` in `indexes/chunks.json` is computed from the exact chunk file bytes.
 
-Record schema (`hl_record_v1`) minimal required fields:
-- `u` string: URL
-- `ts` int64: visit timestamp (Unix microseconds, UTC)
+### Record schema (`hl_record_v1`)
+
+Each chunk line is one JSON object. Field keys are short to keep large archives
+compact. All timestamps are Unix microseconds in UTC.
+
+Required fields (a line is rejected if either is missing or empty):
+
+| Key  | Type   | Meaning                                  |
+|------|--------|------------------------------------------|
+| `u`  | string | URL                                      |
+| `ts` | int64  | Visit timestamp (Unix microseconds, UTC) |
+
+Optional fields (written when available, ignored when absent on import):
+
+| Key  | Type   | Meaning                                                             |
+|------|--------|---------------------------------------------------------------------|
+| `t`  | string | Page title                                                          |
+| `vc` | int    | Visit count (import clamps to at least `1`)                         |
+| `uk` | string | Stored unique/dedup key; recomputed from `u`+`ts`+browser if absent |
+| `sb` | string | Source browser (defaults to `Safari` on import when absent)         |
+| `ia` | int64  | Import timestamp (Unix microseconds); defaults to import time       |
+| `rt` | int64  | Original raw source timestamp (Unix microseconds)                   |
+| `sf` | string | Source file name                                                    |
+| `su` | string | Redirect source URL                                                 |
+| `st` | int64  | Redirect source timestamp (Unix microseconds)                       |
+| `du` | string | Redirect destination URL                                            |
+| `dt` | int64  | Redirect destination timestamp (Unix microseconds)                  |
+| `hg` | bool   | Whether the latest visit was an HTTP GET                            |
+
+Integer fields are decoded flexibly: a JSON number or a numeric string is
+accepted.
+
+Example chunk line:
+
+```json
+{"u":"https://example.com/a","ts":1710000000000000,"t":"Example","vc":1,"uk":"https://example.com/a|1710000000|safari","sb":"Safari","ia":1710000500000000}
+```
 
 ## 5. Index Files
 
-- `indexes/chunks.json`: chunk list + record count + time range + SHA256
-- `indexes/years.json`: yearly counts/time range
-- `indexes/months.json`: monthly counts/time range
-- `indexes/days.json`: daily counts/time range
+All index files are JSON arrays. Object keys use `snake_case`.
 
-These indexes are for faster validation/import planning and future resume support.
+### `indexes/chunks.json`
+
+Required for import. One entry per chunk file.
+
+```json
+[
+  {
+    "id": 1,
+    "path": "chunks/00000001.jsonl",
+    "record_count": 50000,
+    "min_ts": 1577836800000000,
+    "max_ts": 1612345678000000,
+    "sha256": "<hex-encoded sha256 of the exact chunk file bytes>"
+  }
+]
+```
+
+| Key            | Type   | Meaning                                          |
+|----------------|--------|--------------------------------------------------|
+| `id`           | int    | 1-based contiguous chunk id (`1..chunk_count`)   |
+| `path`         | string | Archive-relative path to the chunk file          |
+| `record_count` | int    | Number of records (lines) in the chunk           |
+| `min_ts`       | int64  | Smallest `ts` in the chunk (Unix microseconds)   |
+| `max_ts`       | int64  | Largest `ts` in the chunk (Unix microseconds)    |
+| `sha256`       | string | Lowercase hex SHA256 of the exact chunk bytes    |
+
+### `indexes/years.json`, `months.json`, `days.json`
+
+Pre-built time-bucket counts. Same shape, keyed by the bucket label:
+
+| File          | Bucket key | Key type | Format     |
+|---------------|------------|----------|------------|
+| `years.json`  | `year`     | int      | `2024`     |
+| `months.json` | `month`    | string   | `2024-01`  |
+| `days.json`   | `day`      | string   | `2024-01-31` |
+
+Each entry also carries `record_count` (int), `min_ts` (int64), and `max_ts`
+(int64). Example day entry:
+
+```json
+{ "day": "2024-01-31", "record_count": 1280, "min_ts": 1706659200000000, "max_ts": 1706745599000000 }
+```
+
+The time-bucket indexes (`years`/`months`/`days`) are advisory: they support
+faster validation, import planning, and future resume support. Only
+`indexes/chunks.json` is required to import an archive.
 
 ## 6. Import Validation (v1)
 

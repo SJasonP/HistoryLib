@@ -3,6 +3,11 @@ import SwiftData
 
 @Model
 final class Item {
+    // Indexed because nearly every browse, search, export, summary, and dedup
+    // query sorts by `visitedAt` or looks records up by `uniqueKey`. Without
+    // these indexes large datasets fall back to full-table scans.
+    #Index<Item>([\.visitedAt], [\.uniqueKey])
+
     var uniqueKey: String = ""
     var url: String = ""
     var title: String = ""

@@ -37,6 +37,21 @@ extension ContentView {
         }
     }
 
+    /// Coalesced entry point for rebuilding all derived UI state after a history
+    /// mutation. A burst of imports/deletes collapses into a single refresh
+    /// instead of starting several overlapping full-table scans.
+    func scheduleDerivedDataRefresh() {
+        derivedRefreshTask?.cancel()
+        derivedRefreshTask = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 150_000_000)
+            guard !Task.isCancelled else { return }
+            refreshSummaryStats()
+            rebuildDirectorySkeleton()
+            resetSearchPaginationAndMaybeReload()
+            generateAndPersistSummarySnapshot()
+        }
+    }
+
     func generateAndPersistSummarySnapshot() {
         summaryGenerationToken += 1
         let token = summaryGenerationToken

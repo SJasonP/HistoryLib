@@ -9,7 +9,11 @@ struct HistoryLibApp: App {
             SummarySnapshot.self,
         ])
         let defaults = UserDefaults.standard
-        let isICloudSyncEnabled = defaults.object(forKey: "enable_icloud_sync") as? Bool ?? true
+        let isICloudSyncEnabled = defaults.object(forKey: "enable_icloud_sync") as? Bool ?? false
+      
+        // Record the sync mode the store is actually being created with, so the UI
+        // can detect when the saved setting has changed and a relaunch is required.
+        defaults.set(isICloudSyncEnabled, forKey: "persistence_launch_icloud_enabled")
 
         if !isICloudSyncEnabled {
             let localConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)

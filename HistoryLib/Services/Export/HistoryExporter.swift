@@ -23,7 +23,7 @@ struct HistoryExporter {
         try fileManager.createDirectory(at: tempRoot, withIntermediateDirectories: true)
 
         let totalRecords = try countAllItems(modelContext: modelContext)
-        progress?(.init(phase: .preparing, fraction: 0.02, message: "Preparing export..."))
+        progress?(.init(phase: .preparing, fraction: 0.02, message: String(localized: "Preparing export...")))
         try Task.checkCancellation()
 
         switch format {

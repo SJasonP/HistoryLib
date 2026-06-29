@@ -29,11 +29,11 @@ enum HistoryImportFormatPreference: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .automatic:
-            return "Auto Detect"
+            return String(localized: "Auto Detect")
         case .safari:
-            return "Safari Export"
+            return String(localized: "Safari Export")
         case .historyLib:
-            return "HistoryLib Archive (.hlz)"
+            return String(localized: "HistoryLib Archive (.hlz)")
         }
     }
 }
@@ -60,6 +60,15 @@ struct HistoryImportReport {
     let skippedRecordCount: Int
     let failures: [ImportFileFailure]
 }
+
+/// Progress for a running import. `fraction` is nil when the total is not yet
+/// known (shown as an indeterminate bar).
+struct HistoryImportProgress {
+    let fraction: Double?
+    let message: String
+}
+
+typealias HistoryImportProgressHandler = (HistoryImportProgress) -> Void
 
 extension UTType {
     static var historyLibArchive: UTType {

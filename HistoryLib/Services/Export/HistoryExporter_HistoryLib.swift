@@ -150,7 +150,7 @@ extension HistoryExporter {
             formatVersion: 1,
             createdAtUsec: Int64((exportTime.timeIntervalSince1970 * 1_000_000).rounded()),
             appName: "HistoryLib",
-            appVersion: "1.0",
+            appVersion: Self.bundleAppVersion,
             recordSchema: "hl_record_v1",
             recordCount: totalRecordCount,
             chunkCount: chunkEntries.count,
@@ -169,11 +169,11 @@ extension HistoryExporter {
 
         try writeJSON(manifest, to: archiveRoot.appendingPathComponent("manifest.json"))
 
-        progress?(.init(phase: .packaging, fraction: 0.92, message: "Compressing archive..."))
+        progress?(.init(phase: .packaging, fraction: 0.92, message: String(localized: "Compressing archive...")))
         try Task.checkCancellation()
         let hlzURL = tempRoot.appendingPathComponent("historylib-export.hlz")
         try zipDirectory(at: archiveRoot, to: hlzURL)
-        progress?(.init(phase: .packaging, fraction: 1.0, message: "Export complete."))
+        progress?(.init(phase: .packaging, fraction: 1.0, message: String(localized: "Export complete.")))
 
         return PreparedExportFile(
             fileURL: hlzURL,
@@ -232,5 +232,10 @@ extension HistoryExporter {
         )
         descriptor.fetchLimit = 1
         return try modelContext.fetch(descriptor).first
+    }
+
+    /// The app's marketing version, read from the bundle at export time.
+    static var bundleAppVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
     }
 }

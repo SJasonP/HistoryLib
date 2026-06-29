@@ -15,7 +15,7 @@ enum MinimalZipArchive {
             throw NSError(
                 domain: "HistoryExporter",
                 code: 31,
-                userInfo: [NSLocalizedDescriptionKey: "Failed to create ZIP archive at destination URL."]
+                userInfo: [NSLocalizedDescriptionKey: String(localized: "Failed to create ZIP archive at destination URL.")]
             )
         }
 

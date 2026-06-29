@@ -9,16 +9,18 @@ final class HistoryImporter {
         url: URL,
         modelContext: ModelContext,
         preferredFormat: HistoryImportFormatPreference = .automatic,
-        dedupOptions: ImportDedupOptions = ImportDedupOptions()
-    ) throws -> HistoryImportReport {
+        dedupOptions: ImportDedupOptions = ImportDedupOptions(),
+        progress: HistoryImportProgressHandler? = nil
+    ) async throws -> HistoryImportReport {
         let resolvedFormat = resolveFormat(url: url, preferredFormat: preferredFormat)
 
         switch resolvedFormat {
         case .safari:
-            let report = try safariImporter.importFrom(
+            let report = try await safariImporter.importFrom(
                 url: url,
                 modelContext: modelContext,
-                dedupOptions: dedupOptions
+                dedupOptions: dedupOptions,
+                progress: progress
             )
             return HistoryImportReport(
                 format: .safari,
@@ -29,10 +31,11 @@ final class HistoryImporter {
                 failures: report.failures
             )
         case .historyLib:
-            return try historyLibImporter.importFrom(
+            return try await historyLibImporter.importFrom(
                 url: url,
                 modelContext: modelContext,
-                dedupOptions: dedupOptions
+                dedupOptions: dedupOptions,
+                progress: progress
             )
         }
     }

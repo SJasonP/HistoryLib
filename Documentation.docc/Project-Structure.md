@@ -49,7 +49,10 @@ HistoryLib/
 ## Service Boundaries
 
 - `Services/Import/`: resolves input format and imports Safari or HistoryLib
-  archive sources.
+  archive sources. Shared deduplication and decoding helpers (URL
+  normalization, dedup signatures, near-duplicate tolerance, flexible integer
+  decoding, array chunking) live in one place here and are reused by every
+  importer and by `Services/Sync/`; they are not duplicated per importer.
 - `Services/Export/`: exports Safari-compatible ZIP files and HistoryLib
   `.hlz` archives.
 - `Services/Favicon/`: fetches, validates, caches, and clears site icons.
@@ -60,7 +63,10 @@ HistoryLib/
 
 - File names use `PascalCase` with `_` separators when needed.
 - Avoid `+` in file names.
-- Keep all code and user-facing in-app strings in English.
+- Keep code identifiers, comments, and documentation in English.
+- User-facing in-app strings are localized, not hard-coded English. They go
+  through the String Catalog and must ship a translation for every supported
+  language. See <doc:Localization>.
 
 ## Placement Guidelines
 
@@ -68,3 +74,5 @@ HistoryLib/
 - New export formats or archive logic go under `Services/Export/`.
 - New tabs/pages get their own folder in `Features/`.
 - Cross-feature helpers go to `Shared/` only when reused.
+- Deduplication and record-decoding helpers are shared, single-source
+  utilities; reuse them instead of re-implementing per importer or cleaner.

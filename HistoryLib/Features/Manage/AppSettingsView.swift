@@ -4,7 +4,7 @@ struct AppSettingsView: View {
     @AppStorage("show_history_time") private var showHistoryTime = true
     @AppStorage("show_site_icons") private var showSiteIcons = true
     @AppStorage("enable_delete") private var enableDelete = false
-    @AppStorage("enable_icloud_sync") private var enableICloudSync = true
+    @AppStorage("enable_icloud_sync") private var enableICloudSync = false
     @AppStorage("open_record_in_browser_on_click") private var openRecordInBrowserOnDoubleClick = true
     @AppStorage("default_expand_level") private var defaultExpandLevelRaw = HistoryDefaultExpandLevel.day.rawValue
 
@@ -59,8 +59,8 @@ struct AppSettingsView: View {
 }
 
 private struct SettingsToggleRow: View {
-    let title: String
-    let description: String
+    let title: LocalizedStringKey
+    let description: LocalizedStringKey
     @Binding var isOn: Bool
 
     var body: some View {
@@ -77,8 +77,8 @@ private struct SettingsToggleRow: View {
 }
 
 private struct SettingsPickerRow: View {
-    let title: String
-    let description: String
+    let title: LocalizedStringKey
+    let description: LocalizedStringKey
     @Binding var selection: String
 
     var body: some View {

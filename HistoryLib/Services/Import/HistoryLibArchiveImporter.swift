@@ -19,52 +19,52 @@ enum HistoryLibImportError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .unsupportedInputType:
-            return "HistoryLib import supports .hlz, .zip, or a directory."
+            return String(localized: "HistoryLib import supports .hlz, .zip, or a directory.")
         case .missingManifest:
-            return "No HistoryLib manifest.json file was found."
+            return String(localized: "No HistoryLib manifest.json file was found.")
         case .invalidManifest:
-            return "Invalid HistoryLib manifest format."
+            return String(localized: "Invalid HistoryLib manifest format.")
         case .unsupportedFormatVersion(let version):
-            return "Unsupported HistoryLib format version: \(version)."
+            return String(localized: "Unsupported HistoryLib format version: \(version).")
         case .missingChunkIndex:
-            return "Missing required chunk index for HistoryLib archive."
+            return String(localized: "Missing required chunk index for HistoryLib archive.")
         case .invalidChunkIndex:
-            return "Invalid chunks index in HistoryLib archive."
+            return String(localized: "Invalid chunks index in HistoryLib archive.")
         case .manifestCountMismatch(let field, let expected, let actual):
-            return "Manifest validation failed for \(field): expected \(expected), actual \(actual)."
+            return String(localized: "Manifest validation failed for \(field): expected \(expected), actual \(actual).")
         case .checksumMismatch(let chunkPath):
-            return "Chunk checksum validation failed: \(chunkPath)"
+            return String(localized: "Chunk checksum validation failed: \(chunkPath)")
         case .invalidChunkRecord(let chunkPath, let line):
-            return "Invalid chunk record at \(chunkPath): line \(line)."
+            return String(localized: "Invalid chunk record at \(chunkPath): line \(line).")
         case .noChunkFiles:
-            return "No HistoryLib chunk files were found."
+            return String(localized: "No HistoryLib chunk files were found.")
         case .invalidPath(let path):
-            return "Invalid archive path: \(path)"
+            return String(localized: "Invalid archive path: \(path)")
         }
     }
 }
 
 final class HistoryLibArchiveImporter {
     private let insertBatchSize = 1_000
-    private let signatureLookupChunkSize = 800
     private let decoder = JSONDecoder()
 
     func importFrom(
         url: URL,
         modelContext: ModelContext,
-        dedupOptions: ImportDedupOptions = ImportDedupOptions()
-    ) throws -> HistoryImportReport {
+        dedupOptions: ImportDedupOptions = ImportDedupOptions(),
+        progress: HistoryImportProgressHandler? = nil
+    ) async throws -> HistoryImportReport {
         let fm = FileManager.default
         var isDirectory = ObjCBool(false)
         _ = fm.fileExists(atPath: url.path, isDirectory: &isDirectory)
 
         if isDirectory.boolValue {
-            return try importFromDirectory(url, modelContext: modelContext, dedupOptions: dedupOptions)
+            return try await importFromDirectory(url, modelContext: modelContext, dedupOptions: dedupOptions, progress: progress)
         }
 
         let ext = url.pathExtension.lowercased()
         if ext == "hlz" || ext == "zip" {
-            return try importFromZipFile(url, modelContext: modelContext, dedupOptions: dedupOptions)
+            return try await importFromZipFile(url, modelContext: modelContext, dedupOptions: dedupOptions, progress: progress)
         }
 
         throw HistoryLibImportError.unsupportedInputType
@@ -93,8 +93,9 @@ final class HistoryLibArchiveImporter {
     private func importFromZipFile(
         _ zipURL: URL,
         modelContext: ModelContext,
-        dedupOptions: ImportDedupOptions
-    ) throws -> HistoryImportReport {
+        dedupOptions: ImportDedupOptions,
+        progress: HistoryImportProgressHandler?
+    ) async throws -> HistoryImportReport {
         let fm = FileManager.default
         let tempRoot = fm.temporaryDirectory.appendingPathComponent("HistoryLibImport", isDirectory: true)
         let tempDir = tempRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
@@ -103,15 +104,18 @@ final class HistoryLibArchiveImporter {
             try? fm.removeItem(at: tempDir)
         }
 
+        progress?(HistoryImportProgress(fraction: nil, message: String(localized: "Extracting archive...")))
+        await Task.yield()
         try ImportZipArchive.extractZip(at: zipURL, to: tempDir)
-        return try importFromDirectory(tempDir, modelContext: modelContext, dedupOptions: dedupOptions)
+        return try await importFromDirectory(tempDir, modelContext: modelContext, dedupOptions: dedupOptions, progress: progress)
     }
 
     private func importFromDirectory(
         _ directoryURL: URL,
         modelContext: ModelContext,
-        dedupOptions: ImportDedupOptions
-    ) throws -> HistoryImportReport {
+        dedupOptions: ImportDedupOptions,
+        progress: HistoryImportProgressHandler?
+    ) async throws -> HistoryImportReport {
         guard let (manifestURL, manifest) = findHistoryLibManifest(in: directoryURL) else {
             throw HistoryLibImportError.missingManifest
         }
@@ -123,21 +127,31 @@ final class HistoryLibArchiveImporter {
         }
 
         let archiveRoot = manifestURL.deletingLastPathComponent()
-        let chunkEntries = try validatedChunkEntries(manifest: manifest, archiveRoot: archiveRoot)
+
+        // Validate the whole archive (structure, checksums, counts) before
+        // trusting any chunk, so a corrupt archive imports nothing. This pass
+        // does not decode records — it only hashes bytes and counts lines.
+        let chunkEntries = try await validatedChunkEntries(manifest: manifest, archiveRoot: archiveRoot, progress: progress)
+
+        let totalRecords = max(chunkEntries.reduce(0) { $0 + $1.recordCount }, 1)
         var importedRecordCount = 0
         var skippedRecordCount = 0
+        var processedRecords = 0
         var pendingRecords: [PendingImportRecord] = []
 
+        // Import pass: each chunk is read once and each record decoded once.
         for entry in chunkEntries {
+            try Task.checkCancellation()
             let chunkURL = try safeArchiveURL(forRelativePath: entry.path, archiveRoot: archiveRoot)
             try appendChunkRecords(
                 from: chunkURL,
                 chunkPath: entry.path,
                 pendingRecords: &pendingRecords
             )
+            processedRecords += entry.recordCount
 
             if pendingRecords.count >= insertBatchSize {
-                let flushResult = try flushPending(
+                let flushResult = try ImportDeduplicator.flush(
                     &pendingRecords,
                     modelContext: modelContext,
                     dedupOptions: dedupOptions
@@ -145,10 +159,16 @@ final class HistoryLibArchiveImporter {
                 importedRecordCount += flushResult.imported
                 skippedRecordCount += flushResult.skipped
             }
+
+            progress?(HistoryImportProgress(
+                fraction: 0.2 + 0.8 * (Double(processedRecords) / Double(totalRecords)),
+                message: String(localized: "Importing records (\(processedRecords)/\(totalRecords))...")
+            ))
+            await Task.yield()
         }
 
         if !pendingRecords.isEmpty {
-            let flushResult = try flushPending(
+            let flushResult = try ImportDeduplicator.flush(
                 &pendingRecords,
                 modelContext: modelContext,
                 dedupOptions: dedupOptions
@@ -173,14 +193,17 @@ final class HistoryLibArchiveImporter {
         pendingRecords: inout [PendingImportRecord]
     ) throws {
         let data = try Data(contentsOf: chunkURL, options: [.mappedIfSafe])
-        guard !data.isEmpty else {
-            throw HistoryLibImportError.invalidChunkRecord(chunkPath: chunkPath, line: 1)
-        }
 
-        let lines = String(decoding: data, as: UTF8.self)
-            .split(omittingEmptySubsequences: true, whereSeparator: \.isNewline)
-        for (lineIndex, line) in lines.enumerated() {
-            let lineData = Data(line.utf8)
+        // Split on the raw newline byte so we never materialize the whole chunk
+        // as one Swift String. Each line is decoded exactly once.
+        for (lineIndex, lineSlice) in data.split(separator: UInt8(ascii: "\n"), omittingEmptySubsequences: true).enumerated() {
+            var lineData = Data(lineSlice)
+            if lineData.last == UInt8(ascii: "\r") {
+                lineData.removeLast()
+            }
+            if lineData.isEmpty {
+                continue
+            }
 
             guard let record = try? decoder.decode(HLChunkRecord.self, from: lineData),
                   let rawURLValue = record.u?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
@@ -197,7 +220,7 @@ final class HistoryLibArchiveImporter {
                 browserName = "Safari"
             }
 
-            let dedupEntry = Self.makeDedupEntry(
+            let dedupEntry = ImportDedup.makeEntry(
                 rawURL: rawURLValue,
                 visitedAt: visitedAt,
                 browserName: browserName
@@ -236,8 +259,9 @@ final class HistoryLibArchiveImporter {
 
     private func validatedChunkEntries(
         manifest: HLManifestEnvelope,
-        archiveRoot: URL
-    ) throws -> [HLChunkIndexEntryEnvelope] {
+        archiveRoot: URL,
+        progress: HistoryImportProgressHandler?
+    ) async throws -> [HLChunkIndexEntryEnvelope] {
         guard let chunksIndexPath = manifest.indexes?.chunks,
               !chunksIndexPath.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             throw HistoryLibImportError.missingChunkIndex
@@ -266,6 +290,12 @@ final class HistoryLibArchiveImporter {
 
         var seenChunkPaths: Set<String> = []
         for (index, entry) in sortedEntries.enumerated() {
+            try Task.checkCancellation()
+            progress?(HistoryImportProgress(
+                fraction: 0.2 * (Double(index) / Double(sortedEntries.count)),
+                message: String(localized: "Validating archive...")
+            ))
+            await Task.yield()
             guard entry.id == index + 1 else {
                 throw HistoryLibImportError.invalidChunkIndex
             }
@@ -291,9 +321,7 @@ final class HistoryLibArchiveImporter {
                 throw HistoryLibImportError.checksumMismatch(chunkPath: entry.path)
             }
 
-            let actualRecordCount = String(decoding: chunkData, as: UTF8.self)
-                .split(omittingEmptySubsequences: true, whereSeparator: \.isNewline)
-                .count
+            let actualRecordCount = newlineDelimitedLineCount(chunkData)
             if actualRecordCount != entry.recordCount {
                 throw HistoryLibImportError.manifestCountMismatch(
                     field: "record_count(\(entry.path))",
@@ -301,8 +329,6 @@ final class HistoryLibArchiveImporter {
                     actual: actualRecordCount
                 )
             }
-
-            try validateChunkRecordSchema(chunkData, chunkPath: entry.path)
         }
 
         if manifest.chunkCount != sortedEntries.count {
@@ -323,6 +349,27 @@ final class HistoryLibArchiveImporter {
         }
 
         return sortedEntries
+    }
+
+    private func newlineDelimitedLineCount(_ data: Data) -> Int {
+        let newline = UInt8(ascii: "\n")
+        let carriage = UInt8(ascii: "\r")
+        var count = 0
+        var lineHasContent = false
+        for byte in data {
+            if byte == newline {
+                if lineHasContent {
+                    count += 1
+                }
+                lineHasContent = false
+            } else if byte != carriage {
+                lineHasContent = true
+            }
+        }
+        if lineHasContent {
+            count += 1
+        }
+        return count
     }
 
     private func findHistoryLibManifest(in directoryURL: URL) -> (URL, HLManifestEnvelope)? {
@@ -413,266 +460,6 @@ final class HistoryLibArchiveImporter {
         }
         return targetURL
     }
-
-    private func validateChunkRecordSchema(_ chunkData: Data, chunkPath: String) throws {
-        let lines = String(decoding: chunkData, as: UTF8.self)
-            .split(omittingEmptySubsequences: true, whereSeparator: \.isNewline)
-
-        for (lineIndex, line) in lines.enumerated() {
-            let lineData = Data(line.utf8)
-            guard let record = try? decoder.decode(HLChunkRecord.self, from: lineData),
-                  let rawURLValue = record.u?.trimmingCharacters(in: .whitespacesAndNewlines),
-                  !rawURLValue.isEmpty,
-                  record.ts != nil else {
-                throw HistoryLibImportError.invalidChunkRecord(chunkPath: chunkPath, line: lineIndex + 1)
-            }
-        }
-    }
-
-    private struct DedupEntry {
-        let signature: String
-        let visitedSecond: Int64
-        let normalizedURL: String
-        let normalizedBrowser: String
-    }
-
-    private struct PendingImportRecord {
-        let uniqueKey: String
-        let dedup: DedupEntry
-        let url: String
-        let title: String
-        let visitedAt: Date
-        let visitCount: Int
-        let browserName: String
-        let sourceFileName: String
-        let rawTimeUsec: Int64
-        let sourceURL: String?
-        let sourceTimeUsec: Int64?
-        let destinationURL: String?
-        let destinationTimeUsec: Int64?
-        let latestVisitWasHTTPGet: Bool?
-        let importedAt: Date
-    }
-
-    private struct FlushResult {
-        let imported: Int
-        let skipped: Int
-    }
-
-    private func flushPending(
-        _ pendingRecords: inout [PendingImportRecord],
-        modelContext: ModelContext,
-        dedupOptions: ImportDedupOptions
-    ) throws -> FlushResult {
-        guard !pendingRecords.isEmpty else {
-            return FlushResult(imported: 0, skipped: 0)
-        }
-
-        let tolerance = max(dedupOptions.nearDuplicateToleranceSeconds, 0)
-        let strictSignatures = Set(pendingRecords.map(\.uniqueKey))
-        let existingStrictSignatures = try fetchExistingSignatures(
-            strictSignatures,
-            modelContext: modelContext
-        )
-
-        let existingNearSignatures: Set<String>
-        if dedupOptions.enableNearDuplicateTolerance, tolerance > 0 {
-            let nearSignatures = Set(
-                pendingRecords.flatMap {
-                    Self.nearDuplicateSignatures(for: $0.dedup, toleranceSeconds: tolerance)
-                }
-            )
-            existingNearSignatures = try fetchExistingSignatures(
-                nearSignatures,
-                modelContext: modelContext
-            )
-        } else {
-            existingNearSignatures = existingStrictSignatures
-        }
-
-        var acceptedSignatures: Set<String> = []
-        var imported = 0
-        var skipped = 0
-
-        for pending in pendingRecords {
-            let signature = pending.uniqueKey
-
-            if acceptedSignatures.contains(signature) || existingStrictSignatures.contains(signature) {
-                skipped += 1
-                continue
-            }
-
-            if dedupOptions.enableNearDuplicateTolerance,
-               tolerance > 0,
-               Self.hasNearDuplicate(
-                for: pending.dedup,
-                in: acceptedSignatures,
-                toleranceSeconds: tolerance
-               ) {
-                skipped += 1
-                continue
-            }
-
-            if dedupOptions.enableNearDuplicateTolerance,
-               tolerance > 0,
-               Self.hasNearDuplicate(
-                for: pending.dedup,
-                in: existingNearSignatures,
-                toleranceSeconds: tolerance
-               ) {
-                skipped += 1
-                continue
-            }
-
-            let item = Item(
-                uniqueKey: signature,
-                url: pending.url,
-                title: pending.title,
-                visitedAt: pending.visitedAt,
-                visitCount: pending.visitCount,
-                sourceBrowser: pending.browserName,
-                sourceFileName: pending.sourceFileName,
-                rawTimeUsec: pending.rawTimeUsec,
-                sourceURL: pending.sourceURL,
-                sourceTimeUsec: pending.sourceTimeUsec,
-                destinationURL: pending.destinationURL,
-                destinationTimeUsec: pending.destinationTimeUsec,
-                latestVisitWasHTTPGet: pending.latestVisitWasHTTPGet,
-                importedAt: pending.importedAt
-            )
-            modelContext.insert(item)
-            acceptedSignatures.insert(signature)
-            imported += 1
-        }
-
-        if imported > 0 {
-            try modelContext.save()
-        }
-
-        pendingRecords.removeAll(keepingCapacity: true)
-        return FlushResult(imported: imported, skipped: skipped)
-    }
-
-    private func fetchExistingSignatures(
-        _ signatures: Set<String>,
-        modelContext: ModelContext
-    ) throws -> Set<String> {
-        guard !signatures.isEmpty else {
-            return []
-        }
-
-        var existing: Set<String> = []
-        let signatureArray = Array(signatures)
-
-        for chunk in signatureArray.chunked(into: signatureLookupChunkSize) {
-            let chunkArray = Array(chunk)
-            let descriptor = FetchDescriptor<Item>(
-                predicate: #Predicate<Item> { item in
-                    chunkArray.contains(item.uniqueKey)
-                }
-            )
-            let fetched = try modelContext.fetch(descriptor)
-            existing.formUnion(fetched.map(\.uniqueKey))
-        }
-
-        return existing
-    }
-
-    private static func hasNearDuplicate(
-        for entry: DedupEntry,
-        in signatures: Set<String>,
-        toleranceSeconds: Int64
-    ) -> Bool {
-        for signature in nearDuplicateSignatures(for: entry, toleranceSeconds: toleranceSeconds)
-        where signatures.contains(signature) {
-            return true
-        }
-        return false
-    }
-
-    private static func nearDuplicateSignatures(
-        for entry: DedupEntry,
-        toleranceSeconds: Int64
-    ) -> [String] {
-        guard toleranceSeconds > 0 else {
-            return [entry.signature]
-        }
-
-        var signatures: [String] = []
-        signatures.reserveCapacity(Int((toleranceSeconds * 2) + 1))
-
-        let lowerBound = entry.visitedSecond - toleranceSeconds
-        let upperBound = entry.visitedSecond + toleranceSeconds
-
-        for second in lowerBound...upperBound {
-            signatures.append(makeSignature(
-                normalizedURL: entry.normalizedURL,
-                visitedSecond: second,
-                normalizedBrowser: entry.normalizedBrowser
-            ))
-        }
-
-        return signatures
-    }
-
-    private static func makeSignature(
-        normalizedURL: String,
-        visitedSecond: Int64,
-        normalizedBrowser: String
-    ) -> String {
-        "\(normalizedURL)|\(visitedSecond)|\(normalizedBrowser)"
-    }
-
-    private static func makeDedupEntry(
-        rawURL: String,
-        visitedAt: Date,
-        browserName: String
-    ) -> DedupEntry {
-        let normalizedURL = normalizeURLForDedup(rawURL)
-        let normalizedBrowser = browserName
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .lowercased()
-        let visitedSecond = Int64(visitedAt.timeIntervalSince1970.rounded(.down))
-
-        return DedupEntry(
-            signature: makeSignature(
-                normalizedURL: normalizedURL,
-                visitedSecond: visitedSecond,
-                normalizedBrowser: normalizedBrowser
-            ),
-            visitedSecond: visitedSecond,
-            normalizedURL: normalizedURL,
-            normalizedBrowser: normalizedBrowser
-        )
-    }
-
-    private static func normalizeURLForDedup(_ rawURL: String) -> String {
-        let trimmed = rawURL.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return trimmed }
-
-        guard let initialURL = URL(string: trimmed),
-              var components = URLComponents(url: initialURL, resolvingAgainstBaseURL: false) else {
-            return trimmed.lowercased()
-        }
-
-        components.scheme = components.scheme?.lowercased()
-        components.host = components.host?.lowercased()
-        components.fragment = nil
-
-        if let scheme = components.scheme,
-           let port = components.port,
-           (scheme == "http" && port == 80) || (scheme == "https" && port == 443) {
-            components.port = nil
-        }
-
-        if components.path.isEmpty {
-            components.path = "/"
-        } else if components.path.count > 1 && components.path.hasSuffix("/") {
-            components.path.removeLast()
-        }
-
-        return components.string ?? trimmed.lowercased()
-    }
 }
 
 private struct HLManifestEnvelope: Decodable {
@@ -762,53 +549,5 @@ private struct HLChunkRecord: Decodable {
         du = try container.decodeIfPresent(String.self, forKey: .du)
         dt = container.decodeFlexibleInt64IfPresent(forKey: .dt)
         hg = try container.decodeIfPresent(Bool.self, forKey: .hg)
-    }
-}
-
-private extension KeyedDecodingContainer {
-    func decodeFlexibleInt64IfPresent(forKey key: Key) -> Int64? {
-        if let intVal = try? decode(Int64.self, forKey: key) {
-            return intVal
-        }
-        if let intVal = try? decode(Int.self, forKey: key) {
-            return Int64(intVal)
-        }
-        if let strVal = try? decode(String.self, forKey: key),
-           let intVal = Int64(strVal.trimmingCharacters(in: .whitespacesAndNewlines)) {
-            return intVal
-        }
-        return nil
-    }
-
-    func decodeFlexibleIntIfPresent(forKey key: Key) -> Int? {
-        if let intVal = try? decode(Int.self, forKey: key) {
-            return intVal
-        }
-        if let intVal = try? decode(Int64.self, forKey: key) {
-            return Int(intVal)
-        }
-        if let strVal = try? decode(String.self, forKey: key),
-           let intVal = Int(strVal.trimmingCharacters(in: .whitespacesAndNewlines)) {
-            return intVal
-        }
-        return nil
-    }
-}
-
-private extension Array {
-    func chunked(into size: Int) -> [ArraySlice<Element>] {
-        guard size > 0 else { return [self[...]] }
-
-        var result: [ArraySlice<Element>] = []
-        result.reserveCapacity((count / size) + 1)
-
-        var start = startIndex
-        while start < endIndex {
-            let end = index(start, offsetBy: size, limitedBy: endIndex) ?? endIndex
-            result.append(self[start..<end])
-            start = end
-        }
-
-        return result
     }
 }

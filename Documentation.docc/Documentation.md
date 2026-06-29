@@ -48,4 +48,5 @@ file that is handed to the system file exporter.
 - <doc:Project-Structure>
 - <doc:HistoryLib-Archive-Format>
 - <doc:Privacy-and-Data>
+- <doc:Localization>
 - <doc:Development>

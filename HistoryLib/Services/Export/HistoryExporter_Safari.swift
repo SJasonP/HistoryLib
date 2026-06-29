@@ -53,11 +53,11 @@ extension HistoryExporter {
 
         try currentWriter?.finish()
 
-        progress?(.init(phase: .packaging, fraction: 0.92, message: "Compressing archive..."))
+        progress?(.init(phase: .packaging, fraction: 0.92, message: String(localized: "Compressing archive...")))
         try Task.checkCancellation()
         let zipURL = tempRoot.appendingPathComponent("\(baseFilename).zip")
         try zipDirectory(at: payloadDirectoryURL, to: zipURL)
-        progress?(.init(phase: .packaging, fraction: 1.0, message: "Export complete."))
+        progress?(.init(phase: .packaging, fraction: 1.0, message: String(localized: "Export complete.")))
 
         return PreparedExportFile(
             fileURL: zipURL,

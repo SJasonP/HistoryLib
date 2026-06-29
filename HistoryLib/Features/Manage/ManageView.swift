@@ -29,12 +29,13 @@ struct ManageView: View {
     @State private var isShowingDeleteConfirmation = false
     @State private var confirmedDeleteRange: ClosedRange<Date>?
     @State private var confirmedDeleteCount = 0
+    @State private var matchingDeleteCount = 0
 
     var body: some View {
         List {
             if !canMutateHistoryData {
                 Section {
-                    Label("CloudKit is unavailable. History changes are currently blocked.", systemImage: "exclamationmark.triangle.fill")
+                    Label("iCloud is unavailable. Changes are paused.", systemImage: "exclamationmark.triangle.fill")
                         .foregroundStyle(.orange)
                 }
             }
@@ -45,6 +46,7 @@ struct ManageView: View {
                 } label: {
                     Label("Import (Auto Detect)", systemImage: "wand.and.stars")
                 }
+                .foregroundStyle(importButtonColor)
                 .disabled(!canMutateHistoryData)
 
                 Button {
@@ -52,6 +54,7 @@ struct ManageView: View {
                 } label: {
                     Label("Import as Safari Export", systemImage: "safari")
                 }
+                .foregroundStyle(importButtonColor)
                 .disabled(!canMutateHistoryData)
 
                 Button {
@@ -59,6 +62,7 @@ struct ManageView: View {
                 } label: {
                     Label("Import as HistoryLib Archive", systemImage: "archivebox")
                 }
+                .foregroundStyle(importButtonColor)
                 .disabled(!canMutateHistoryData)
             }
 
@@ -154,6 +158,12 @@ struct ManageView: View {
                 }
             }
             .navigationTitle("Batch Delete")
+            .task(id: deleteRangeKey) {
+                // Debounce rapid date-picker changes, then recompute once.
+                try? await Task.sleep(nanoseconds: 250_000_000)
+                guard !Task.isCancelled else { return }
+                recomputeMatchingDeleteCount()
+            }
             .onChange(of: startDate) { _, newValue in
                 if endDate < newValue {
                     endDate = newValue
@@ -194,13 +204,24 @@ struct ManageView: View {
         }
     }
 
-    private var deleteButtonTitle: String {
-        "Delete \(matchingDeleteCount) Records"
+    // Accent when actionable; a dimmed gray when disabled so the buttons clearly
+    // read as non-tappable instead of just losing their tint.
+    private var importButtonColor: Color {
+        canMutateHistoryData ? Color.accentColor : Color.secondary
     }
 
-    private var matchingDeleteCount: Int {
-        guard let range = validRange else { return 0 }
-        return onCountRecordsInRange(range)
+    private var deleteButtonTitle: String {
+        String(localized: "Delete \(matchingDeleteCount) Records")
+    }
+
+    // Keyed identity for the current range so the count is recomputed only when
+    // the range actually changes, never on every view-body evaluation.
+    private var deleteRangeKey: String {
+        "\(startDate.timeIntervalSince1970)-\(endDate.timeIntervalSince1970)"
+    }
+
+    private func recomputeMatchingDeleteCount() {
+        matchingDeleteCount = validRange.map(onCountRecordsInRange) ?? 0
     }
 
     private var validRange: ClosedRange<Date>? {
@@ -221,17 +242,18 @@ struct ManageView: View {
         }
         confirmedDeleteRange = nil
         confirmedDeleteCount = 0
+        matchingDeleteCount = 0
         isShowingDeleteConfirmation = false
     }
 
-    private var clearCacheTitle: String {
+    private var clearCacheTitle: LocalizedStringKey {
         "Clear Cache"
     }
 
     private var clearCacheMessage: String {
         if shouldDisableIconsAfterClear {
-            return "Continuing will also turn off Show Site Icons. Do you want to continue?"
+            return String(localized: "Continuing will also turn off Show Site Icons. Do you want to continue?")
         }
-        return "This will clear favicon cache files. Do you want to continue?"
+        return String(localized: "This will clear favicon cache files. Do you want to continue?")
     }
 }

@@ -38,13 +38,13 @@ enum HistoryExportSplit: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .single:
-            return "Single File"
+            return String(localized: "Single File")
         case .year:
-            return "One File Per Year"
+            return String(localized: "One File Per Year")
         case .month:
-            return "One File Per Month"
+            return String(localized: "One File Per Month")
         case .day:
-            return "One File Per Day"
+            return String(localized: "One File Per Day")
         }
     }
 
