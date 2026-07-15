@@ -54,6 +54,21 @@ set.
 User settings are synced separately through `NSUbiquitousKeyValueStore` when
 iCloud sync is enabled.
 
+## Library Directory Cache
+
+The Library tab groups records by year, month, and day and shows a record count
+for each group. Those counts are derived from a per-day count map, which is
+cached on disk (`directory-count-cache.json` in Application Support) so the app
+can display every count on launch without rescanning the whole store.
+
+This cache is device-local by design and never syncs to iCloud: it is not part
+of the SwiftData/CloudKit schema, day boundaries depend on the device's time
+zone, and it is excluded from device backups. It is recomputed whenever history
+records are imported or deleted, and it self-heals: on launch the cached total is
+compared against the live store count (and the recorded time zone), and any
+mismatch triggers a full rescan. Clearing the cache and rebuilding it never
+changes any history record.
+
 ## Favicon Fetching
 
 When site icons are enabled, HistoryLib may request favicon resources for hosts
@@ -74,13 +89,39 @@ HistoryLib can export records as Safari-compatible ZIP files and as HistoryLib
 `.hlz` archives. These exports contain browser history records and should be
 handled as private data.
 
-Native `.hlz` archives are ZIP containers. They are not encrypted.
+Native `.hlz` archives are ZIP containers when no password is supplied. A
+password-protected export wraps the ZIP in authenticated encryption using
+Argon2id password-based key derivation and XChaCha20-Poly1305 secretstream.
+Password-protected files can only be opened by a compatible HistoryLib version.
+
+Passwords are held only for the current import or export operation and are not
+stored by the app. Forgotten passwords cannot be recovered. Encryption cannot
+compensate for an easily guessed password; the app warns about passwords shorter
+than 12 characters.
+
+The app must create temporary plaintext while packaging an export and after
+decrypting an import for ZIP validation. These files remain in the app sandbox,
+are excluded from backups, use complete file protection on iOS, and are removed
+after success, failure, or cancellation.
 
 ## Cache Clearing
 
-The Clear Cache action removes cached favicon files and related in-memory icon
-state. It does not delete history records, summary snapshots, exported files, or
-iCloud data.
+The Clear Cache action reports the clearable cache size separately from the
+non-clearable history data, then removes the contents of the app's Caches and
+temporary directories, related in-memory icon state, and the Library directory
+count cache after user confirmation. In-flight favicon requests are cancelled so
+they cannot repopulate the cache after clearing. It does not delete history
+records, summary snapshots, exported files, or synced data. The directory count
+cache is rebuilt when a later data refresh or app launch requires it.
+
+The non-clearable data value is calculated as the app's sandbox data minus the
+clearable cache. This is equivalent to total local storage minus the app bundle
+and clearable cache, without unnecessarily scanning the app bundle. It includes
+history records, settings, and other data that cannot be removed by Clear Cache.
+Its size is determined mainly by the number of imported history records and
+Apple's storage management. HistoryLib cannot control, reduce, or clear it.
+System Settings may use different accounting rules, so its displayed value may
+differ.
 
 ## Logging
 

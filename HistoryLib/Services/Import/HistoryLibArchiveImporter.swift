@@ -51,6 +51,7 @@ final class HistoryLibArchiveImporter {
     func importFrom(
         url: URL,
         modelContext: ModelContext,
+        password: String? = nil,
         dedupOptions: ImportDedupOptions = ImportDedupOptions(),
         progress: HistoryImportProgressHandler? = nil
     ) async throws -> HistoryImportReport {
@@ -64,10 +65,60 @@ final class HistoryLibArchiveImporter {
 
         let ext = url.pathExtension.lowercased()
         if ext == "hlz" || ext == "zip" {
+            if HistoryLibEncryptedArchive.isEncryptedArchive(url) {
+                let normalizedPassword = password.map(HistoryLibEncryptedArchive.normalizedPassword) ?? ""
+                guard !normalizedPassword.isEmpty else {
+                    throw HistoryLibEncryptedArchiveError.passwordRequired
+                }
+                return try await importFromEncryptedFile(
+                    url,
+                    password: normalizedPassword,
+                    modelContext: modelContext,
+                    dedupOptions: dedupOptions,
+                    progress: progress
+                )
+            }
             return try await importFromZipFile(url, modelContext: modelContext, dedupOptions: dedupOptions, progress: progress)
         }
 
         throw HistoryLibImportError.unsupportedInputType
+    }
+
+    private func importFromEncryptedFile(
+        _ encryptedURL: URL,
+        password: String,
+        modelContext: ModelContext,
+        dedupOptions: ImportDedupOptions,
+        progress: HistoryImportProgressHandler?
+    ) async throws -> HistoryImportReport {
+        let fileManager = FileManager.default
+        let tempRoot = fileManager.temporaryDirectory
+            .appendingPathComponent("EncryptedImport", isDirectory: true)
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try fileManager.createDirectory(at: tempRoot, withIntermediateDirectories: true)
+        HistoryLibSensitiveFiles.applyAttributes(to: tempRoot)
+        defer { try? fileManager.removeItem(at: tempRoot) }
+
+        let decryptedURL = tempRoot.appendingPathComponent("decrypted.hlz")
+        progress?(HistoryImportProgress(fraction: nil, message: String(localized: "Decrypting archive...")))
+        try HistoryLibEncryptedArchive.decrypt(
+            sourceURL: encryptedURL,
+            destinationURL: decryptedURL,
+            password: password,
+            progress: { fraction in
+                progress?(HistoryImportProgress(
+                    fraction: 0.15 * fraction,
+                    message: String(localized: "Decrypting archive...")
+                ))
+            }
+        )
+        try Task.checkCancellation()
+        return try await importFromZipFile(
+            decryptedURL,
+            modelContext: modelContext,
+            dedupOptions: dedupOptions,
+            progress: progress
+        )
     }
 
     func looksLikeHistoryLibSource(_ url: URL) -> Bool {
@@ -97,9 +148,10 @@ final class HistoryLibArchiveImporter {
         progress: HistoryImportProgressHandler?
     ) async throws -> HistoryImportReport {
         let fm = FileManager.default
-        let tempRoot = fm.temporaryDirectory.appendingPathComponent("HistoryLibImport", isDirectory: true)
+        let tempRoot = fm.temporaryDirectory.appendingPathComponent("Import", isDirectory: true)
         let tempDir = tempRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try fm.createDirectory(at: tempDir, withIntermediateDirectories: true)
+        HistoryLibSensitiveFiles.applyAttributes(to: tempDir)
         defer {
             try? fm.removeItem(at: tempDir)
         }

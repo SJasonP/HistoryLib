@@ -57,7 +57,6 @@ struct ContentView: View {
 #endif
 
     @State var isFileImporterPresented = false
-    @State var importFormatPreference: HistoryImportFormatPreference = .automatic
     @State var isFileExporterPresented = false
     @State var searchText = ""
     @State var selectedTab: AppTab = .summary
@@ -88,6 +87,10 @@ struct ContentView: View {
     @State var importProgressMessage = String(localized: "Preparing import...")
     @State var isCancellingImport = false
     @State var importTask: Task<Void, Never>?
+    @State var pendingEncryptedImportURL: URL?
+    @State var showingImportPasswordPrompt = false
+    @State var importArchivePassword = ""
+    @State var importPasswordErrorMessage = ""
 
     @State var searchResults: [Item] = []
     @State var hasMoreSearchResults = false
@@ -100,6 +103,9 @@ struct ContentView: View {
     @State var isDirectoryLoading = false
     @State var directoryBuildTask: Task<Void, Never>?
     @State var directoryBuildGeneration = 0
+    // True once `dayItemCounts` holds every day's count (from a completed scan or
+    // a loaded cache), so the persisted count cache can be updated in place.
+    @State var directoryCountsAreComplete = false
 
     @State var dayItemCounts: [Date: Int] = [:]
     @State var loadingDayCounts: Set<Date> = []
@@ -107,6 +113,7 @@ struct ContentView: View {
     @State var dayItemOffsets: [Date: Int] = [:]
     @State var dayHasMoreItems: [Date: Bool] = [:]
     @State var loadingDayItems: Set<Date> = []
+    @State var dayItemLoadGenerations: [Date: Int] = [:]
 
     @State var totalRecordCount = 0
     @State var oldestRecordDate: Date?
@@ -152,15 +159,24 @@ struct ContentView: View {
             ) { result in
                 handleFileExporterCompletion(result)
             }
+            .sheet(isPresented: $showingImportPasswordPrompt) {
+                ArchivePasswordPrompt(
+                    password: $importArchivePassword,
+                    errorMessage: importPasswordErrorMessage,
+                    onCancel: cancelPasswordProtectedImport,
+                    onSubmit: submitPasswordProtectedImport
+                )
+                .interactiveDismissDisabled()
+            }
             .alert("Import Result", isPresented: $showingImportFeedback) {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(importFeedbackMessage)
             }
-            .alert("Sync Result", isPresented: $showingSyncFeedback) {
+            .alert("iCloud Sync Information", isPresented: $showingSyncFeedback) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text(syncFeedbackMessage)
+                Text(syncFeedbackDisplayMessage)
             }
             .alert("Delete Result", isPresented: $showingDeleteFeedback) {
                 Button("OK", role: .cancel) { }
@@ -191,7 +207,7 @@ struct ContentView: View {
                    latestSummarySnapshot == nil || latestSummarySnapshot?.totalRecords != totalRecordCount {
                     generateAndPersistSummarySnapshot()
                 }
-                rebuildDirectorySkeleton()
+                rebuildDirectorySkeleton(preferCache: true)
                 resetSearchPaginationAndMaybeReload()
                 if shouldEnforceCloudWriteProtection && !canMutateHistoryData {
                     showingStorageModeAlert = true
@@ -235,6 +251,10 @@ struct ContentView: View {
                 scheduleBackgroundDedupIfNeeded(reason: "remote change")
             }
             .onDisappear {
+                importTask?.cancel()
+                if !isImporting {
+                    cleanupPendingEncryptedImport()
+                }
                 exportPreparationTask?.cancel()
                 backgroundDedupTask?.cancel()
                 searchReloadTask?.cancel()
@@ -242,6 +262,11 @@ struct ContentView: View {
                 derivedRefreshTask?.cancel()
                 importTask?.cancel()
             }
+    }
+
+    private var syncFeedbackDisplayMessage: String {
+        let systemControlNotice = String(localized: "iCloud syncing is handled entirely by Apple. HistoryLib cannot see the current sync progress, force a sync, or control which records sync and when.")
+        return "\(syncFeedbackMessage)\n\n\(systemControlNotice)"
     }
 }
 

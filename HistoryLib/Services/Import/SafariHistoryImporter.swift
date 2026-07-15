@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import ZIPFoundation
 
 struct SafariImportReport {
     let scannedJSONFileCount: Int
@@ -25,6 +26,25 @@ enum SafariImportError: LocalizedError {
 
 final class SafariHistoryImporter {
     private let insertBatchSize = 1_000
+
+    func looksLikeSafariHistorySource(_ url: URL) -> Bool {
+        let fileManager = FileManager.default
+        var isDirectory = ObjCBool(false)
+        _ = fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory)
+
+        if isDirectory.boolValue {
+            return collectJSONFiles(in: url).contains(where: isSafariHistoryFile)
+        }
+
+        switch url.pathExtension.lowercased() {
+        case "json":
+            return isSafariHistoryFile(url)
+        case "zip":
+            return zipContainsSafariHistory(url)
+        default:
+            return false
+        }
+    }
 
     func importFrom(
         url: URL,
@@ -79,6 +99,38 @@ final class SafariHistoryImporter {
             files.append(fileURL)
         }
         return files
+    }
+
+    private func isSafariHistoryFile(_ fileURL: URL) -> Bool {
+        guard let data = try? Data(contentsOf: fileURL) else { return false }
+        return isSafariHistoryData(data)
+    }
+
+    private func isSafariHistoryData(_ data: Data) -> Bool {
+        guard let envelope = try? JSONDecoder().decode(SafariHistoryMetadataEnvelope.self, from: data) else {
+            return false
+        }
+        return envelope.metadata.browserName.lowercased() == "safari"
+            && envelope.metadata.dataType.lowercased() == "history"
+    }
+
+    private func zipContainsSafariHistory(_ zipURL: URL) -> Bool {
+        guard let archive = try? Archive(url: zipURL, accessMode: .read, pathEncoding: nil) else {
+            return false
+        }
+
+        for entry in archive where entry.type == .file && entry.path.lowercased().hasSuffix(".json") {
+            var data = Data()
+            do {
+                _ = try archive.extract(entry) { data.append($0) }
+                if isSafariHistoryData(data) {
+                    return true
+                }
+            } catch {
+                continue
+            }
+        }
+        return false
     }
 
     private func importJSONFiles(
@@ -198,7 +250,7 @@ final class SafariHistoryImporter {
         progress: HistoryImportProgressHandler?
     ) async throws -> SafariImportReport {
         let fm = FileManager.default
-        let tempRoot = fm.temporaryDirectory.appendingPathComponent("HistoryLibImport", isDirectory: true)
+        let tempRoot = fm.temporaryDirectory.appendingPathComponent("Import", isDirectory: true)
         let tempDir = tempRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try fm.createDirectory(at: tempDir, withIntermediateDirectories: true)
         defer {
@@ -215,6 +267,10 @@ final class SafariHistoryImporter {
 
         return try await importFromDirectory(tempDir, modelContext: modelContext, dedupOptions: dedupOptions, progress: progress)
     }
+}
+
+private struct SafariHistoryMetadataEnvelope: Decodable {
+    let metadata: SafariHistoryExport.Metadata
 }
 
 private struct SafariHistoryExport: Decodable {

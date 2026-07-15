@@ -10,6 +10,7 @@
 		0372DB152F77BDAD0025A048 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 0372DB142F77BDAD0025A048 /* ZIPFoundation */; };
 		0372DBBC2F7811DE0025A048 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 0372DBBB2F7811DE0025A048 /* Documentation.docc */; };
 		0372DBBE2F7812230025A048 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0372DBBD2F7812230025A048 /* README.md */; };
+		A10000012F90000100000001 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = A10000032F90000100000001 /* Sodium */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000012F90000100000001 /* Sodium in Frameworks */,
 				0372DB152F77BDAD0025A048 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,6 +139,7 @@
 			name = HistoryLib;
 			packageProductDependencies = (
 				0372DB142F77BDAD0025A048 /* ZIPFoundation */,
+				A10000032F90000100000001 /* Sodium */,
 			);
 			productName = HistoryLib;
 			productReference = 036F4C842F43139100811CC1 /* History Lib.app */;
@@ -223,6 +226,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				0372DB132F77BDAD0025A048 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				A10000022F90000100000001 /* XCRemoteSwiftPackageReference "swift-sodium" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 036F4C852F43139100811CC1 /* Products */;
@@ -309,7 +313,7 @@
 				CODE_SIGN_ENTITLEMENTS = HistoryLib/HistoryLib.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = HistoryLib/HistoryLib.macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BC2V2ASFWV;
 				ENABLE_APP_SANDBOX = YES;
@@ -337,7 +341,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.SJasonP.HistoryLib;
 				PRODUCT_NAME = "History Lib";
 				REGISTER_APP_GROUPS = YES;
@@ -363,7 +367,7 @@
 				CODE_SIGN_ENTITLEMENTS = HistoryLib/HistoryLib.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = HistoryLib/HistoryLib.macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BC2V2ASFWV;
 				ENABLE_APP_SANDBOX = YES;
@@ -391,7 +395,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.SJasonP.HistoryLib;
 				PRODUCT_NAME = "History Lib";
 				REGISTER_APP_GROUPS = YES;
@@ -688,6 +692,14 @@
 				minimumVersion = 0.9.20;
 			};
 		};
+		A10000022F90000100000001 /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jedisct1/swift-sodium";
+			requirement = {
+				kind = revision;
+				revision = cfd195c76882aa9b997560ca7cb95d72fbf5db00;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -695,6 +707,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0372DB132F77BDAD0025A048 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
+		};
+		A10000032F90000100000001 /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000022F90000100000001 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

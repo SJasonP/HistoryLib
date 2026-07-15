@@ -20,7 +20,7 @@ actor FaviconStore {
     init() {
         let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
             ?? FileManager.default.temporaryDirectory
-        cacheDirectory = caches.appendingPathComponent("HistoryLibFavicons", isDirectory: true)
+        cacheDirectory = caches.appendingPathComponent("Favicons", isDirectory: true)
         try? FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
 
         let configuration = URLSessionConfiguration.ephemeral
@@ -60,13 +60,16 @@ actor FaviconStore {
         let task = Task<Data?, Never> { [self] in
             await acquireFetchSlot()
             defer { releaseFetchSlot() }
+            guard !Task.isCancelled else { return nil }
 
             if let fetched = await fetchFaviconData(for: pageURL) {
+                guard !Task.isCancelled else { return nil }
                 cacheInMemory(host: host, data: fetched)
                 try? fetched.write(to: diskURL, options: .atomic)
                 return fetched
             }
 
+            guard !Task.isCancelled else { return nil }
             missingHostRetryAt[host] = Date().addingTimeInterval(missingHostRetryInterval)
             return nil
         }
@@ -78,6 +81,9 @@ actor FaviconStore {
     }
 
     func clearAllCache() {
+        for task in inFlightByHost.values {
+            task.cancel()
+        }
         memoryCache.removeAll(keepingCapacity: false)
         memoryCacheOrder.removeAll(keepingCapacity: false)
         missingHostRetryAt.removeAll(keepingCapacity: false)
@@ -93,6 +99,13 @@ actor FaviconStore {
         for fileURL in fileURLs {
             try? FileManager.default.removeItem(at: fileURL)
         }
+    }
+
+    func ensureCacheDirectoryExists() {
+        try? FileManager.default.createDirectory(
+            at: cacheDirectory,
+            withIntermediateDirectories: true
+        )
     }
 
     private func fetchFaviconData(for pageURL: URL) async -> Data? {

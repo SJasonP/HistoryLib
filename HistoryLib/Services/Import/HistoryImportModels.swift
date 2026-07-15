@@ -19,25 +19,6 @@ struct ImportDedupOptions: Sendable {
     }
 }
 
-enum HistoryImportFormatPreference: String, CaseIterable, Identifiable {
-    case automatic
-    case safari
-    case historyLib
-
-    var id: String { rawValue }
-
-    var title: String {
-        switch self {
-        case .automatic:
-            return String(localized: "Auto Detect")
-        case .safari:
-            return String(localized: "Safari Export")
-        case .historyLib:
-            return String(localized: "HistoryLib Archive (.hlz)")
-        }
-    }
-}
-
 enum HistoryImportFormatResolved: String {
     case safari
     case historyLib
@@ -48,6 +29,17 @@ enum HistoryImportFormatResolved: String {
             return "Safari"
         case .historyLib:
             return "HistoryLib"
+        }
+    }
+}
+
+enum HistoryImportError: LocalizedError {
+    case unrecognizedFormat
+
+    var errorDescription: String? {
+        switch self {
+        case .unrecognizedFormat:
+            return String(localized: "The selected item is not a recognized Safari history export or HistoryLib archive.")
         }
     }
 }

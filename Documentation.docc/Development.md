@@ -70,6 +70,9 @@ statistics and regenerate the latest snapshot.
 
 Importers should:
 
+- expose one smart-import entry point and detect Safari or HistoryLib content
+  before inserting any records; reject the input when neither format can be
+  recognized instead of falling back to a user-selected format;
 - validate input format before inserting records;
 - skip incomplete records when the external format allows partial data;
 - fail clearly when the archive format itself is invalid;
@@ -105,6 +108,11 @@ Exporters should:
 - preserve enough source metadata for round-trip import;
 - keep the native `.hlz` format compatible with
   <doc:HistoryLib-Archive-Format>.
+- never fall back to an unencrypted `.hlz` after password encryption fails;
+- authenticate a password-protected archive completely before extracting or
+  inserting any record, and enforce bounded KDF and frame parameters;
+- keep passwords ephemeral and clean up temporary plaintext on success, error,
+  and cancellation.
 
 ## CloudKit Write Protection
 
@@ -157,6 +165,8 @@ Tests should cover the data-integrity and safety paths, not only happy-path
 round trips. Required coverage includes:
 
 - archive path-traversal (zip-slip) rejection and symlink rejection;
+- encrypted archive round trips, wrong passwords, modified/truncated/reordered
+  frames, missing final tags, trailing data, and malicious KDF parameters;
 - checksum mismatch, manifest/chunk count mismatch, and malformed chunk lines;
 - dedup merge behavior (visit counts are summed, not dropped);
 - near-duplicate tolerance edge cases;
@@ -169,8 +179,8 @@ stubs.
 ## Privacy Rules
 
 History records are sensitive. New code should avoid logging full URLs, titles,
-or raw import/export payloads. Export files are private data and the native
-`.hlz` format is not encrypted.
+passwords, keys, or raw import/export payloads. Unencrypted `.hlz` files remain
+plain ZIP containers; password protection is optional.
 
 See <doc:Privacy-and-Data> before adding import, export, sync, cache, or logging
 behavior.

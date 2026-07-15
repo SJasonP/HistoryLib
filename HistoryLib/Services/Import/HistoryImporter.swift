@@ -8,11 +8,11 @@ final class HistoryImporter {
     func importFrom(
         url: URL,
         modelContext: ModelContext,
-        preferredFormat: HistoryImportFormatPreference = .automatic,
+        password: String? = nil,
         dedupOptions: ImportDedupOptions = ImportDedupOptions(),
         progress: HistoryImportProgressHandler? = nil
     ) async throws -> HistoryImportReport {
-        let resolvedFormat = resolveFormat(url: url, preferredFormat: preferredFormat)
+        let resolvedFormat = try resolveFormat(url: url)
 
         switch resolvedFormat {
         case .safari:
@@ -34,23 +34,20 @@ final class HistoryImporter {
             return try await historyLibImporter.importFrom(
                 url: url,
                 modelContext: modelContext,
+                password: password,
                 dedupOptions: dedupOptions,
                 progress: progress
             )
         }
     }
 
-    private func resolveFormat(
-        url: URL,
-        preferredFormat: HistoryImportFormatPreference
-    ) -> HistoryImportFormatResolved {
-        switch preferredFormat {
-        case .automatic:
-            return historyLibImporter.looksLikeHistoryLibSource(url) ? .historyLib : .safari
-        case .safari:
-            return .safari
-        case .historyLib:
+    private func resolveFormat(url: URL) throws -> HistoryImportFormatResolved {
+        if historyLibImporter.looksLikeHistoryLibSource(url) {
             return .historyLib
         }
+        if safariImporter.looksLikeSafariHistorySource(url) {
+            return .safari
+        }
+        throw HistoryImportError.unrecognizedFormat
     }
 }

@@ -274,6 +274,7 @@ extension ContentView {
             onEnsureDayCount: ensureDayCountLoaded,
             onEnsureDayItems: ensureDayItemsLoaded,
             onLoadMoreDayItems: loadMoreDayItems,
+            onReleaseDayItems: releaseDayItems,
             onLoadMoreSearchResults: loadNextSearchPage
         )
     }
@@ -288,12 +289,11 @@ extension ContentView {
                 canMutateHistoryData: canMutateHistoryData,
                 oldestRecordDate: oldestRecordDate,
                 newestRecordDate: newestRecordDate,
-                onImportAutoDetect: startImportAutoDetect,
-                onImportAsSafari: startImportAsSafari,
-                onImportAsHistoryLib: startImportAsHistoryLib,
+                onImport: startImport,
                 onRetryICloudSync: retryICloudSync,
                 onExport: exportHistory,
-                onClearCache: clearFaviconCache,
+                onMeasureStorageUsage: measureClearCacheStorageUsage,
+                onClearCache: clearCaches,
                 onBatchDelete: deleteRecordsInRange,
                 onCountRecordsInRange: countRecords
             )
@@ -379,7 +379,7 @@ extension ContentView {
     var topToolbar: some ToolbarContent {
         ToolbarItem {
             Button {
-                startImportAutoDetect()
+                startImport()
             } label: {
                 Label("Import", systemImage: "square.and.arrow.down")
             }

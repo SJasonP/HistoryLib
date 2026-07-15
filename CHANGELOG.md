@@ -3,9 +3,47 @@
 All notable changes to HistoryLib are documented here. This project adheres to
 [Keep a Changelog](https://keepachangelog.com/) and uses [Semantic Versioning](https://semver.org/).
 
+## [1.2] - 2026-07-15
+
+### Added
+
+- Optional password protection for HistoryLib `.hlz` exports. Protected
+  archives use Argon2id password-based key derivation and authenticated
+  XChaCha20-Poly1305 streaming encryption; passwords remain hidden and are
+  never stored by the app.
+- Record counts for every year, month, and day in the Library, backed by a
+  device-local count cache so large libraries can restore their directory
+  structure without a full scan on every launch.
+- Clear Cache now reports clearable cache and non-clearable data separately
+  before asking for confirmation.
+
+### Changed
+
+- Import is now a single smart action that recognizes supported Safari exports
+  and HistoryLib archives automatically, and rejects files whose format cannot
+  be identified.
+- Clear Cache now removes the app's cache and temporary files as well as the
+  Library count cache, cancels in-progress site-icon downloads, and clearly
+  explains what cannot be removed.
+- The iCloud sync information dialog now explains that sync scheduling, status,
+  and record-level control are managed entirely by Apple.
+- Collapsing a year or month now releases its loaded record rows and
+  cancels stale page loads, reducing memory use in very large libraries.
+
+### Fixed
+
+- Fixed a serious crash that could occur when expanding or collapsing a
+  year or month containing a large number of history records.
+- Fixed missing year and month record counts.
+- Fixed ZIP export path handling across `/var` and `/private/var`, which could
+  cause Safari or HistoryLib archive creation to fail on macOS.
+- Strengthened temporary-file cleanup and protection for imports, exports, and
+  password-protected archives.
+
 ## [1.1] - 2026-06-29
 
 ### Added
+
 - Import now shows a progress bar with a Cancel button, like export, so large
   imports no longer look frozen. `.hlz` imports report determinate progress;
   Safari imports report per-file progress.
@@ -18,6 +56,7 @@ All notable changes to HistoryLib are documented here. This project adheres to
   browsing, search, export, and deduplication on large libraries.
 
 ### Changed
+
 - Changing the iCloud Sync setting now applies on the next launch, and the app
   tells you a relaunch is required; history changes stay protected until then so
   on-device data cannot diverge from the selected mode.
@@ -26,6 +65,7 @@ All notable changes to HistoryLib are documented here. This project adheres to
 - `.hlz` exports record the app's real version (read from the bundle).
 
 ### Fixed
+
 - **Importing `.hlz` / `.zip` archives failed on iOS** with "ZIP entry path is
   outside destination directory." The archive safety check now validates each
   entry's relative path instead of comparing absolute paths, which broke on iOS

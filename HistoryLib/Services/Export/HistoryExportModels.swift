@@ -92,7 +92,7 @@ struct ExportFileDocument: FileDocument {
 
     init(configuration: ReadConfiguration) throws {
         let tempRoot = FileManager.default.temporaryDirectory
-            .appendingPathComponent("HistoryLibImportedExportDocument", isDirectory: true)
+            .appendingPathComponent("ImportedExportDocument", isDirectory: true)
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: tempRoot, withIntermediateDirectories: true)
         let targetURL = tempRoot.appendingPathComponent("document.data")

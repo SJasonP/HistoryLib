@@ -49,7 +49,9 @@ The current deployment targets in the project are iOS 26.x and macOS 26.x.
 - Network access for package resolution and favicon fetching.
 
 The project uses Swift Package Manager and currently depends on
-[ZIPFoundation](https://github.com/weichsel/ZIPFoundation) 0.9.20.
+[ZIPFoundation](https://github.com/weichsel/ZIPFoundation) 0.9.20 and
+[Swift Sodium](https://github.com/jedisct1/swift-sodium), which bundles
+libsodium for password-protected `.hlz` archives.
 
 ## Build
 

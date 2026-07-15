@@ -3,15 +3,53 @@
 Status: v1 (current)
 
 - File extension: `.hlz`
-- Container: ZIP (single file shown to users)
+- Container: ZIP when unencrypted; authenticated encrypted wrapper when password protected
 - Primary goal: reliable import/export for very large history datasets
 
 ## 1. Overview
 
-HistoryLib always exports one archive file (`.hlz`).
-Inside the archive, data is split into ordered chunk files to keep import stable on large datasets.
+HistoryLib always exports one archive file (`.hlz`). With no password, the file
+is the ZIP container described below. With a password, that ZIP is wrapped in
+the encrypted container described in the next section.
 
-## 2. Archive Layout
+Inside the ZIP, data is split into ordered chunk files to keep import stable on
+large datasets.
+
+## 2. Optional Password Encryption
+
+Password-protected archives use the `HLZENC` v1 binary container. They are not
+standard encrypted ZIP files and can only be opened by a HistoryLib version
+that supports this format.
+
+The password is normalized to Unicode NFC and encoded as UTF-8. Argon2id 1.3
+derives a 32-byte key using a random 16-byte salt, an operations limit of `2`,
+and a memory limit of `64 MiB`. The inner ZIP is then encrypted in `1 MiB`
+messages with libsodium's XChaCha20-Poly1305 secretstream construction.
+
+The fixed 66-byte header is:
+
+| Field                | Size                | v1 value                        |
+|----------------------|---------------------|---------------------------------|
+| Magic and version    | 8 bytes             | `HLZENC`, NUL, `1`              |
+| KDF identifier       | 1 byte              | Argon2id 1.3                    |
+| Cipher identifier    | 1 byte              | XChaCha20-Poly1305 secretstream |
+| Operations limit     | 4 bytes, big-endian | `2`                             |
+| Memory limit         | 8 bytes, big-endian | `67108864`                      |
+| Plaintext chunk size | 4 bytes, big-endian | `1048576`                       |
+| Salt                 | 16 bytes            | cryptographically random        |
+| Secretstream header  | 24 bytes            | cryptographically random        |
+
+Each encrypted message is prefixed by its 4-byte big-endian ciphertext length.
+The complete fixed header is authenticated as additional data for every
+message. All messages except the last use the secretstream `MESSAGE` tag; the
+last must use `FINAL`. Import rejects missing or duplicate final messages,
+reordered or modified messages, trailing bytes, unsupported algorithms, and
+resource parameters outside the reader's bounds.
+
+Every export gets a new salt and secretstream header, so exporting identical
+data twice with the same password produces different ciphertext.
+
+## 3. Archive Layout
 
 ```text
 archive.hlz
@@ -30,11 +68,12 @@ archive.hlz
 ```
 
 Notes:
+
 - `chunks/*` are written in ascending visit-time order.
 - ZIP compression is applied by the container (`deflate`).
 - Chunk files themselves are plain JSONL (not pre-compressed).
 
-## 3. Manifest (`manifest.json`)
+## 4. Manifest (`manifest.json`)
 
 Required and read first.
 
@@ -71,13 +110,15 @@ Required and read first.
 `app_version` is the app's marketing version, read from the app bundle at export
 time (not a hard-coded literal). Importers treat it as informational only.
 
-## 4. Chunk and Record Rules
+## 5. Chunk and Record Rules
 
 Chunk file naming:
+
 - `chunks/00000001.jsonl`
 - `chunks/00000002.jsonl`
 
 Rules:
+
 1. Global order by `ts` ascending.
 2. In-chunk order by `ts` ascending.
 3. Default target size: `50,000` records per chunk.
@@ -120,10 +161,18 @@ accepted.
 Example chunk line:
 
 ```json
-{"u":"https://example.com/a","ts":1710000000000000,"t":"Example","vc":1,"uk":"https://example.com/a|1710000000|safari","sb":"Safari","ia":1710000500000000}
+{
+  "u": "https://example.com/a",
+  "ts": 1710000000000000,
+  "t": "Example",
+  "vc": 1,
+  "uk": "https://example.com/a|1710000000|safari",
+  "sb": "Safari",
+  "ia": 1710000500000000
+}
 ```
 
-## 5. Index Files
+## 6. Index Files
 
 All index files are JSON arrays. Object keys use `snake_case`.
 
@@ -144,39 +193,45 @@ Required for import. One entry per chunk file.
 ]
 ```
 
-| Key            | Type   | Meaning                                          |
-|----------------|--------|--------------------------------------------------|
-| `id`           | int    | 1-based contiguous chunk id (`1..chunk_count`)   |
-| `path`         | string | Archive-relative path to the chunk file          |
-| `record_count` | int    | Number of records (lines) in the chunk           |
-| `min_ts`       | int64  | Smallest `ts` in the chunk (Unix microseconds)   |
-| `max_ts`       | int64  | Largest `ts` in the chunk (Unix microseconds)    |
-| `sha256`       | string | Lowercase hex SHA256 of the exact chunk bytes    |
+| Key            | Type   | Meaning                                        |
+|----------------|--------|------------------------------------------------|
+| `id`           | int    | 1-based contiguous chunk id (`1..chunk_count`) |
+| `path`         | string | Archive-relative path to the chunk file        |
+| `record_count` | int    | Number of records (lines) in the chunk         |
+| `min_ts`       | int64  | Smallest `ts` in the chunk (Unix microseconds) |
+| `max_ts`       | int64  | Largest `ts` in the chunk (Unix microseconds)  |
+| `sha256`       | string | Lowercase hex SHA256 of the exact chunk bytes  |
 
 ### `indexes/years.json`, `months.json`, `days.json`
 
 Pre-built time-bucket counts. Same shape, keyed by the bucket label:
 
-| File          | Bucket key | Key type | Format     |
-|---------------|------------|----------|------------|
-| `years.json`  | `year`     | int      | `2024`     |
-| `months.json` | `month`    | string   | `2024-01`  |
+| File          | Bucket key | Key type | Format       |
+|---------------|------------|----------|--------------|
+| `years.json`  | `year`     | int      | `2024`       |
+| `months.json` | `month`    | string   | `2024-01`    |
 | `days.json`   | `day`      | string   | `2024-01-31` |
 
 Each entry also carries `record_count` (int), `min_ts` (int64), and `max_ts`
 (int64). Example day entry:
 
 ```json
-{ "day": "2024-01-31", "record_count": 1280, "min_ts": 1706659200000000, "max_ts": 1706745599000000 }
+{
+  "day": "2024-01-31",
+  "record_count": 1280,
+  "min_ts": 1706659200000000,
+  "max_ts": 1706745599000000
+}
 ```
 
 The time-bucket indexes (`years`/`months`/`days`) are advisory: they support
 faster validation, import planning, and future resume support. Only
 `indexes/chunks.json` is required to import an archive.
 
-## 6. Import Validation (v1)
+## 7. Import Validation (v1)
 
 Archive is valid only if:
+
 1. `format == "historylib"`
 2. `format_version` is supported
 3. `record_count == sum(chunks.record_count)`
@@ -186,18 +241,26 @@ Archive is valid only if:
 7. every chunk line decodes as a valid `hl_record_v1` record (`u` + `ts` required)
 8. `record_count == 0` and `chunk_count == 0` is a valid empty archive
 
-## 7. Compatibility
+## 8. Compatibility
 
 1. Unknown manifest fields must be ignored.
 2. Unknown record fields must be ignored.
 3. Missing required fields cause validation failure.
 4. Future format changes must bump or extend `format_version`.
+5. Unencrypted v1 `.hlz` files remain ZIP-compatible with earlier releases.
+6. Earlier releases cannot open `HLZENC` password-protected files.
 
-## 8. Privacy and Security
+## 9. Privacy and Security
 
-`.hlz` files are not encrypted. They are ordinary ZIP archives containing JSON
-and JSONL files. Anyone who can open the archive can inspect the exported
-history records.
+Unencrypted `.hlz` files are ordinary ZIP archives containing JSON and JSONL.
+Anyone who can open the archive can inspect the records. Password-protected
+archives provide confidentiality and integrity, but their resistance to
+offline guessing depends on the password. Passwords shorter than 12 characters
+trigger a warning, but the user may continue.
+
+Passwords are not stored or recoverable. Losing a password means losing access
+to that archive. Authentication failures intentionally do not distinguish a
+wrong password from damaged or tampered ciphertext.
 
 The importer validates archive structure before trusting chunk files:
 
@@ -208,5 +271,6 @@ The importer validates archive structure before trusting chunk files:
 5. Every listed chunk must match its SHA256 checksum.
 6. Record counts in the manifest, chunk index, and chunk files must agree.
 
-These checks protect against malformed archives and accidental corruption. They
-do not provide confidentiality.
+These checks protect against malformed archives and accidental corruption. For
+password-protected files they run only after the encrypted stream has been
+authenticated completely.

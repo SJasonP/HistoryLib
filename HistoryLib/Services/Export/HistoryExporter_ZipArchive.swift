@@ -30,9 +30,13 @@ enum MinimalZipArchive {
 
     private static func collectFilePaths(fromDirectory directoryURL: URL) throws -> [String] {
         let fileManager = FileManager.default
+        let rootComponents = directoryURL
+            .resolvingSymlinksInPath()
+            .standardizedFileURL
+            .pathComponents
         guard let enumerator = fileManager.enumerator(
             at: directoryURL,
-            includingPropertiesForKeys: [.isRegularFileKey],
+            includingPropertiesForKeys: [.isRegularFileKey, .isSymbolicLinkKey],
             options: [.skipsHiddenFiles]
         ) else {
             return []
@@ -41,14 +45,20 @@ enum MinimalZipArchive {
         var paths: [String] = []
 
         for case let fileURL as URL in enumerator {
-            let values = try fileURL.resourceValues(forKeys: [.isRegularFileKey])
-            guard values.isRegularFile == true else {
+            let values = try fileURL.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
+            guard values.isRegularFile == true, values.isSymbolicLink != true else {
                 continue
             }
 
-            let relativePath = fileURL.path
-                .replacingOccurrences(of: directoryURL.path + "/", with: "")
-                .replacingOccurrences(of: "\\", with: "/")
+            let fileComponents = fileURL
+                .resolvingSymlinksInPath()
+                .standardizedFileURL
+                .pathComponents
+            guard fileComponents.count > rootComponents.count,
+                  fileComponents.prefix(rootComponents.count).elementsEqual(rootComponents) else {
+                throw CocoaError(.fileReadInvalidFileName)
+            }
+            let relativePath = fileComponents.dropFirst(rootComponents.count).joined(separator: "/")
             paths.append(relativePath)
         }
 

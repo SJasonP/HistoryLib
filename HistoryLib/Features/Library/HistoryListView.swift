@@ -18,6 +18,7 @@ struct HistoryMonthGroup: Identifiable {
     let dayGroups: [HistoryDayGroup]
 
     var id: HistoryMonthID { HistoryMonthID(value: monthStart) }
+    var dayStarts: [Date] { dayGroups.map(\.dayStart) }
 }
 
 struct HistoryYearGroup: Identifiable {
@@ -35,7 +36,34 @@ struct HistoryDayGroup: Identifiable {
     var id: HistoryDayID { HistoryDayID(value: dayStart) }
 }
 
+enum HistoryHierarchyExpansion {
+    static func collapse(
+        _ yearGroup: HistoryYearGroup,
+        years: inout Set<Int>,
+        months: inout Set<Date>,
+        days: inout Set<Date>
+    ) -> [Date] {
+        let descendantDays = yearGroup.monthGroups.flatMap(\.dayStarts)
+        years.remove(yearGroup.year)
+        months.subtract(yearGroup.monthGroups.map(\.monthStart))
+        days.subtract(descendantDays)
+        return descendantDays
+    }
+
+    static func collapse(
+        _ monthGroup: HistoryMonthGroup,
+        months: inout Set<Date>,
+        days: inout Set<Date>
+    ) -> [Date] {
+        months.remove(monthGroup.monthStart)
+        days.subtract(monthGroup.dayStarts)
+        return monthGroup.dayStarts
+    }
+}
+
 struct HistoryListView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let yearGroups: [HistoryYearGroup]
     let flatSearchItems: [Item]
     let isSearching: Bool
@@ -59,6 +87,7 @@ struct HistoryListView: View {
     let onEnsureDayCount: (Date) -> Void
     let onEnsureDayItems: (Date) -> Void
     let onLoadMoreDayItems: (Date) -> Void
+    let onReleaseDayItems: ([Date]) -> Void
     let onLoadMoreSearchResults: () -> Void
 
     var body: some View {
@@ -122,34 +151,49 @@ struct HistoryListView: View {
     private var desktopGroupedList: some View {
         List {
             ForEach(yearGroups) { yearGroup in
-                DisclosureGroup(
-                    isExpanded: bindingForYear(yearGroup.year)
+                hierarchyRow(
+                    title: yearGroup.title,
+                    count: groupCountLabel(
+                        for: yearGroup.monthGroups.flatMap(\.dayStarts)
+                    ),
+                    level: 0,
+                    isExpanded: expandedYears.contains(yearGroup.year)
                 ) {
+                    toggleYear(yearGroup)
+                }
+
+                if expandedYears.contains(yearGroup.year) {
                     ForEach(yearGroup.monthGroups) { monthGroup in
-                        DisclosureGroup(
-                            isExpanded: bindingForMonth(monthGroup.monthStart)
+                        hierarchyRow(
+                            title: monthGroup.title,
+                            count: groupCountLabel(for: monthGroup.dayStarts),
+                            level: 1,
+                            isExpanded: expandedMonths.contains(monthGroup.monthStart)
                         ) {
+                            toggleMonth(monthGroup)
+                        }
+
+                        if expandedMonths.contains(monthGroup.monthStart) {
                             ForEach(monthGroup.dayGroups) { dayGroup in
-                                DisclosureGroup(
-                                    isExpanded: bindingForDay(dayGroup.dayStart)
+                                hierarchyRow(
+                                    title: dayGroup.title,
+                                    count: dayCountLabel(for: dayGroup.dayStart),
+                                    level: 2,
+                                    isExpanded: expandedDays.contains(dayGroup.dayStart)
                                 ) {
-                                    dayContent(for: dayGroup.dayStart)
-                                } label: {
-                                    Text("\(dayGroup.title)  (\(dayCountLabel(for: dayGroup.dayStart)))")
-                                        .font(.headline)
+                                    toggleDay(dayGroup.dayStart)
                                 }
                                 .onAppear {
                                     onEnsureDayCount(dayGroup.dayStart)
                                 }
+
+                                if expandedDays.contains(dayGroup.dayStart) {
+                                    dayContent(for: dayGroup.dayStart)
+                                        .padding(.leading, 48)
+                                }
                             }
-                        } label: {
-                            Text(monthGroup.title)
-                                .font(.headline)
                         }
                     }
-                } label: {
-                    Text(yearGroup.title)
-                        .font(.headline)
                 }
             }
 
@@ -165,6 +209,36 @@ struct HistoryListView: View {
                 .listRowSeparator(.hidden)
             }
         }
+        .animation(hierarchyAnimation, value: expandedYears)
+        .animation(hierarchyAnimation, value: expandedMonths)
+        .animation(hierarchyAnimation, value: expandedDays)
+    }
+
+    private func hierarchyRow(
+        title: String,
+        count: String? = nil,
+        level: Int,
+        isExpanded: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 12)
+                Text(title)
+                    .font(.headline)
+                if let count {
+                    Text("(\(count))")
+                        .foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .padding(.leading, CGFloat(level) * 16)
     }
 
     @ViewBuilder
@@ -331,45 +405,56 @@ struct HistoryListView: View {
         return String(total)
     }
 
-    private func bindingForYear(_ year: Int) -> Binding<Bool> {
-        Binding(
-            get: { expandedYears.contains(year) },
-            set: { isExpanded in
-                if isExpanded {
-                    expandedYears.insert(year)
-                } else {
-                    expandedYears.remove(year)
-                }
+    private func toggleYear(_ yearGroup: HistoryYearGroup) {
+        withHierarchyAnimation {
+            if expandedYears.contains(yearGroup.year) {
+                let dayStarts = HistoryHierarchyExpansion.collapse(
+                    yearGroup,
+                    years: &expandedYears,
+                    months: &expandedMonths,
+                    days: &expandedDays
+                )
+                onReleaseDayItems(dayStarts)
+            } else {
+                expandedYears.insert(yearGroup.year)
             }
-        )
+        }
     }
 
-    private func bindingForMonth(_ month: Date) -> Binding<Bool> {
-        Binding(
-            get: { expandedMonths.contains(month) },
-            set: { isExpanded in
-                if isExpanded {
-                    expandedMonths.insert(month)
-                } else {
-                    expandedMonths.remove(month)
-                }
+    private func toggleMonth(_ monthGroup: HistoryMonthGroup) {
+        withHierarchyAnimation {
+            if expandedMonths.contains(monthGroup.monthStart) {
+                let dayStarts = HistoryHierarchyExpansion.collapse(
+                    monthGroup,
+                    months: &expandedMonths,
+                    days: &expandedDays
+                )
+                onReleaseDayItems(dayStarts)
+            } else {
+                expandedMonths.insert(monthGroup.monthStart)
             }
-        )
+        }
     }
 
-    private func bindingForDay(_ day: Date) -> Binding<Bool> {
-        Binding(
-            get: { expandedDays.contains(day) },
-            set: { isExpanded in
-                if isExpanded {
-                    expandedDays.insert(day)
-                    onEnsureDayItems(day)
-                    onEnsureDayCount(day)
-                } else {
-                    expandedDays.remove(day)
-                }
+    private func toggleDay(_ day: Date) {
+        withHierarchyAnimation {
+            if expandedDays.contains(day) {
+                expandedDays.remove(day)
+                onReleaseDayItems([day])
+            } else {
+                expandedDays.insert(day)
+                onEnsureDayItems(day)
+                onEnsureDayCount(day)
             }
-        )
+        }
+    }
+
+    private func withHierarchyAnimation(_ updates: () -> Void) {
+        withAnimation(hierarchyAnimation, updates)
+    }
+
+    private var hierarchyAnimation: Animation? {
+        reduceMotion ? nil : .easeInOut(duration: 0.16)
     }
 }
 

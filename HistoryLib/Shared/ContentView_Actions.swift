@@ -77,18 +77,7 @@ extension ContentView {
         return String(localized: "Cannot \(actionText) because iCloud is unavailable. Changes are paused to keep your history consistent.")
     }
 
-    func startImportAutoDetect() {
-        importFormatPreference = .automatic
-        isFileImporterPresented = true
-    }
-
-    func startImportAsSafari() {
-        importFormatPreference = .safari
-        isFileImporterPresented = true
-    }
-
-    func startImportAsHistoryLib() {
-        importFormatPreference = .historyLib
+    func startImport() {
         isFileImporterPresented = true
     }
 
@@ -100,7 +89,7 @@ extension ContentView {
     func stageImportedItem(_ sourceURL: URL) throws -> URL {
         let fileManager = FileManager.default
         let stagingRoot = fileManager.temporaryDirectory
-            .appendingPathComponent("HistoryLibStaging", isDirectory: true)
+            .appendingPathComponent("Staging", isDirectory: true)
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try fileManager.createDirectory(at: stagingRoot, withIntermediateDirectories: true)
         let destinationURL = stagingRoot.appendingPathComponent(sourceURL.lastPathComponent)
@@ -126,6 +115,17 @@ extension ContentView {
         }
         if let copyError { throw copyError }
         if let coordinatorError { throw coordinatorError }
+
+        var mutableDestinationURL = destinationURL
+        var values = URLResourceValues()
+        values.isExcludedFromBackup = true
+        try? mutableDestinationURL.setResourceValues(values)
+#if os(iOS)
+        try? fileManager.setAttributes(
+            [.protectionKey: FileProtectionType.complete],
+            ofItemAtPath: destinationURL.path
+        )
+#endif
         return destinationURL
     }
 
@@ -146,14 +146,18 @@ extension ContentView {
             return
         }
 
-        let preferredFormat = importFormatPreference
         isImporting = true
         isCancellingImport = false
         importProgressFraction = nil
         importProgressMessage = String(localized: "Preparing import...")
 
         importTask = Task { @MainActor in
+            var stagedURL: URL?
+            var retainStagedItem = false
             defer {
+                if let stagedURL, !retainStagedItem {
+                    try? FileManager.default.removeItem(at: stagedURL.deletingLastPathComponent())
+                }
                 isImporting = false
                 isCancellingImport = false
                 importTask = nil
@@ -168,32 +172,28 @@ extension ContentView {
                 // elsewhere (Files / iCloud Drive); reading or memory-mapping it in
                 // place can be denied by the sandbox on iOS. Working on a local
                 // copy avoids that and any security-scope lifetime issues.
-                let stagedURL = try stageImportedItem(url)
-                defer { try? FileManager.default.removeItem(at: stagedURL.deletingLastPathComponent()) }
+                let localURL = try stageImportedItem(url)
+                stagedURL = localURL
+
+                if HistoryLibEncryptedArchive.isEncryptedArchive(localURL) {
+                    retainStagedItem = true
+                    pendingEncryptedImportURL = localURL
+                    importArchivePassword = ""
+                    importPasswordErrorMessage = ""
+                    showingImportPasswordPrompt = true
+                    return
+                }
 
                 let report = try await importer.importFrom(
-                    url: stagedURL,
+                    url: localURL,
                     modelContext: modelContext,
-                    preferredFormat: preferredFormat,
                     progress: { progress in
                         importProgressFraction = progress.fraction
                         importProgressMessage = progress.message
                     }
                 )
 
-                importFeedbackMessage = [
-                    String(localized: "Detected format: \(report.format.title)"),
-                    String(localized: "Scanned files: \(report.scannedFileCount)"),
-                    String(localized: "Valid files: \(report.validFileCount)"),
-                    String(localized: "Imported records: \(report.importedRecordCount)"),
-                    String(localized: "Skipped records: \(report.skippedRecordCount)"),
-                    report.failures.isEmpty ? nil : String(localized: "Failed files: \(report.failures.count)")
-                ]
-                .compactMap { $0 }
-                .joined(separator: "\n")
-                showingImportFeedback = true
-
-                scheduleDerivedDataRefresh()
+                applyImportReport(report)
             } catch is CancellationError {
                 // User cancelled. Any records imported before cancellation remain;
                 // re-importing is safe because import deduplicates.
@@ -203,6 +203,83 @@ extension ContentView {
                 showingImportFeedback = true
             }
         }
+    }
+
+    func submitPasswordProtectedImport() {
+        guard let stagedURL = pendingEncryptedImportURL, !isImporting else { return }
+        let password = HistoryLibEncryptedArchive.normalizedPassword(importArchivePassword)
+        guard !password.isEmpty else { return }
+
+        showingImportPasswordPrompt = false
+        importArchivePassword = ""
+        importPasswordErrorMessage = ""
+        isImporting = true
+        isCancellingImport = false
+        importProgressFraction = nil
+        importProgressMessage = String(localized: "Decrypting archive...")
+
+        importTask = Task { @MainActor in
+            var retainStagedItem = false
+            defer {
+                if !retainStagedItem {
+                    cleanupPendingEncryptedImport()
+                }
+                isImporting = false
+                isCancellingImport = false
+                importTask = nil
+            }
+
+            do {
+                let report = try await importer.importFrom(
+                    url: stagedURL,
+                    modelContext: modelContext,
+                    password: password,
+                    progress: { progress in
+                        importProgressFraction = progress.fraction
+                        importProgressMessage = progress.message
+                    }
+                )
+                applyImportReport(report)
+            } catch is CancellationError {
+                scheduleDerivedDataRefresh()
+            } catch HistoryLibEncryptedArchiveError.authenticationFailed {
+                retainStagedItem = true
+                importPasswordErrorMessage = String(localized: "The password is incorrect or the archive is damaged.")
+                showingImportPasswordPrompt = true
+            } catch {
+                importFeedbackMessage = error.localizedDescription
+                showingImportFeedback = true
+            }
+        }
+    }
+
+    func cancelPasswordProtectedImport() {
+        showingImportPasswordPrompt = false
+        importArchivePassword = ""
+        importPasswordErrorMessage = ""
+        cleanupPendingEncryptedImport()
+    }
+
+    func cleanupPendingEncryptedImport() {
+        if let url = pendingEncryptedImportURL {
+            try? FileManager.default.removeItem(at: url.deletingLastPathComponent())
+        }
+        pendingEncryptedImportURL = nil
+    }
+
+    func applyImportReport(_ report: HistoryImportReport) {
+        importFeedbackMessage = [
+            String(localized: "Detected format: \(report.format.title)"),
+            String(localized: "Scanned files: \(report.scannedFileCount)"),
+            String(localized: "Valid files: \(report.validFileCount)"),
+            String(localized: "Imported records: \(report.importedRecordCount)"),
+            String(localized: "Skipped records: \(report.skippedRecordCount)"),
+            report.failures.isEmpty ? nil : String(localized: "Failed files: \(report.failures.count)")
+        ]
+        .compactMap { $0 }
+        .joined(separator: "\n")
+        showingImportFeedback = true
+        scheduleDerivedDataRefresh()
     }
 
     func cancelImport() {
@@ -334,8 +411,10 @@ extension ContentView {
                 try modelContext.save()
                 refreshSummaryStats()
                 generateAndPersistSummarySnapshot()
+                persistDirectoryCountCacheFromStateIfComplete()
             } catch {
                 rollbackOptimisticSingleDelete(item, dayStart: dayStart, dayWasRemoved: removedDayFromDirectory)
+                persistDirectoryCountCacheFromStateIfComplete()
                 deleteFeedbackMessage = String(localized: "Delete failed: \(error.localizedDescription)")
                 showingDeleteFeedback = true
             }
@@ -482,13 +561,22 @@ extension ContentView {
         }
     }
 
-    func clearFaviconCache() {
+    func measureClearCacheStorageUsage() async -> ClearCacheStorageUsage {
+        await ClearCacheStorageUsageCalculator.measure()
+    }
+
+    func clearCaches() {
+        DirectoryCountCache.clear()
+        directoryCountsAreComplete = false
+
         Task { @MainActor in
             await FaviconStore.shared.clearAllCache()
+            await ClearCacheStorageUsageCalculator.clearCacheDirectories()
+            await FaviconStore.shared.ensureCacheDirectoryExists()
         }
     }
 
-    func exportHistory(_ format: HistoryExportFormat, _ split: HistoryExportSplit) {
+    func exportHistory(_ format: HistoryExportFormat, _ split: HistoryExportSplit, _ password: String?) {
         guard !isPreparingExport else { return }
 
         isPreparingExport = true
@@ -509,6 +597,7 @@ extension ContentView {
                     modelContext: modelContext,
                     format: format,
                     split: split,
+                    password: password,
                     progress: { progress in
                         exportProgressFraction = progress.fraction
                         exportProgressMessage = progress.message

@@ -10,11 +10,10 @@ struct ManageView: View {
     let canMutateHistoryData: Bool
     let oldestRecordDate: Date?
     let newestRecordDate: Date?
-    let onImportAutoDetect: () -> Void
-    let onImportAsSafari: () -> Void
-    let onImportAsHistoryLib: () -> Void
+    let onImport: () -> Void
     let onRetryICloudSync: () -> Void
-    let onExport: (HistoryExportFormat, HistoryExportSplit) -> Void
+    let onExport: (HistoryExportFormat, HistoryExportSplit, String?) -> Void
+    let onMeasureStorageUsage: () async -> ClearCacheStorageUsage
     let onClearCache: () -> Void
     let onBatchDelete: (ClosedRange<Date>) -> Int
     let onCountRecordsInRange: (ClosedRange<Date>) -> Int
@@ -23,6 +22,8 @@ struct ManageView: View {
     @State private var selectedExportSplit: HistoryExportSplit = .single
     @State private var isShowingBatchDeleteSheet = false
     @State private var isShowingClearCacheAlert = false
+    @State private var isMeasuringStorageUsage = false
+    @State private var storageUsage: ClearCacheStorageUsage?
     @State private var shouldDisableIconsAfterClear = false
     @State private var startDate = Date()
     @State private var endDate = Date()
@@ -30,6 +31,9 @@ struct ManageView: View {
     @State private var confirmedDeleteRange: ClosedRange<Date>?
     @State private var confirmedDeleteCount = 0
     @State private var matchingDeleteCount = 0
+    @State private var exportPassword = ""
+    @State private var exportPasswordConfirmation = ""
+    @State private var isShowingWeakPasswordAlert = false
 
     var body: some View {
         List {
@@ -42,25 +46,9 @@ struct ManageView: View {
 
             Section("Import") {
                 Button {
-                    onImportAutoDetect()
+                    onImport()
                 } label: {
-                    Label("Import (Auto Detect)", systemImage: "wand.and.stars")
-                }
-                .foregroundStyle(importButtonColor)
-                .disabled(!canMutateHistoryData)
-
-                Button {
-                    onImportAsSafari()
-                } label: {
-                    Label("Import as Safari Export", systemImage: "safari")
-                }
-                .foregroundStyle(importButtonColor)
-                .disabled(!canMutateHistoryData)
-
-                Button {
-                    onImportAsHistoryLib()
-                } label: {
-                    Label("Import as HistoryLib Archive", systemImage: "archivebox")
+                    Label("Import", systemImage: "square.and.arrow.down")
                 }
                 .foregroundStyle(importButtonColor)
                 .disabled(!canMutateHistoryData)
@@ -85,10 +73,22 @@ struct ManageView: View {
                     Text("HistoryLib export always uses one optimized .hlz archive format.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+
+                    passwordField("Password (Optional)", text: $exportPassword)
+
+                    if !normalizedExportPassword.isEmpty {
+                        passwordField("Confirm Password", text: $exportPasswordConfirmation)
+
+                        if !passwordsMatch {
+                            Text("Passwords do not match.")
+                                .font(.footnote)
+                                .foregroundStyle(.red)
+                        }
+                    }
                 }
 
                 Button {
-                    onExport(selectedExportFormat, selectedExportSplit)
+                    prepareExport()
                 } label: {
                     if isPreparingExport {
                         Label("Preparing Export...", systemImage: "hourglass")
@@ -96,17 +96,23 @@ struct ManageView: View {
                         Label("Export", systemImage: "square.and.arrow.up")
                     }
                 }
-                .disabled(isPreparingExport)
+                .disabled(isPreparingExport || !passwordsMatch)
             }
 
             Section("Data") {
                 Button("Check iCloud Sync", action: onRetryICloudSync)
                     .disabled(isSyncing || !isICloudSyncEnabled)
 
-                Button("Clear Cache") {
-                    shouldDisableIconsAfterClear = showSiteIcons
-                    isShowingClearCacheAlert = true
+                Button {
+                    prepareClearCacheConfirmation()
+                } label: {
+                    if isMeasuringStorageUsage {
+                        Label("Calculating Cache Size...", systemImage: "hourglass")
+                    } else {
+                        Text("Clear Cache")
+                    }
                 }
+                .disabled(isMeasuringStorageUsage)
 
                 if enableDelete && canMutateHistoryData {
                     Button(role: .destructive) {
@@ -122,16 +128,31 @@ struct ManageView: View {
             batchDeleteSheet
         }
         .alert(clearCacheTitle, isPresented: $isShowingClearCacheAlert) {
-            Button("Cancel", role: .cancel) { }
+            Button("Cancel", role: .cancel) {
+                storageUsage = nil
+            }
             Button("Clear Cache", role: .destructive) {
                 if shouldDisableIconsAfterClear {
                     showSiteIcons = false
                 }
                 onClearCache()
+                storageUsage = nil
             }
         } message: {
             Text(clearCacheMessage)
         }
+        .alert("Weak Password", isPresented: $isShowingWeakPasswordAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Export Anyway", action: performExport)
+        } message: {
+            Text("This password is shorter than 12 characters and may be easier to guess.")
+        }
+        .onChange(of: selectedExportFormat) { _, format in
+            if format != .historyLib {
+                clearExportPassword()
+            }
+        }
+        .onDisappear(perform: clearExportPassword)
     }
 
     private var batchDeleteSheet: some View {
@@ -210,6 +231,47 @@ struct ManageView: View {
         canMutateHistoryData ? Color.accentColor : Color.secondary
     }
 
+    private var normalizedExportPassword: String {
+        HistoryLibEncryptedArchive.normalizedPassword(exportPassword)
+    }
+
+    private var passwordsMatch: Bool {
+        guard selectedExportFormat == .historyLib, !normalizedExportPassword.isEmpty else {
+            return true
+        }
+        return normalizedExportPassword
+            == HistoryLibEncryptedArchive.normalizedPassword(exportPasswordConfirmation)
+    }
+
+    private func passwordField(_ title: LocalizedStringKey, text: Binding<String>) -> some View {
+        SecureField(title, text: text)
+            .textContentType(.newPassword)
+    }
+
+    private func prepareExport() {
+        guard passwordsMatch else { return }
+        if selectedExportFormat == .historyLib,
+           !normalizedExportPassword.isEmpty,
+           normalizedExportPassword.count < HistoryLibEncryptedArchive.weakPasswordLength {
+            isShowingWeakPasswordAlert = true
+            return
+        }
+        performExport()
+    }
+
+    private func performExport() {
+        let password = selectedExportFormat == .historyLib && !normalizedExportPassword.isEmpty
+            ? normalizedExportPassword
+            : nil
+        clearExportPassword()
+        onExport(selectedExportFormat, selectedExportSplit, password)
+    }
+
+    private func clearExportPassword() {
+        exportPassword = ""
+        exportPasswordConfirmation = ""
+    }
+
     private var deleteButtonTitle: String {
         String(localized: "Delete \(matchingDeleteCount) Records")
     }
@@ -251,9 +313,34 @@ struct ManageView: View {
     }
 
     private var clearCacheMessage: String {
-        if shouldDisableIconsAfterClear {
-            return String(localized: "Continuing will also turn off Show Site Icons. Do you want to continue?")
+        guard let storageUsage else { return "" }
+        let clearableCacheSize = formattedByteCount(storageUsage.clearableCacheBytes)
+        let nonClearableDataSize = formattedByteCount(storageUsage.nonClearableDataBytes)
+        let clearActionMessage = shouldDisableIconsAfterClear
+            ? String(localized: "Continuing will only clear \(clearableCacheSize) of cache data and turn off Show Site Icons.")
+            : String(localized: "Continuing will only clear \(clearableCacheSize) of cache data.")
+        let paragraphs = [
+            String(localized: "Clearable cache: \(clearableCacheSize)"),
+            String(localized: "Non-clearable data (not cache): \(nonClearableDataSize)"),
+            String(localized: "Non-clearable data mainly consists of your history records and related files, and its size is determined by the number of records you import and Apple's storage management. HistoryLib cannot control, reduce, or clear it."),
+            clearActionMessage
+        ]
+        return paragraphs.joined(separator: "\n\n")
+    }
+
+    private func prepareClearCacheConfirmation() {
+        guard !isMeasuringStorageUsage else { return }
+        isMeasuringStorageUsage = true
+        Task { @MainActor in
+            let measuredUsage = await onMeasureStorageUsage()
+            storageUsage = measuredUsage
+            shouldDisableIconsAfterClear = showSiteIcons
+            isMeasuringStorageUsage = false
+            isShowingClearCacheAlert = true
         }
-        return String(localized: "This will clear favicon cache files. Do you want to continue?")
+    }
+
+    private func formattedByteCount(_ bytes: Int64) -> String {
+        ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
     }
 }

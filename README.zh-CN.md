@@ -2,13 +2,16 @@
 
 [English](README.md) | 简体中文
 
-HistoryLib 是一个 SwiftUI app，用于收集、浏览、搜索、去重并重新导出浏览器历史记录。目前它主要面向 Safari 历史记录导出文件和 HistoryLib 自己的 `.hlz` 归档格式。
+HistoryLib 是一个 SwiftUI app，用于收集、浏览、搜索、去重并重新导出浏览器历史记录。目前它主要面向 Safari 历史记录导出文件和
+HistoryLib 自己的 `.hlz` 归档格式。
 
-导入的记录使用 SwiftData 存储。app 可以通过 CloudKit 使用 iCloud 同步，也可以将大数据集导出为基于 ZIP 的 `.hlz` 归档，内部包含 JSONL 分块和校验索引。
+导入的记录使用 SwiftData 存储。app 可以通过 CloudKit 使用 iCloud 同步，也可以将大数据集导出为基于 ZIP 的 `.hlz` 归档，内部包含
+JSONL 分块和校验索引。
 
 ## 状态
 
-此项目仍处于早期阶段，并且偏向个人使用。app 已经足够用于导入、浏览、汇总、导出和去重历史记录数据，但公开 API、归档格式细节和 UI 仍可能变化。
+此项目仍处于早期阶段，并且偏向个人使用。app 已经足够用于导入、浏览、汇总、导出和去重历史记录数据，但公开 API、归档格式细节和 UI
+仍可能变化。
 
 浏览器历史记录是敏感的个人数据。除非你已经检查过其中内容，否则不要发布导出的 `.hlz`、`.zip` 或 `.json` 历史记录文件。
 
@@ -39,7 +42,8 @@ HistoryLib 是一个 SwiftUI app，用于收集、浏览、搜索、去重并重
 - 如果你希望 CloudKit 同步能在设备上工作，需要 Apple Developer team 和有效的 iCloud entitlements。
 - 解析包依赖和获取 favicon 时需要网络访问。
 
-项目使用 Swift Package Manager，目前依赖 [ZIPFoundation](https://github.com/weichsel/ZIPFoundation) 0.9.20。
+项目使用 Swift Package Manager，目前依赖 [ZIPFoundation](https://github.com/weichsel/ZIPFoundation) 0.9.20
+和 [Swift Sodium](https://github.com/jedisct1/swift-sodium)；后者为密码保护的 `.hlz` 归档提供内置的 libsodium。
 
 ## 构建
 

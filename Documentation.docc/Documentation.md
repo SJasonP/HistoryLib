@@ -1,4 +1,4 @@
-# ``History_Lib``
+# History Lib
 
 Collect, browse, search, summarize, deduplicate, and re-export browser history
 records on Apple platforms.

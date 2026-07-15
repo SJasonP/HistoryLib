@@ -8,6 +8,7 @@ extension HistoryExporter {
         modelContext: ModelContext,
         totalRecords: Int,
         tempRoot: URL,
+        password: String?,
         progress: ((HistoryExportProgress) -> Void)?
     ) async throws -> PreparedExportFile {
         let fileManager = FileManager.default
@@ -171,8 +172,32 @@ extension HistoryExporter {
 
         progress?(.init(phase: .packaging, fraction: 0.92, message: String(localized: "Compressing archive...")))
         try Task.checkCancellation()
+        let normalizedPassword = password.map(HistoryLibEncryptedArchive.normalizedPassword) ?? ""
+        let shouldEncrypt = !normalizedPassword.isEmpty
         let hlzURL = tempRoot.appendingPathComponent("historylib-export.hlz")
-        try zipDirectory(at: archiveRoot, to: hlzURL)
+        let plainHLZURL = shouldEncrypt
+            ? tempRoot.appendingPathComponent("historylib-export-plain.hlz")
+            : hlzURL
+        try zipDirectory(at: archiveRoot, to: plainHLZURL)
+        try fileManager.removeItem(at: archiveRoot)
+
+        if shouldEncrypt {
+            progress?(.init(phase: .packaging, fraction: 0.94, message: String(localized: "Encrypting archive...")))
+            try Task.checkCancellation()
+            defer { try? fileManager.removeItem(at: plainHLZURL) }
+            try HistoryLibEncryptedArchive.encrypt(
+                sourceURL: plainHLZURL,
+                destinationURL: hlzURL,
+                password: normalizedPassword,
+                progress: { fraction in
+                    progress?(.init(
+                        phase: .packaging,
+                        fraction: 0.94 + 0.06 * fraction,
+                        message: String(localized: "Encrypting archive...")
+                    ))
+                }
+            )
+        }
         progress?(.init(phase: .packaging, fraction: 1.0, message: String(localized: "Export complete.")))
 
         return PreparedExportFile(
