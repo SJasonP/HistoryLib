@@ -70,8 +70,8 @@ statistics and regenerate the latest snapshot.
 
 Importers should:
 
-- expose one smart-import entry point and detect Safari or HistoryLib content
-  before inserting any records; reject the input when neither format can be
+- expose one smart-import entry point and detect Safari, Chrome, or HistoryLib
+  content before inserting any records; reject the input when no format can be
   recognized instead of falling back to a user-selected format;
 - validate input format before inserting records;
 - skip incomplete records when the external format allows partial data;
@@ -94,8 +94,45 @@ used by every importer and the duplicate cleaner. Do not copy these into
 individual importers. The near-duplicate tolerance defaults to 1 second and is
 defined in one place (`ImportDedupOptions`).
 
-Safari import accepts JSON files, folders, and ZIP archives. HistoryLib import
-accepts `.hlz`, ZIP, and folder archive layouts.
+Safari import accepts JSON files, folders, and ZIP archives. Chrome import
+accepts the same three layouts. HistoryLib import accepts `.hlz`, ZIP, and
+folder archive layouts.
+
+### Timestamps
+
+`Item.rawTimeUsec` is always **microseconds since the Unix epoch**. The `.hlz`
+exporter writes it back out verbatim, so a value on any other epoch silently
+produces records centuries away and corrupts the archive's time-bucket indexes.
+Any importer for a format that uses a different epoch must convert on the way
+in. This is why Chrome support reads Google Takeout JSON — whose `time_usec` is
+already Unix-based — rather than Chrome's local `History` database, which counts
+from 1601.
+
+### Chrome (Google Takeout)
+
+Chrome has no built-in history export; Google Takeout is the only official
+route. It produces `Takeout/Chrome/History.json` (older exports:
+`BrowserHistory.json`), normally inside a ZIP, shaped as a single
+`"Browser History"` array of per-visit records with `url`, `title`, and
+`time_usec`. It carries no visit count, no redirect chain, and no metadata
+block, so those fields are left at their defaults rather than invented.
+
+Detection reads only the head of a file (looking for `"Browser History"` used as
+a key) instead of decoding the document: Takeout history files are routinely
+hundreds of megabytes, and a probe must never parse one just to return a Bool.
+The check requires a following colon so that a record *titled* "Browser History"
+is not mistaken for an export. Safari is probed before Chrome because both
+browsers name their export `History.json`; only content tells them apart.
+
+A Takeout folder holds unrelated JSON siblings (Autofill, SearchEngines, and so
+on). Only files that pass the history sniff are imported; the rest are ignored
+quietly rather than reported as failures.
+
+The actual import also streams the JSON in 64 KiB blocks and decodes one visit
+object at a time. It never retains the complete Takeout document or its full
+record array in memory. Records are flushed through the shared deduplicator in
+1,000-record batches, which keeps large imports viable on memory-constrained
+iPhone and iPad devices.
 
 ## Export Rules
 

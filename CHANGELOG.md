@@ -3,6 +3,28 @@
 All notable changes to HistoryLib are documented here. This project adheres to
 [Keep a Changelog](https://keepachangelog.com/) and uses [Semantic Versioning](https://semver.org/).
 
+## [1.3] - 2026-08-13
+
+### Added
+
+- Smart import for Chrome history exported through Google Takeout as a JSON
+  file, folder, or ZIP archive.
+- A Help page that explains HistoryLib's import options and introduces
+  HistoryLib Helper for importing history from computers and additional
+  browsers.
+
+### Changed
+
+- Large Google Takeout exports are now parsed as a stream and saved in batches
+  to keep memory use bounded during import.
+- Import guidance now includes Google Takeout alongside Safari exports and
+  HistoryLib `.hlz` archives.
+
+### Security
+
+- Strengthened temporary-file protection for browser history extracted from
+  Safari and Google Takeout ZIP archives.
+
 ## [1.2] - 2026-07-15
 
 ### Added

@@ -831,12 +831,12 @@
         }
       }
     },
-    "Import Safari JSON/folder/ZIP files or a HistoryLib .hlz archive." : {
+    "Import Safari or Chrome Takeout JSON/folder/ZIP files, or a HistoryLib .hlz archive." : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "导入Safari的JSON/文件夹/ZIP文件或者HistoryLib .hlz存档文件。"
+            "value" : "导入 Safari 或 Chrome Takeout 的 JSON/文件夹/ZIP 文件，或 HistoryLib .hlz 存档文件。"
           }
         }
       }
@@ -1421,6 +1421,26 @@
         }
       }
     },
+    "The Chrome browser history file is incomplete or damaged." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chrome 浏览器历史记录文件不完整或已损坏。"
+          }
+        }
+      }
+    },
+    "The file does not contain Chrome browser history." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件中不包含 Chrome 浏览器历史记录。"
+          }
+        }
+      }
+    },
     "The password is incorrect or the archive is damaged." : {
       "localizations" : {
         "zh-Hans" : {
@@ -1431,12 +1451,12 @@
         }
       }
     },
-    "The selected item is not a recognized Safari history export or HistoryLib archive." : {
+    "The selected item is not a recognized Safari history export, Chrome Takeout export, or HistoryLib archive." : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "所选项目不是可识别的 Safari 历史记录导出或 HistoryLib 归档。"
+            "value" : "所选项目不是可识别的 Safari 历史记录导出、Chrome Takeout 导出或 HistoryLib 归档。"
           }
         }
       }
@@ -1617,6 +1637,176 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ZIP 条目路径超出目标目录范围。"
+          }
+        }
+      }
+    },
+    "Bring browser history into HistoryLib." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将浏览器历史记录导入 HistoryLib。"
+          }
+        }
+      }
+    },
+    "Choose whether to protect the .hlz file with a password, then export it." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择是否使用密码保护 .hlz 文件，然后将其导出。"
+          }
+        }
+      }
+    },
+    "Download and open HistoryLib Helper on your computer." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在电脑上下载并打开 HistoryLib Helper。"
+          }
+        }
+      }
+    },
+    "Download HistoryLib Helper" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下载 HistoryLib Helper"
+          }
+        }
+      }
+    },
+    "Google Chrome, Microsoft Edge, Brave, Vivaldi, Opera, Chromium, and Firefox are supported." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持 Google Chrome、Microsoft Edge、Brave、Vivaldi、Opera、Chromium 和 Firefox。"
+          }
+        }
+      }
+    },
+    "Help" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "帮助"
+          }
+        }
+      }
+    },
+    "HistoryLib Helper" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HistoryLib Helper"
+          }
+        }
+      }
+    },
+    "HistoryLib Helper is a separate local-only tool for Windows and macOS. It reads supported browser history and exports a .hlz file that HistoryLib can import." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HistoryLib Helper 是一款独立且仅在本机运行的 Windows 和 macOS 工具。它可以读取受支持浏览器的历史记录，并导出可由 HistoryLib 导入的 .hlz 文件。"
+          }
+        }
+      }
+    },
+    "How It Works" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用方法"
+          }
+        }
+      }
+    },
+    "Privacy" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隐私"
+          }
+        }
+      }
+    },
+    "Select the history you want to export." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择要导出的历史记录。"
+          }
+        }
+      }
+    },
+    "Supported Browsers" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持的浏览器"
+          }
+        }
+      }
+    },
+    "The Helper runs locally, opens browser history databases read-only, and does not upload your history." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Helper 仅在本机运行，以只读方式打开浏览器历史记录数据库，并且不会上传您的历史记录。"
+          }
+        }
+      }
+    },
+    "Transfer the .hlz file to this device and import it from Manage." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将 .hlz 文件传输到此设备，然后在“管理”中导入。"
+          }
+        }
+      }
+    },
+    "HistoryLib can directly import only Safari history, Google Takeout exports, and .hlz archives." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HistoryLib 本体仅支持直接导入 Safari 历史记录、Google Takeout 导出文件和 .hlz 归档。"
+          }
+        }
+      }
+    },
+    "Import Options" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入方式"
+          }
+        }
+      }
+    },
+    "To import history from a computer or from more browsers, use HistoryLib Helper to create a .hlz archive, then import that archive into HistoryLib." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "如果要导入电脑上的历史记录或支持更多浏览器，请使用 HistoryLib Helper 创建 .hlz 归档，然后将其导入 HistoryLib。"
           }
         }
       }

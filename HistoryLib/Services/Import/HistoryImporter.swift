@@ -3,6 +3,7 @@ import SwiftData
 
 final class HistoryImporter {
     private let safariImporter = SafariHistoryImporter()
+    private let chromeImporter = ChromeHistoryImporter()
     private let historyLibImporter = HistoryLibArchiveImporter()
 
     func importFrom(
@@ -30,6 +31,13 @@ final class HistoryImporter {
                 skippedRecordCount: report.skippedRecordCount,
                 failures: report.failures
             )
+        case .chrome:
+            return try await chromeImporter.importFrom(
+                url: url,
+                modelContext: modelContext,
+                dedupOptions: dedupOptions,
+                progress: progress
+            )
         case .historyLib:
             return try await historyLibImporter.importFrom(
                 url: url,
@@ -45,8 +53,13 @@ final class HistoryImporter {
         if historyLibImporter.looksLikeHistoryLibSource(url) {
             return .historyLib
         }
+        // Safari is probed before Chrome: both export a file named History.json,
+        // and only a content check tells them apart.
         if safariImporter.looksLikeSafariHistorySource(url) {
             return .safari
+        }
+        if chromeImporter.looksLikeChromeHistorySource(url) {
+            return .chrome
         }
         throw HistoryImportError.unrecognizedFormat
     }

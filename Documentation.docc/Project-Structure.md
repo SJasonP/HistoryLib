@@ -48,8 +48,9 @@ HistoryLib/
 
 ## Service Boundaries
 
-- `Services/Import/`: resolves input format and imports Safari or HistoryLib
-  archive sources. Shared deduplication and decoding helpers (URL
+- `Services/Import/`: resolves input format and imports Safari, Chrome
+  (Google Takeout), or HistoryLib archive sources. Shared deduplication and
+  decoding helpers (URL
   normalization, dedup signatures, near-duplicate tolerance, flexible integer
   decoding, array chunking) live in one place here and are reused by every
   importer and by `Services/Sync/`; they are not duplicated per importer.

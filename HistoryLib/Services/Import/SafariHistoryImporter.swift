@@ -253,6 +253,7 @@ final class SafariHistoryImporter {
         let tempRoot = fm.temporaryDirectory.appendingPathComponent("Import", isDirectory: true)
         let tempDir = tempRoot.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try fm.createDirectory(at: tempDir, withIntermediateDirectories: true)
+        HistoryLibSensitiveFiles.applyAttributes(to: tempDir)
         defer {
             try? fm.removeItem(at: tempDir)
         }

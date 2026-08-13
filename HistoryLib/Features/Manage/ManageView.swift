@@ -123,6 +123,14 @@ struct ManageView: View {
                     }
                 }
             }
+
+            Section {
+                NavigationLink {
+                    HistoryLibHelperHelpView()
+                } label: {
+                    Label("Help", systemImage: "questionmark.circle")
+                }
+            }
         }
         .sheet(isPresented: $isShowingBatchDeleteSheet) {
             batchDeleteSheet

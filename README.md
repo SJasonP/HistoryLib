@@ -4,7 +4,8 @@ English | [简体中文](README.zh-CN.md)
 
 HistoryLib is a SwiftUI app for collecting, browsing, searching, deduplicating,
 and re-exporting browser history records. It currently focuses on Safari
-history export files and HistoryLib's own `.hlz` archive format.
+history export files, Chrome history exported through Google Takeout, and
+HistoryLib's own `.hlz` archive format.
 
 Imported records are stored with SwiftData. The app can use CloudKit for iCloud
 sync, and can export large datasets as a ZIP-based `.hlz` archive with JSONL
@@ -22,6 +23,7 @@ Browser history is sensitive personal data. Do not publish exported `.hlz`,
 ## Features
 
 - Import Safari history JSON files, folders, and ZIP archives.
+- Import Chrome history from a Google Takeout export (JSON, folder, or ZIP).
 - Import HistoryLib `.hlz` archives.
 - Browse records by year, month, and day.
 - Search by URL or title.

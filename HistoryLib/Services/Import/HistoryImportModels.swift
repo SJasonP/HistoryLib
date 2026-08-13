@@ -21,12 +21,15 @@ struct ImportDedupOptions: Sendable {
 
 enum HistoryImportFormatResolved: String {
     case safari
+    case chrome
     case historyLib
 
     var title: String {
         switch self {
         case .safari:
             return "Safari"
+        case .chrome:
+            return "Chrome"
         case .historyLib:
             return "HistoryLib"
         }
@@ -39,7 +42,7 @@ enum HistoryImportError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .unrecognizedFormat:
-            return String(localized: "The selected item is not a recognized Safari history export or HistoryLib archive.")
+            return String(localized: "The selected item is not a recognized Safari history export, Chrome Takeout export, or HistoryLib archive.")
         }
     }
 }
