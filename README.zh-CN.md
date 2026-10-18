@@ -1,94 +1,40 @@
 # HistoryLib
 
-[English](README.md) | 简体中文
+[English](README.md)
 
-HistoryLib 是一个 SwiftUI app，用于收集、浏览、搜索、去重并重新导出浏览器历史记录。目前它主要面向 Safari 历史记录导出文件、
-通过 Google Takeout 导出的 Chrome 历史记录，以及 HistoryLib 自己的 `.hlz` 归档格式。
+HistoryLib 是一个原生多平台应用，用于导入、浏览、搜索、去重、同步和重新导出浏览器历史记录。
 
-导入的记录使用 SwiftData 存储。app 可以通过 CloudKit 使用 iCloud 同步，也可以将大数据集导出为基于 ZIP 的 `.hlz` 归档，内部包含
-JSONL 分块和校验索引。
+1.4 将是 Apple、Android 和 Windows 第一次统一发布的版本。三个客户端分别使用平台原生语言和 UI 技术，共享规范与测试数据用于保证行为和数据格式一致。
 
-## 状态
+所有客户端统一支持联合国六种官方语言：美式英语、简体中文、阿拉伯语、法语、俄语和西班牙语。阿拉伯语使用平台原生从右到左布局，涉及数量的文案遵循各平台的复数规则。
 
-此项目仍处于早期阶段，并且偏向个人使用。app 已经足够用于导入、浏览、汇总、导出和去重历史记录数据，但公开 API、归档格式细节和 UI
-仍可能变化。
+## 仓库结构
 
-浏览器历史记录是敏感的个人数据。除非你已经检查过其中内容，否则不要发布导出的 `.hlz`、`.zip` 或 `.json` 历史记录文件。
+- `platforms/apple`：Swift、SwiftUI、SwiftData 与 CloudKit 客户端。
+- `platforms/android`：Kotlin 与 Jetpack Compose 客户端，最低 API 36。
+- `platforms/windows`：计划使用 C# 与 WinUI 3 的客户端位置。
+- `shared/specs`：跨平台行为与格式契约。
+- `shared/fixtures`：虚构的互操作和拒绝测试数据。
 
-## 功能
+整个产品只有一份 Git 历史和一个产品版本。各应用商店使用的内部构建号可以不同，但公开功能版本必须保持一致。
 
-- 导入 Safari 历史记录 JSON 文件、文件夹和 ZIP 归档。
-- 导入通过 Google Takeout 导出的 Chrome 历史记录（JSON、文件夹或 ZIP）。
-- 导入 HistoryLib `.hlz` 归档。
-- 按年、月、日浏览记录。
-- 按 URL 或标题搜索。
-- 在系统浏览器中打开记录。
-- 显示已缓存的网站 favicon。
-- 生成汇总快照。
-- 导出 Safari 兼容的 ZIP 归档。
-- 导出优化后的 HistoryLib `.hlz` 归档。
-- 对导入或同步的记录去重。
-- 启用 iCloud 时同步记录和 app 设置。
+公共规范索引见 [`shared/specs/README.md`](shared/specs/README.md)。
 
-## 平台
+## 当前状态
 
-- iOS
-- macOS
+- Apple 1.3 是当前已经完成的客户端。
+- Android 1.4 原生客户端已具备完整功能，当前处于发布加固阶段。
+- Windows 1.4 尚待开发。
 
-项目当前的部署目标是 iOS 26.x 和 macOS 26.x。
+各平台的构建方式见对应目录内的 README。
 
-## 要求
+Android 1.4 的详细产品与技术实施基线见
+[`platforms/android/docs/Android-1.4-Specification.zh-CN.md`](platforms/android/docs/Android-1.4-Specification.zh-CN.md)。
 
-- 支持已配置部署目标的 Xcode，以及 Swift、SwiftUI、SwiftData 和 CloudKit 支持。
-- 如果你希望 CloudKit 同步能在设备上工作，需要 Apple Developer team 和有效的 iCloud entitlements。
-- 解析包依赖和获取 favicon 时需要网络访问。
+## 隐私
 
-项目使用 Swift Package Manager，目前依赖 [ZIPFoundation](https://github.com/weichsel/ZIPFoundation) 0.9.20
-和 [Swift Sodium](https://github.com/jedisct1/swift-sodium)；后者为密码保护的 `.hlz` 归档提供内置的 libsodium。
-
-## 构建
-
-在 Xcode 中打开 `HistoryLib.xcodeproj`，然后运行 `HistoryLib` scheme。
-
-通过命令行：
-
-```sh
-xcodebuild -list -project HistoryLib.xcodeproj
-xcodebuild -project HistoryLib.xcodeproj -scheme HistoryLib build
-```
-
-对于模拟器或真机构建，请传入与你本地 Xcode 安装匹配的 destination，例如：
-
-```sh
-xcodebuild \
-  -project HistoryLib.xcodeproj \
-  -scheme HistoryLib \
-  -destination 'platform=iOS Simulator,name=iPhone 17' \
-  build
-```
-
-## 测试
-
-从 Xcode 运行测试，或使用 `xcodebuild`：
-
-```sh
-xcodebuild \
-  -project HistoryLib.xcodeproj \
-  -scheme HistoryLib \
-  -destination 'platform=iOS Simulator,name=iPhone 17' \
-  test
-```
-
-## 文档
-
-- [项目文档](Documentation.docc/Documentation.md)
-- [归档格式](Documentation.docc/HistoryLib-Archive-Format.md)
-- [隐私和数据](Documentation.docc/Privacy-and-Data.md)
-- [项目结构](Documentation.docc/Project-Structure.md)
-- [开发说明](Documentation.docc/Development.md)
+浏览器历史记录是敏感个人数据。不得向仓库提交真实浏览记录。HistoryLib 不提供产品级备份功能；导出属于用户主动发起的数据转移。
 
 ## 许可证
 
-HistoryLib 使用 MIT License 授权。请参阅 [LICENSE](LICENSE)。
-
-第三方依赖声明列在 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
+HistoryLib 使用 MIT License，详见 `LICENSE`。

@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "browser_name": "Safari",
+    "data_type": "history",
+    "schema_version": 1
+  },
+  "history": [
+    {
+      "url": "https://alpha.example/path/",
+      "time_usec": "1710000000123456",
+      "visit_count": 2,
+      "title": "Synthetic Alpha"
+    },
+    {
+      "url": "HTTPS://Beta.Example:443/#fixture",
+      "time_usec": 1710000001123456,
+      "title": "Synthetic Beta"
+    }
+  ]
+}

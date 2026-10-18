@@ -1,0 +1,13 @@
+{
+  "Browser History": [
+    {
+      "url": "https://gamma.example/",
+      "title": "Synthetic Gamma",
+      "time_usec": 1710000002123456
+    },
+    {
+      "url": "https://delta.example/docs",
+      "time_usec": "1710000003123456"
+    }
+  ]
+}

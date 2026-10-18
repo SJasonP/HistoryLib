@@ -1,105 +1,49 @@
 # HistoryLib
 
-English | [简体中文](README.zh-CN.md)
+[简体中文](README.zh-CN.md)
 
-HistoryLib is a SwiftUI app for collecting, browsing, searching, deduplicating,
-and re-exporting browser history records. It currently focuses on Safari
-history export files, Chrome history exported through Google Takeout, and
-HistoryLib's own `.hlz` archive format.
+HistoryLib is a native, multi-platform application for importing, browsing,
+searching, deduplicating, syncing, and exporting browser history.
 
-Imported records are stored with SwiftData. The app can use CloudKit for iCloud
-sync, and can export large datasets as a ZIP-based `.hlz` archive with JSONL
-chunks and validation indexes.
+Version 1.4 is being developed as the first coordinated Apple, Android, and
+Windows release. Each client uses its platform's native language and UI stack;
+shared specifications and fixtures keep behavior and data formats compatible.
 
-## Status
+All clients target the six United Nations official languages: American
+English, Simplified Chinese, Arabic, French, Russian, and Spanish. Arabic uses
+native right-to-left layout, and count-sensitive text follows each platform's
+plural rules.
 
-This project is early and personal-use oriented. The app is usable enough to
-import, browse, summarize, export, and deduplicate history data, but the public
-API, archive format details, and UI may still change.
+## Repository layout
 
-Browser history is sensitive personal data. Do not publish exported `.hlz`,
-`.zip`, or `.json` history files unless you have reviewed their contents.
+- `platforms/apple`: Swift, SwiftUI, SwiftData, and CloudKit client.
+- `platforms/android`: Kotlin and Jetpack Compose client targeting API 36+.
+- `platforms/windows`: C# and WinUI 3 client placeholder.
+- `shared/specs`: cross-platform behavior and format contracts.
+- `shared/fixtures`: synthetic interoperability and rejection fixtures.
 
-## Features
+The repository has one Git history and one product version. Platform build
+numbers can differ, but public feature versions must remain aligned.
 
-- Import Safari history JSON files, folders, and ZIP archives.
-- Import Chrome history from a Google Takeout export (JSON, folder, or ZIP).
-- Import HistoryLib `.hlz` archives.
-- Browse records by year, month, and day.
-- Search by URL or title.
-- Open records in the system browser.
-- Show cached site favicons.
-- Generate summary snapshots.
-- Export Safari-compatible ZIP archives.
-- Export optimized HistoryLib `.hlz` archives.
-- Deduplicate imported or synced records.
-- Sync records and app settings with iCloud when enabled.
+Shared specifications are indexed in [`shared/specs/README.md`](shared/specs/README.md).
 
-## Platforms
+## Current status
 
-- iOS
-- macOS
+- Apple 1.3 is the current completed client.
+- Android 1.4 has a functional native client and is in release-hardening.
+- Windows 1.4 is planned.
 
-The current deployment targets in the project are iOS 26.x and macOS 26.x.
+See each platform directory for platform-specific build instructions.
 
-## Requirements
+The detailed Android 1.4 product and implementation baseline is available in
+[`platforms/android/docs/Android-1.4-Specification.zh-CN.md`](platforms/android/docs/Android-1.4-Specification.zh-CN.md).
 
-- Xcode with Swift, SwiftUI, SwiftData, and CloudKit support for the configured
-  deployment targets.
-- An Apple Developer team and valid iCloud entitlements if you want CloudKit
-  sync to work on devices.
-- Network access for package resolution and favicon fetching.
+## Privacy
 
-The project uses Swift Package Manager and currently depends on
-[ZIPFoundation](https://github.com/weichsel/ZIPFoundation) 0.9.20 and
-[Swift Sodium](https://github.com/jedisct1/swift-sodium), which bundles
-libsodium for password-protected `.hlz` archives.
-
-## Build
-
-Open `HistoryLib.xcodeproj` in Xcode and run the `HistoryLib` scheme.
-
-From the command line:
-
-```sh
-xcodebuild -list -project HistoryLib.xcodeproj
-xcodebuild -project HistoryLib.xcodeproj -scheme HistoryLib build
-```
-
-For simulator or device builds, pass a destination that matches your local
-Xcode installation, for example:
-
-```sh
-xcodebuild \
-  -project HistoryLib.xcodeproj \
-  -scheme HistoryLib \
-  -destination 'platform=iOS Simulator,name=iPhone 17' \
-  build
-```
-
-## Test
-
-Run tests from Xcode or use `xcodebuild`:
-
-```sh
-xcodebuild \
-  -project HistoryLib.xcodeproj \
-  -scheme HistoryLib \
-  -destination 'platform=iOS Simulator,name=iPhone 17' \
-  test
-```
-
-## Documentation
-
-- [Project documentation](Documentation.docc/Documentation.md)
-- [Archive format](Documentation.docc/HistoryLib-Archive-Format.md)
-- [Privacy and data](Documentation.docc/Privacy-and-Data.md)
-- [Project structure](Documentation.docc/Project-Structure.md)
-- [Development notes](Documentation.docc/Development.md)
+Browser history is sensitive personal data. Do not commit real browsing data to
+this repository. HistoryLib does not expose a product-level backup feature;
+exports are explicit, user-initiated data transfers.
 
 ## License
 
-HistoryLib is licensed under the MIT License. See [LICENSE](LICENSE).
-
-Third-party dependency notices are listed in
-[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+HistoryLib is released under the MIT License. See `LICENSE`.

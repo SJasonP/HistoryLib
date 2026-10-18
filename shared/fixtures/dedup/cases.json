@@ -1,0 +1,16 @@
+[
+  {
+    "raw_url": " HTTPS://Example.Test:443/a/?q=1#fragment ",
+    "browser": " Safari ",
+    "visited_at_usec": 1710000000999999,
+    "normalized_url": "https://example.test/a?q=1",
+    "canonical_key": "https://example.test/a?q=1|1710000000|safari"
+  },
+  {
+    "raw_url": "http://Example.Test:80",
+    "browser": "CHROME",
+    "visited_at_usec": 1710000001000000,
+    "normalized_url": "http://example.test/",
+    "canonical_key": "http://example.test/|1710000001|chrome"
+  }
+]
