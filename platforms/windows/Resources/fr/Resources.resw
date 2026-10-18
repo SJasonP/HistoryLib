@@ -1,0 +1,432 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="app_name" xml:space="preserve">
+    <value>HistoryLib</value>
+  </data>
+  <data name="destination_summary" xml:space="preserve">
+    <value>Résumé</value>
+  </data>
+  <data name="destination_library" xml:space="preserve">
+    <value>Bibliothèque</value>
+  </data>
+  <data name="destination_manage" xml:space="preserve">
+    <value>Gérer</value>
+  </data>
+  <data name="summary_total_records" xml:space="preserve">
+    <value>Total des enregistrements</value>
+  </data>
+  <data name="summary_avg_day" xml:space="preserve">
+    <value>Moy. / Jour</value>
+  </data>
+  <data name="summary_avg_month" xml:space="preserve">
+    <value>Moyenne / Mois</value>
+  </data>
+  <data name="summary_avg_year" xml:space="preserve">
+    <value>Moyenne / Année</value>
+  </data>
+  <data name="summary_top_sites" xml:space="preserve">
+    <value>Les 10 meilleurs sites</value>
+  </data>
+  <data name="summary_last_modified" xml:space="preserve">
+    <value>Dernière modification : %1$s</value>
+  </data>
+  <data name="summary_empty" xml:space="preserve">
+    <value>Pas d'historique pour l'instant. Importez des données Safari, Chrome Takeout ou HistoryLib depuis Gérer.</value>
+  </data>
+  <data name="library_search_hint" xml:space="preserve">
+    <value>Rechercher une URL ou un titre</value>
+  </data>
+  <data name="library_empty" xml:space="preserve">
+    <value>Aucun enregistrement ne correspond.</value>
+  </data>
+  <data name="library_delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="library_today" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="library_yesterday" xml:space="preserve">
+    <value>Hier</value>
+  </data>
+  <data name="library_load_more" xml:space="preserve">
+    <value>Charger plus</value>
+  </data>
+  <data name="manage_import" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="manage_import_file" xml:space="preserve">
+    <value>Importer le fichier</value>
+  </data>
+  <data name="manage_import_folder" xml:space="preserve">
+    <value>Dossier d'importation</value>
+  </data>
+  <data name="manage_export" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="manage_export_historylib" xml:space="preserve">
+    <value>Archives HistoryLib</value>
+  </data>
+  <data name="manage_export_safari" xml:space="preserve">
+    <value>ZIP Safari</value>
+  </data>
+  <data name="manage_transfer_running" xml:space="preserve">
+    <value>En cours… (%1$s)</value>
+  </data>
+  <data name="manage_import_done" xml:space="preserve">
+    <value>%1$s ; %2$s.</value>
+  </data>
+  <data name="manage_import_failed" xml:space="preserve">
+    <value>Échec de l'importation : %1$s</value>
+  </data>
+  <data name="manage_import_cancelled" xml:space="preserve">
+    <value>Importation annulée.</value>
+  </data>
+  <data name="manage_import_error_generic" xml:space="preserve">
+    <value>L'importation a échoué. Vérifiez que l'élément sélectionné est lisible et utilise un format pris en charge.</value>
+  </data>
+  <data name="manage_export_error_generic" xml:space="preserve">
+    <value>L'exportation a échoué. Vérifiez la destination et l'espace de stockage disponible, puis réessayez.</value>
+  </data>
+  <data name="import_error_unrecognized" xml:space="preserve">
+    <value>L'élément sélectionné n'est pas un format d'historique pris en charge.</value>
+  </data>
+  <data name="import_error_invalid_structure" xml:space="preserve">
+    <value>Les données de l'historique sont incomplètes ou ont une structure non valide.</value>
+  </data>
+  <data name="import_error_checksum" xml:space="preserve">
+    <value>La vérification des archives a échoué. Le fichier est peut-être endommagé ou incomplet.</value>
+  </data>
+  <data name="import_error_authentication" xml:space="preserve">
+    <value>Le mot de passe de l'archive est incorrect ou le fichier crypté est endommagé.</value>
+  </data>
+  <data name="import_error_io" xml:space="preserve">
+    <value>L'élément sélectionné n'a pas pu être lu.</value>
+  </data>
+  <data name="manage_settings" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="manage_cancel_transfer" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="manage_show_visit_time" xml:space="preserve">
+    <value>Afficher l'heure de la visite</value>
+  </data>
+  <data name="manage_sync" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="manage_sync_unsupported" xml:space="preserve">
+    <value>Local storage</value>
+  </data>
+  <data name="manage_show_site_icons" xml:space="preserve">
+    <value>Afficher les icônes du site</value>
+  </data>
+  <data name="manage_open_link_on_tap" xml:space="preserve">
+    <value>Ouvrir le lien en un clic</value>
+  </data>
+  <data name="manage_enable_deletion" xml:space="preserve">
+    <value>Activer la suppression</value>
+  </data>
+  <data name="manage_default_expand" xml:space="preserve">
+    <value>Développer par défaut vers</value>
+  </data>
+  <data name="manage_cache" xml:space="preserve">
+    <value>Cache</value>
+  </data>
+  <data name="manage_clear_cache" xml:space="preserve">
+    <value>Vider le cache</value>
+  </data>
+  <data name="manage_batch_delete" xml:space="preserve">
+    <value>Suppression par lots</value>
+  </data>
+  <data name="manage_batch_start" xml:space="preserve">
+    <value>Date de début</value>
+  </data>
+  <data name="manage_batch_end" xml:space="preserve">
+    <value>Date de fin</value>
+  </data>
+  <data name="manage_date_placeholder" xml:space="preserve">
+    <value>yyyy-MM-dd</value>
+  </data>
+  <data name="manage_delete_range" xml:space="preserve">
+    <value>Supprimer les enregistrements correspondants</value>
+  </data>
+  <data name="manage_delete_confirm_title" xml:space="preserve">
+    <value>Supprimer les enregistrements ?</value>
+  </data>
+  <data name="manage_delete_confirm" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="manage_help" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="manage_help_body" xml:space="preserve">
+    <value>Importez l’historique Safari, l’historique Google Takeout Chrome ou les archives HistoryLib .hlz. L'exportation est un transfert de données initié par l'utilisateur, pas une sauvegarde. Les icônes du site peuvent révéler les domaines visités à leurs serveurs.</value>
+  </data>
+  <data name="manage_back" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="help_helper_title" xml:space="preserve">
+    <value>Aide HistoryLib</value>
+  </data>
+  <data name="help_helper_tagline" xml:space="preserve">
+    <value>Apportez l’historique du navigateur dans HistoryLib.</value>
+  </data>
+  <data name="help_helper_description" xml:space="preserve">
+    <value>HistoryLib Helper est un outil local distinct pour Windows et macOS. Il lit l'historique du navigateur pris en charge et exporte un fichier .hlz que HistoryLib peut importer.</value>
+  </data>
+  <data name="help_supported_browsers_title" xml:space="preserve">
+    <value>Navigateurs pris en charge</value>
+  </data>
+  <data name="help_supported_browsers_body" xml:space="preserve">
+    <value>Google Chrome, Microsoft Edge, Brave, Vivaldi, Opera, Chromium et Firefox sont pris en charge.</value>
+  </data>
+  <data name="help_import_options_title" xml:space="preserve">
+    <value>Options d'importation</value>
+  </data>
+  <data name="help_import_options_body_1" xml:space="preserve">
+    <value>HistoryLib ne peut importer directement que l'historique Safari, les exportations Google Takeout et les archives .hlz.</value>
+  </data>
+  <data name="help_import_options_body_2" xml:space="preserve">
+    <value>Pour importer l'historique depuis un ordinateur ou depuis plusieurs navigateurs, utilisez HistoryLib Helper pour créer une archive .hlz, puis importez cette archive dans HistoryLib.</value>
+  </data>
+  <data name="help_how_it_works_title" xml:space="preserve">
+    <value>Comment ça marche</value>
+  </data>
+  <data name="help_step_1" xml:space="preserve">
+    <value>Téléchargez et ouvrez HistoryLib Helper sur votre ordinateur.</value>
+  </data>
+  <data name="help_step_2" xml:space="preserve">
+    <value>Sélectionnez l'historique que vous souhaitez exporter.</value>
+  </data>
+  <data name="help_step_3" xml:space="preserve">
+    <value>Choisissez si vous souhaitez protéger le fichier .hlz avec un mot de passe, puis exportez-le.</value>
+  </data>
+  <data name="help_step_4" xml:space="preserve">
+    <value>Transférez le fichier .hlz sur cet appareil et importez-le depuis Gérer.</value>
+  </data>
+  <data name="help_privacy_title" xml:space="preserve">
+    <value>Confidentialité</value>
+  </data>
+  <data name="help_privacy_body" xml:space="preserve">
+    <value>L'assistant s'exécute localement, ouvre les bases de données d'historique du navigateur en lecture seule et ne télécharge pas votre historique.</value>
+  </data>
+  <data name="help_download_helper" xml:space="preserve">
+    <value>Télécharger l'aide HistoryLib</value>
+  </data>
+  <data name="manage_password_title" xml:space="preserve">
+    <value>Mot de passe de l’archive</value>
+  </data>
+  <data name="manage_password" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="manage_password_confirm" xml:space="preserve">
+    <value>Confirmez le mot de passe</value>
+  </data>
+  <data name="manage_password_optional_note" xml:space="preserve">
+    <value>Laissez le mot de passe vide pour exporter une archive HistoryLib non cryptée.</value>
+  </data>
+  <data name="manage_weak_password" xml:space="preserve">
+    <value>Les mots de passe de moins de 12 caractères sont plus faibles.</value>
+  </data>
+  <data name="common_ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="common_cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="manage_export_format" xml:space="preserve">
+    <value>Format d'exportation</value>
+  </data>
+  <data name="manage_export_format_historylib" xml:space="preserve">
+    <value>Archives HistoryLib</value>
+  </data>
+  <data name="manage_export_format_safari" xml:space="preserve">
+    <value>ZIP Safari</value>
+  </data>
+  <data name="manage_export_layout" xml:space="preserve">
+    <value>Disposition Safari</value>
+  </data>
+  <data name="manage_export_layout_single" xml:space="preserve">
+    <value>Fichier unique</value>
+  </data>
+  <data name="manage_export_layout_by_day" xml:space="preserve">
+    <value>De jour</value>
+  </data>
+  <data name="manage_export_layout_by_month" xml:space="preserve">
+    <value>Par mois</value>
+  </data>
+  <data name="manage_export_layout_by_year" xml:space="preserve">
+    <value>Par année</value>
+  </data>
+  <data name="manage_export_historylib_note" xml:space="preserve">
+    <value>Les archives HistoryLib utilisent toujours un fichier d'archive optimisé.</value>
+  </data>
+  <data name="manage_export_action" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="expand_level_none" xml:space="preserve">
+    <value>Aucun</value>
+  </data>
+  <data name="expand_level_year" xml:space="preserve">
+    <value>Année</value>
+  </data>
+  <data name="expand_level_month" xml:space="preserve">
+    <value>Mois</value>
+  </data>
+  <data name="expand_level_day" xml:space="preserve">
+    <value>Jour</value>
+  </data>
+  <data name="transfer_phase_detecting" xml:space="preserve">
+    <value>Détection</value>
+  </data>
+  <data name="transfer_phase_authenticating" xml:space="preserve">
+    <value>Authentification</value>
+  </data>
+  <data name="transfer_phase_reading" xml:space="preserve">
+    <value>Lecture</value>
+  </data>
+  <data name="transfer_phase_validating" xml:space="preserve">
+    <value>Validation</value>
+  </data>
+  <data name="transfer_phase_writing" xml:space="preserve">
+    <value>Écriture</value>
+  </data>
+  <data name="transfer_phase_merging" xml:space="preserve">
+    <value>Fusion</value>
+  </data>
+  <data name="transfer_phase_cleaning_up" xml:space="preserve">
+    <value>Nettoyage</value>
+  </data>
+  <data name="manage_cache_measuring" xml:space="preserve">
+    <value>Calcul de la taille du cache…</value>
+  </data>
+  <data name="manage_cache_clear_title" xml:space="preserve">
+    <value>Vider le cache ?</value>
+  </data>
+  <data name="manage_cache_clearable" xml:space="preserve">
+    <value>Cache effaçable : %1$s</value>
+  </data>
+  <data name="manage_cache_non_clearable" xml:space="preserve">
+    <value>Données non effaçables (pas de cache) : %1$s</value>
+  </data>
+  <data name="manage_cache_explanation" xml:space="preserve">
+    <value>Les données non effaçables comprennent principalement vos enregistrements d'historique et les fichiers associés. Sa taille dépend des enregistrements que vous importez et de la gestion du stockage Android. HistoryLib ne peut pas le contrôler, le réduire ou l'effacer.</value>
+  </data>
+  <data name="manage_cache_clear_action" xml:space="preserve">
+    <value>La suppression supprimera uniquement %1$s des données du cache.</value>
+  </data>
+  <data name="manage_cache_cleared" xml:space="preserve">
+    <value>Cache vidé (%1$s).</value>
+  </data>
+  <data name="manage_batch_range_hint" xml:space="preserve">
+    <value>La valeur par défaut est la plage d'enregistrement complète.</value>
+  </data>
+  <data name="manage_batch_range_unavailable" xml:space="preserve">
+    <value>Aucun enregistrement disponible pour l'instant.</value>
+  </data>
+  <data name="manage_import_done_imported.Zero" xml:space="preserve">
+    <value>%1$d enregistrements importés</value>
+  </data>
+  <data name="manage_import_done_imported.One" xml:space="preserve">
+    <value>%1$d enregistrement importé</value>
+  </data>
+  <data name="manage_import_done_imported.Two" xml:space="preserve">
+    <value>%1$d enregistrements importés</value>
+  </data>
+  <data name="manage_import_done_imported.Few" xml:space="preserve">
+    <value>%1$d enregistrements importés</value>
+  </data>
+  <data name="manage_import_done_imported.Many" xml:space="preserve">
+    <value>%1$d enregistrements importés</value>
+  </data>
+  <data name="manage_import_done_imported.Other" xml:space="preserve">
+    <value>%1$d enregistrements importés</value>
+  </data>
+  <data name="manage_import_done_skipped.Zero" xml:space="preserve">
+    <value>%1$d enregistrements ignorés</value>
+  </data>
+  <data name="manage_import_done_skipped.One" xml:space="preserve">
+    <value>%1$d enregistrement ignoré</value>
+  </data>
+  <data name="manage_import_done_skipped.Two" xml:space="preserve">
+    <value>%1$d enregistrements ignorés</value>
+  </data>
+  <data name="manage_import_done_skipped.Few" xml:space="preserve">
+    <value>%1$d enregistrements ignorés</value>
+  </data>
+  <data name="manage_import_done_skipped.Many" xml:space="preserve">
+    <value>%1$d enregistrements ignorés</value>
+  </data>
+  <data name="manage_import_done_skipped.Other" xml:space="preserve">
+    <value>%1$d enregistrements ignorés</value>
+  </data>
+  <data name="manage_export_done.Zero" xml:space="preserve">
+    <value>%1$d enregistrements exportés.</value>
+  </data>
+  <data name="manage_export_done.One" xml:space="preserve">
+    <value>%1$d enregistrement exporté.</value>
+  </data>
+  <data name="manage_export_done.Two" xml:space="preserve">
+    <value>%1$d enregistrements exportés.</value>
+  </data>
+  <data name="manage_export_done.Few" xml:space="preserve">
+    <value>%1$d enregistrements exportés.</value>
+  </data>
+  <data name="manage_export_done.Many" xml:space="preserve">
+    <value>%1$d enregistrements exportés.</value>
+  </data>
+  <data name="manage_export_done.Other" xml:space="preserve">
+    <value>%1$d enregistrements exportés.</value>
+  </data>
+  <data name="manage_batch_preview.Zero" xml:space="preserve">
+    <value>Enregistrements correspondants : %1$d</value>
+  </data>
+  <data name="manage_batch_preview.One" xml:space="preserve">
+    <value>Enregistrement correspondant : %1$d</value>
+  </data>
+  <data name="manage_batch_preview.Two" xml:space="preserve">
+    <value>Enregistrements correspondants : %1$d</value>
+  </data>
+  <data name="manage_batch_preview.Few" xml:space="preserve">
+    <value>Enregistrements correspondants : %1$d</value>
+  </data>
+  <data name="manage_batch_preview.Many" xml:space="preserve">
+    <value>Enregistrements correspondants : %1$d</value>
+  </data>
+  <data name="manage_batch_preview.Other" xml:space="preserve">
+    <value>Enregistrements correspondants : %1$d</value>
+  </data>
+  <data name="manage_delete_confirm_body.Zero" xml:space="preserve">
+    <value>Cette opération supprimera définitivement %1$d enregistrements et ne pourra pas être annulée.</value>
+  </data>
+  <data name="manage_delete_confirm_body.One" xml:space="preserve">
+    <value>Cette opération supprimera définitivement %1$d enregistrement et ne pourra pas être annulée.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Two" xml:space="preserve">
+    <value>Cette opération supprimera définitivement %1$d enregistrements et ne pourra pas être annulée.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Few" xml:space="preserve">
+    <value>Cette opération supprimera définitivement %1$d enregistrements et ne pourra pas être annulée.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Many" xml:space="preserve">
+    <value>Cette opération supprimera définitivement %1$d enregistrements et ne pourra pas être annulée.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Other" xml:space="preserve">
+    <value>Cette opération supprimera définitivement %1$d enregistrements et ne pourra pas être annulée.</value>
+  </data>
+</root>
+
+
+

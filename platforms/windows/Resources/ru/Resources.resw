@@ -1,0 +1,432 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="app_name" xml:space="preserve">
+    <value>HistoryLib</value>
+  </data>
+  <data name="destination_summary" xml:space="preserve">
+    <value>Сводка</value>
+  </data>
+  <data name="destination_library" xml:space="preserve">
+    <value>Библиотека</value>
+  </data>
+  <data name="destination_manage" xml:space="preserve">
+    <value>Управление</value>
+  </data>
+  <data name="summary_total_records" xml:space="preserve">
+    <value>Всего записей</value>
+  </data>
+  <data name="summary_avg_day" xml:space="preserve">
+    <value>Среднее значение/день</value>
+  </data>
+  <data name="summary_avg_month" xml:space="preserve">
+    <value>Среднее/месяц</value>
+  </data>
+  <data name="summary_avg_year" xml:space="preserve">
+    <value>Среднее/год</value>
+  </data>
+  <data name="summary_top_sites" xml:space="preserve">
+    <value>10 лучших сайтов</value>
+  </data>
+  <data name="summary_last_modified" xml:space="preserve">
+    <value>Последнее изменение: %1$s</value>
+  </data>
+  <data name="summary_empty" xml:space="preserve">
+    <value>Истории пока нет. Импортируйте данные Safari, Chrome Takeout или HistoryLib из Manage.</value>
+  </data>
+  <data name="library_search_hint" xml:space="preserve">
+    <value>Поиск по URL или названию</value>
+  </data>
+  <data name="library_empty" xml:space="preserve">
+    <value>Ни одна запись не совпадает.</value>
+  </data>
+  <data name="library_delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="library_today" xml:space="preserve">
+    <value>Сегодня</value>
+  </data>
+  <data name="library_yesterday" xml:space="preserve">
+    <value>Вчера</value>
+  </data>
+  <data name="library_load_more" xml:space="preserve">
+    <value>Загрузить больше</value>
+  </data>
+  <data name="manage_import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="manage_import_file" xml:space="preserve">
+    <value>Импортировать файл</value>
+  </data>
+  <data name="manage_import_folder" xml:space="preserve">
+    <value>Импортировать папку</value>
+  </data>
+  <data name="manage_export" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="manage_export_historylib" xml:space="preserve">
+    <value>Архив HistoryLib</value>
+  </data>
+  <data name="manage_export_safari" xml:space="preserve">
+    <value>Архив Safari ZIP</value>
+  </data>
+  <data name="manage_transfer_running" xml:space="preserve">
+    <value>Выполняется… (%1$s)</value>
+  </data>
+  <data name="manage_import_done" xml:space="preserve">
+    <value>%1$s; %2$s.</value>
+  </data>
+  <data name="manage_import_failed" xml:space="preserve">
+    <value>Не удалось импортировать: %1$s</value>
+  </data>
+  <data name="manage_import_cancelled" xml:space="preserve">
+    <value>Импорт отменен.</value>
+  </data>
+  <data name="manage_import_error_generic" xml:space="preserve">
+    <value>Импорт не удался. Убедитесь, что выбранный элемент доступен для чтения и использует поддерживаемый формат.</value>
+  </data>
+  <data name="manage_export_error_generic" xml:space="preserve">
+    <value>Экспорт не удался. Проверьте место назначения и доступное пространство, затем повторите попытку.</value>
+  </data>
+  <data name="import_error_unrecognized" xml:space="preserve">
+    <value>Выбранный элемент не является поддерживаемым форматом истории.</value>
+  </data>
+  <data name="import_error_invalid_structure" xml:space="preserve">
+    <value>Данные истории неполны или имеют недопустимую структуру.</value>
+  </data>
+  <data name="import_error_checksum" xml:space="preserve">
+    <value>Проверка архива не удалась. Возможно, файл поврежден или неполный.</value>
+  </data>
+  <data name="import_error_authentication" xml:space="preserve">
+    <value>Пароль архива неверен или зашифрованный файл поврежден.</value>
+  </data>
+  <data name="import_error_io" xml:space="preserve">
+    <value>Выбранный элемент не может быть прочитан.</value>
+  </data>
+  <data name="manage_settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="manage_cancel_transfer" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="manage_show_visit_time" xml:space="preserve">
+    <value>Показать время посещения</value>
+  </data>
+  <data name="manage_sync" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="manage_sync_unsupported" xml:space="preserve">
+    <value>Local storage</value>
+  </data>
+  <data name="manage_show_site_icons" xml:space="preserve">
+    <value>Показать значки сайтов</value>
+  </data>
+  <data name="manage_open_link_on_tap" xml:space="preserve">
+    <value>Открыть ссылку при нажатии</value>
+  </data>
+  <data name="manage_enable_deletion" xml:space="preserve">
+    <value>Разрешить удаление</value>
+  </data>
+  <data name="manage_default_expand" xml:space="preserve">
+    <value>По умолчанию развернуть до</value>
+  </data>
+  <data name="manage_cache" xml:space="preserve">
+    <value>Кэш</value>
+  </data>
+  <data name="manage_clear_cache" xml:space="preserve">
+    <value>Очистить кеш</value>
+  </data>
+  <data name="manage_batch_delete" xml:space="preserve">
+    <value>Пакетное удаление</value>
+  </data>
+  <data name="manage_batch_start" xml:space="preserve">
+    <value>Дата начала</value>
+  </data>
+  <data name="manage_batch_end" xml:space="preserve">
+    <value>Дата окончания</value>
+  </data>
+  <data name="manage_date_placeholder" xml:space="preserve">
+    <value>yyyy-MM-dd</value>
+  </data>
+  <data name="manage_delete_range" xml:space="preserve">
+    <value>Удалить совпадающие записи</value>
+  </data>
+  <data name="manage_delete_confirm_title" xml:space="preserve">
+    <value>Удалить записи?</value>
+  </data>
+  <data name="manage_delete_confirm" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="manage_help" xml:space="preserve">
+    <value>Помощь</value>
+  </data>
+  <data name="manage_help_body" xml:space="preserve">
+    <value>Импортируйте историю Safari, историю Google Takeout Chrome или архивы HistoryLib .hlz. Экспорт — это передача данных по инициативе пользователя, а не резервное копирование. Значки сайтов могут показывать на их серверах посещенные домены.</value>
+  </data>
+  <data name="manage_back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="help_helper_title" xml:space="preserve">
+    <value>Помощник HistoryLib</value>
+  </data>
+  <data name="help_helper_tagline" xml:space="preserve">
+    <value>Перенесите историю браузера в HistoryLib.</value>
+  </data>
+  <data name="help_helper_description" xml:space="preserve">
+    <value>HistoryLib Helper — это отдельный локальный инструмент для Windows и macOS. Он считывает поддерживаемую историю браузера и экспортирует файл .hlz, который HistoryLib может импортировать.</value>
+  </data>
+  <data name="help_supported_browsers_title" xml:space="preserve">
+    <value>Поддерживаемые браузеры</value>
+  </data>
+  <data name="help_supported_browsers_body" xml:space="preserve">
+    <value>Поддерживаются Google Chrome, Microsoft Edge, Brave, Vivaldi, Opera, Chromium и Firefox.</value>
+  </data>
+  <data name="help_import_options_title" xml:space="preserve">
+    <value>Параметры импорта</value>
+  </data>
+  <data name="help_import_options_body_1" xml:space="preserve">
+    <value>HistoryLib может напрямую импортировать только историю Safari, экспорт Google Takeout и архивы .hlz.</value>
+  </data>
+  <data name="help_import_options_body_2" xml:space="preserve">
+    <value>Чтобы импортировать историю с компьютера или из других браузеров, используйте HistoryLib Helper для создания архива .hlz, а затем импортируйте этот архив в HistoryLib.</value>
+  </data>
+  <data name="help_how_it_works_title" xml:space="preserve">
+    <value>Как это работает</value>
+  </data>
+  <data name="help_step_1" xml:space="preserve">
+    <value>Загрузите и откройте HistoryLib Helper на своем компьютере.</value>
+  </data>
+  <data name="help_step_2" xml:space="preserve">
+    <value>Выберите историю, которую хотите экспортировать.</value>
+  </data>
+  <data name="help_step_3" xml:space="preserve">
+    <value>Выберите, защищать ли файл .hlz паролем, а затем экспортируйте его.</value>
+  </data>
+  <data name="help_step_4" xml:space="preserve">
+    <value>Перенесите файл .hlz на это устройство и импортируйте его из «Управления».</value>
+  </data>
+  <data name="help_privacy_title" xml:space="preserve">
+    <value>Конфиденциальность</value>
+  </data>
+  <data name="help_privacy_body" xml:space="preserve">
+    <value>Помощник запускается локально, открывает базы данных истории браузера только для чтения и не загружает вашу историю.</value>
+  </data>
+  <data name="help_download_helper" xml:space="preserve">
+    <value>Скачать помощник HistoryLib</value>
+  </data>
+  <data name="manage_password_title" xml:space="preserve">
+    <value>Пароль архива</value>
+  </data>
+  <data name="manage_password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="manage_password_confirm" xml:space="preserve">
+    <value>Подтвердите пароль</value>
+  </data>
+  <data name="manage_password_optional_note" xml:space="preserve">
+    <value>Оставьте пароль пустым, чтобы экспортировать незашифрованный архив HistoryLib.</value>
+  </data>
+  <data name="manage_weak_password" xml:space="preserve">
+    <value>Пароли длиной менее 12 символов более слабы.</value>
+  </data>
+  <data name="common_ok" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="common_cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="manage_export_format" xml:space="preserve">
+    <value>Формат экспорта</value>
+  </data>
+  <data name="manage_export_format_historylib" xml:space="preserve">
+    <value>Архив HistoryLib</value>
+  </data>
+  <data name="manage_export_format_safari" xml:space="preserve">
+    <value>Архив Safari ZIP</value>
+  </data>
+  <data name="manage_export_layout" xml:space="preserve">
+    <value>Структура Safari</value>
+  </data>
+  <data name="manage_export_layout_single" xml:space="preserve">
+    <value>Один файл</value>
+  </data>
+  <data name="manage_export_layout_by_day" xml:space="preserve">
+    <value>Днем</value>
+  </data>
+  <data name="manage_export_layout_by_month" xml:space="preserve">
+    <value>По месяцам</value>
+  </data>
+  <data name="manage_export_layout_by_year" xml:space="preserve">
+    <value>По году</value>
+  </data>
+  <data name="manage_export_historylib_note" xml:space="preserve">
+    <value>Архивы HistoryLib всегда используют один оптимизированный архивный файл.</value>
+  </data>
+  <data name="manage_export_action" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="expand_level_none" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="expand_level_year" xml:space="preserve">
+    <value>Год</value>
+  </data>
+  <data name="expand_level_month" xml:space="preserve">
+    <value>Месяц</value>
+  </data>
+  <data name="expand_level_day" xml:space="preserve">
+    <value>День</value>
+  </data>
+  <data name="transfer_phase_detecting" xml:space="preserve">
+    <value>Обнаружение</value>
+  </data>
+  <data name="transfer_phase_authenticating" xml:space="preserve">
+    <value>Аутентификация</value>
+  </data>
+  <data name="transfer_phase_reading" xml:space="preserve">
+    <value>Чтение</value>
+  </data>
+  <data name="transfer_phase_validating" xml:space="preserve">
+    <value>Проверка</value>
+  </data>
+  <data name="transfer_phase_writing" xml:space="preserve">
+    <value>Запись</value>
+  </data>
+  <data name="transfer_phase_merging" xml:space="preserve">
+    <value>Слияние</value>
+  </data>
+  <data name="transfer_phase_cleaning_up" xml:space="preserve">
+    <value>Уборка</value>
+  </data>
+  <data name="manage_cache_measuring" xml:space="preserve">
+    <value>Вычисление размера кэша…</value>
+  </data>
+  <data name="manage_cache_clear_title" xml:space="preserve">
+    <value>Очистить кеш?</value>
+  </data>
+  <data name="manage_cache_clearable" xml:space="preserve">
+    <value>Очищаемый кэш: %1$s</value>
+  </data>
+  <data name="manage_cache_non_clearable" xml:space="preserve">
+    <value>Неочищаемые данные (не кэш): %1$s</value>
+  </data>
+  <data name="manage_cache_explanation" xml:space="preserve">
+    <value>Неочищаемые данные в основном состоят из записей вашей истории и связанных файлов. Его размер зависит от импортируемых вами записей и управления хранилищем Android. HistoryLib не может контролировать, уменьшать или очищать его.</value>
+  </data>
+  <data name="manage_cache_clear_action" xml:space="preserve">
+    <value>При очистке будет удалено только %1$s данных кэша.</value>
+  </data>
+  <data name="manage_cache_cleared" xml:space="preserve">
+    <value>Кэш очищен (%1$s).</value>
+  </data>
+  <data name="manage_batch_range_hint" xml:space="preserve">
+    <value>По умолчанию используется полный диапазон записи.</value>
+  </data>
+  <data name="manage_batch_range_unavailable" xml:space="preserve">
+    <value>Записей пока нет.</value>
+  </data>
+  <data name="manage_import_done_imported.Zero" xml:space="preserve">
+    <value>Импортировано %1$d записи</value>
+  </data>
+  <data name="manage_import_done_imported.One" xml:space="preserve">
+    <value>Импортирована %1$d запись</value>
+  </data>
+  <data name="manage_import_done_imported.Two" xml:space="preserve">
+    <value>Импортировано %1$d записи</value>
+  </data>
+  <data name="manage_import_done_imported.Few" xml:space="preserve">
+    <value>Импортировано %1$d записи</value>
+  </data>
+  <data name="manage_import_done_imported.Many" xml:space="preserve">
+    <value>Импортировано %1$d записей</value>
+  </data>
+  <data name="manage_import_done_imported.Other" xml:space="preserve">
+    <value>Импортировано %1$d записи</value>
+  </data>
+  <data name="manage_import_done_skipped.Zero" xml:space="preserve">
+    <value>пропущено %1$d записи</value>
+  </data>
+  <data name="manage_import_done_skipped.One" xml:space="preserve">
+    <value>пропущена %1$d запись</value>
+  </data>
+  <data name="manage_import_done_skipped.Two" xml:space="preserve">
+    <value>пропущено %1$d записи</value>
+  </data>
+  <data name="manage_import_done_skipped.Few" xml:space="preserve">
+    <value>пропущено %1$d записи</value>
+  </data>
+  <data name="manage_import_done_skipped.Many" xml:space="preserve">
+    <value>пропущено %1$d записей</value>
+  </data>
+  <data name="manage_import_done_skipped.Other" xml:space="preserve">
+    <value>пропущено %1$d записи</value>
+  </data>
+  <data name="manage_export_done.Zero" xml:space="preserve">
+    <value>Экспортировано %1$d записи.</value>
+  </data>
+  <data name="manage_export_done.One" xml:space="preserve">
+    <value>Экспортирована %1$d запись.</value>
+  </data>
+  <data name="manage_export_done.Two" xml:space="preserve">
+    <value>Экспортировано %1$d записи.</value>
+  </data>
+  <data name="manage_export_done.Few" xml:space="preserve">
+    <value>Экспортировано %1$d записи.</value>
+  </data>
+  <data name="manage_export_done.Many" xml:space="preserve">
+    <value>Экспортировано %1$d записей.</value>
+  </data>
+  <data name="manage_export_done.Other" xml:space="preserve">
+    <value>Экспортировано %1$d записи.</value>
+  </data>
+  <data name="manage_batch_preview.Zero" xml:space="preserve">
+    <value>Найдено %1$d записи</value>
+  </data>
+  <data name="manage_batch_preview.One" xml:space="preserve">
+    <value>Найдена %1$d запись</value>
+  </data>
+  <data name="manage_batch_preview.Two" xml:space="preserve">
+    <value>Найдено %1$d записи</value>
+  </data>
+  <data name="manage_batch_preview.Few" xml:space="preserve">
+    <value>Найдено %1$d записи</value>
+  </data>
+  <data name="manage_batch_preview.Many" xml:space="preserve">
+    <value>Найдено %1$d записей</value>
+  </data>
+  <data name="manage_batch_preview.Other" xml:space="preserve">
+    <value>Найдено %1$d записи</value>
+  </data>
+  <data name="manage_delete_confirm_body.Zero" xml:space="preserve">
+    <value>%1$d записи будут удалены без возможности восстановления.</value>
+  </data>
+  <data name="manage_delete_confirm_body.One" xml:space="preserve">
+    <value>%1$d запись будет удалена без возможности восстановления.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Two" xml:space="preserve">
+    <value>%1$d записи будут удалены без возможности восстановления.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Few" xml:space="preserve">
+    <value>%1$d записи будут удалены без возможности восстановления.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Many" xml:space="preserve">
+    <value>%1$d записей будут удалены без возможности восстановления.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Other" xml:space="preserve">
+    <value>%1$d записи будут удалены без возможности восстановления.</value>
+  </data>
+</root>
+
+
+

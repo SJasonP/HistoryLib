@@ -1,0 +1,432 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="app_name" xml:space="preserve">
+    <value>HistoryLib</value>
+  </data>
+  <data name="destination_summary" xml:space="preserve">
+    <value>ملخص</value>
+  </data>
+  <data name="destination_library" xml:space="preserve">
+    <value>المكتبة</value>
+  </data>
+  <data name="destination_manage" xml:space="preserve">
+    <value>إدارة</value>
+  </data>
+  <data name="summary_total_records" xml:space="preserve">
+    <value>إجمالي السجلات</value>
+  </data>
+  <data name="summary_avg_day" xml:space="preserve">
+    <value>متوسط ​​/ يوم</value>
+  </data>
+  <data name="summary_avg_month" xml:space="preserve">
+    <value>متوسط ​​/ شهر</value>
+  </data>
+  <data name="summary_avg_year" xml:space="preserve">
+    <value>متوسط ​​/ سنة</value>
+  </data>
+  <data name="summary_top_sites" xml:space="preserve">
+    <value>أفضل 10 مواقع</value>
+  </data>
+  <data name="summary_last_modified" xml:space="preserve">
+    <value>آخر تعديل: %1$s</value>
+  </data>
+  <data name="summary_empty" xml:space="preserve">
+    <value>لا يوجد تاريخ بعد. قم باستيراد بيانات Safari أو Chrome Takeout أو HistoryLib من الإدارة.</value>
+  </data>
+  <data name="library_search_hint" xml:space="preserve">
+    <value>بحث URL أو العنوان</value>
+  </data>
+  <data name="library_empty" xml:space="preserve">
+    <value>لا توجد سجلات متطابقة.</value>
+  </data>
+  <data name="library_delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="library_today" xml:space="preserve">
+    <value>اليوم</value>
+  </data>
+  <data name="library_yesterday" xml:space="preserve">
+    <value>أمس</value>
+  </data>
+  <data name="library_load_more" xml:space="preserve">
+    <value>تحميل المزيد</value>
+  </data>
+  <data name="manage_import" xml:space="preserve">
+    <value>استيراد</value>
+  </data>
+  <data name="manage_import_file" xml:space="preserve">
+    <value>استيراد الملف</value>
+  </data>
+  <data name="manage_import_folder" xml:space="preserve">
+    <value>مجلد الاستيراد</value>
+  </data>
+  <data name="manage_export" xml:space="preserve">
+    <value>تصدير</value>
+  </data>
+  <data name="manage_export_historylib" xml:space="preserve">
+    <value>أرشيف HistoryLib</value>
+  </data>
+  <data name="manage_export_safari" xml:space="preserve">
+    <value>أرشيف Safari بصيغة ZIP</value>
+  </data>
+  <data name="manage_transfer_running" xml:space="preserve">
+    <value>جاري العمل… (%1$s)</value>
+  </data>
+  <data name="manage_import_done" xml:space="preserve">
+    <value>%1$s؛ %2$s.</value>
+  </data>
+  <data name="manage_import_failed" xml:space="preserve">
+    <value>فشل الاستيراد: %1$s</value>
+  </data>
+  <data name="manage_import_cancelled" xml:space="preserve">
+    <value>تم إلغاء الاستيراد.</value>
+  </data>
+  <data name="manage_import_error_generic" xml:space="preserve">
+    <value>فشل الاستيراد. تأكد من أن العنصر المحدد قابل للقراءة ويستخدم تنسيقًا مدعومًا.</value>
+  </data>
+  <data name="manage_export_error_generic" xml:space="preserve">
+    <value>فشل التصدير. تحقق من الوجهة ومساحة التخزين المتوفرة، ثم حاول مرة أخرى.</value>
+  </data>
+  <data name="import_error_unrecognized" xml:space="preserve">
+    <value>العنصر المحدد ليس تنسيق سجل مدعومًا.</value>
+  </data>
+  <data name="import_error_invalid_structure" xml:space="preserve">
+    <value>بيانات السجل غير كاملة أو تحتوي على بنية غير صالحة.</value>
+  </data>
+  <data name="import_error_checksum" xml:space="preserve">
+    <value>فشل التحقق من الأرشيف. قد يكون الملف تالفًا أو غير مكتمل.</value>
+  </data>
+  <data name="import_error_authentication" xml:space="preserve">
+    <value>كلمة مرور الأرشيف غير صحيحة أو أن الملف المشفر تالف.</value>
+  </data>
+  <data name="import_error_io" xml:space="preserve">
+    <value>لا يمكن قراءة العنصر المحدد.</value>
+  </data>
+  <data name="manage_settings" xml:space="preserve">
+    <value>إعدادات</value>
+  </data>
+  <data name="manage_cancel_transfer" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="manage_show_visit_time" xml:space="preserve">
+    <value>عرض وقت الزيارة</value>
+  </data>
+  <data name="manage_sync" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="manage_sync_unsupported" xml:space="preserve">
+    <value>Local storage</value>
+  </data>
+  <data name="manage_show_site_icons" xml:space="preserve">
+    <value>إظهار أيقونات الموقع</value>
+  </data>
+  <data name="manage_open_link_on_tap" xml:space="preserve">
+    <value>فتح الرابط عند النقر</value>
+  </data>
+  <data name="manage_enable_deletion" xml:space="preserve">
+    <value>تمكين الحذف</value>
+  </data>
+  <data name="manage_default_expand" xml:space="preserve">
+    <value>التوسيع الافتراضي إلى</value>
+  </data>
+  <data name="manage_cache" xml:space="preserve">
+    <value>ذاكرة التخزين المؤقت</value>
+  </data>
+  <data name="manage_clear_cache" xml:space="preserve">
+    <value>مسح ذاكرة التخزين المؤقت</value>
+  </data>
+  <data name="manage_batch_delete" xml:space="preserve">
+    <value>حذف دفعة</value>
+  </data>
+  <data name="manage_batch_start" xml:space="preserve">
+    <value>تاريخ البدء</value>
+  </data>
+  <data name="manage_batch_end" xml:space="preserve">
+    <value>تاريخ الانتهاء</value>
+  </data>
+  <data name="manage_date_placeholder" xml:space="preserve">
+    <value>yyyy-MM-dd</value>
+  </data>
+  <data name="manage_delete_range" xml:space="preserve">
+    <value>حذف السجلات المطابقة</value>
+  </data>
+  <data name="manage_delete_confirm_title" xml:space="preserve">
+    <value>هل تريد حذف السجلات؟</value>
+  </data>
+  <data name="manage_delete_confirm" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="manage_help" xml:space="preserve">
+    <value>مساعدة</value>
+  </data>
+  <data name="manage_help_body" xml:space="preserve">
+    <value>قم باستيراد سجل Safari أو سجل Google Takeout Chrome أو أرشيفات HistoryLib .hlz. التصدير هو نقل البيانات بمبادرة من المستخدم، وليس النسخ الاحتياطي. قد تكشف أيقونات الموقع عن النطاقات التي تمت زيارتها لخوادمها.</value>
+  </data>
+  <data name="manage_back" xml:space="preserve">
+    <value>رجوع</value>
+  </data>
+  <data name="help_helper_title" xml:space="preserve">
+    <value>مساعد HistoryLib</value>
+  </data>
+  <data name="help_helper_tagline" xml:space="preserve">
+    <value>قم بإحضار سجل المتصفح إلى HistoryLib.</value>
+  </data>
+  <data name="help_helper_description" xml:space="preserve">
+    <value>HistoryLib Helper هي أداة محلية منفصلة فقط لنظامي التشغيل Windows وmacOS. يقرأ سجل المتصفح المدعوم ويصدر ملف .hlz الذي يمكن لـ HistoryLib استيراده.</value>
+  </data>
+  <data name="help_supported_browsers_title" xml:space="preserve">
+    <value>المتصفحات المدعومة</value>
+  </data>
+  <data name="help_supported_browsers_body" xml:space="preserve">
+    <value>يتم دعم Google Chrome وMicrosoft Edge وBrave وVivaldi وOpera وChromium وFirefox.</value>
+  </data>
+  <data name="help_import_options_title" xml:space="preserve">
+    <value>خيارات الاستيراد</value>
+  </data>
+  <data name="help_import_options_body_1" xml:space="preserve">
+    <value>يمكن لـ HistoryLib استيراد سجل Safari وصادرات Google Takeout وأرشيفات ‎.hlz مباشرةً فقط.</value>
+  </data>
+  <data name="help_import_options_body_2" xml:space="preserve">
+    <value>لاستيراد السجل من جهاز كمبيوتر أو من المزيد من المتصفحات، استخدم HistoryLib Helper لإنشاء أرشيف .hlz، ثم قم باستيراد هذا الأرشيف إلى HistoryLib.</value>
+  </data>
+  <data name="help_how_it_works_title" xml:space="preserve">
+    <value>كيف يعمل</value>
+  </data>
+  <data name="help_step_1" xml:space="preserve">
+    <value>قم بتنزيل وفتح HistoryLib Helper على جهاز الكمبيوتر الخاص بك.</value>
+  </data>
+  <data name="help_step_2" xml:space="preserve">
+    <value>حدد التاريخ الذي تريد تصديره.</value>
+  </data>
+  <data name="help_step_3" xml:space="preserve">
+    <value>اختر ما إذا كنت تريد حماية ملف .hlz بكلمة مرور، ثم قم بتصديره.</value>
+  </data>
+  <data name="help_step_4" xml:space="preserve">
+    <value>انقل ملف .hlz إلى هذا الجهاز واستورده من الإدارة.</value>
+  </data>
+  <data name="help_privacy_title" xml:space="preserve">
+    <value>خصوصية</value>
+  </data>
+  <data name="help_privacy_body" xml:space="preserve">
+    <value>يعمل المساعد محليًا، ويفتح قواعد بيانات سجل المتصفح للقراءة فقط، ولا يقوم بتحميل السجل الخاص بك.</value>
+  </data>
+  <data name="help_download_helper" xml:space="preserve">
+    <value>تنزيل مساعد HistoryLib</value>
+  </data>
+  <data name="manage_password_title" xml:space="preserve">
+    <value>كلمة مرور الأرشيف</value>
+  </data>
+  <data name="manage_password" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="manage_password_confirm" xml:space="preserve">
+    <value>تأكيد كلمة المرور</value>
+  </data>
+  <data name="manage_password_optional_note" xml:space="preserve">
+    <value>اترك كلمة المرور فارغة لتصدير أرشيف HistoryLib غير المشفر.</value>
+  </data>
+  <data name="manage_weak_password" xml:space="preserve">
+    <value>كلمات المرور التي يقل طولها عن 12 حرفًا تكون أضعف.</value>
+  </data>
+  <data name="common_ok" xml:space="preserve">
+    <value>حسنًا</value>
+  </data>
+  <data name="common_cancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="manage_export_format" xml:space="preserve">
+    <value>تنسيق التصدير</value>
+  </data>
+  <data name="manage_export_format_historylib" xml:space="preserve">
+    <value>أرشيف HistoryLib</value>
+  </data>
+  <data name="manage_export_format_safari" xml:space="preserve">
+    <value>أرشيف Safari بصيغة ZIP</value>
+  </data>
+  <data name="manage_export_layout" xml:space="preserve">
+    <value>تخطيط Safari</value>
+  </data>
+  <data name="manage_export_layout_single" xml:space="preserve">
+    <value>ملف واحد</value>
+  </data>
+  <data name="manage_export_layout_by_day" xml:space="preserve">
+    <value>باليوم</value>
+  </data>
+  <data name="manage_export_layout_by_month" xml:space="preserve">
+    <value>بالشهر</value>
+  </data>
+  <data name="manage_export_layout_by_year" xml:space="preserve">
+    <value>حسب السنة</value>
+  </data>
+  <data name="manage_export_historylib_note" xml:space="preserve">
+    <value>تستخدم أرشيفات HistoryLib دائمًا ملف أرشيف محسّنًا واحدًا.</value>
+  </data>
+  <data name="manage_export_action" xml:space="preserve">
+    <value>تصدير</value>
+  </data>
+  <data name="expand_level_none" xml:space="preserve">
+    <value>لا شيء</value>
+  </data>
+  <data name="expand_level_year" xml:space="preserve">
+    <value>سنة</value>
+  </data>
+  <data name="expand_level_month" xml:space="preserve">
+    <value>شهر</value>
+  </data>
+  <data name="expand_level_day" xml:space="preserve">
+    <value>يوم</value>
+  </data>
+  <data name="transfer_phase_detecting" xml:space="preserve">
+    <value>كشف</value>
+  </data>
+  <data name="transfer_phase_authenticating" xml:space="preserve">
+    <value>المصادقة</value>
+  </data>
+  <data name="transfer_phase_reading" xml:space="preserve">
+    <value>قراءة</value>
+  </data>
+  <data name="transfer_phase_validating" xml:space="preserve">
+    <value>التحقق من صحة</value>
+  </data>
+  <data name="transfer_phase_writing" xml:space="preserve">
+    <value>كتابة</value>
+  </data>
+  <data name="transfer_phase_merging" xml:space="preserve">
+    <value>دمج</value>
+  </data>
+  <data name="transfer_phase_cleaning_up" xml:space="preserve">
+    <value>تنظيف</value>
+  </data>
+  <data name="manage_cache_measuring" xml:space="preserve">
+    <value>جارٍ حساب حجم ذاكرة التخزين المؤقت…</value>
+  </data>
+  <data name="manage_cache_clear_title" xml:space="preserve">
+    <value>هل تريد مسح ذاكرة التخزين المؤقت؟</value>
+  </data>
+  <data name="manage_cache_clearable" xml:space="preserve">
+    <value>ذاكرة التخزين المؤقت القابلة للمسح: %1$s</value>
+  </data>
+  <data name="manage_cache_non_clearable" xml:space="preserve">
+    <value>بيانات غير قابلة للمسح (ليست ذاكرة تخزين مؤقت): %1$s</value>
+  </data>
+  <data name="manage_cache_explanation" xml:space="preserve">
+    <value>تتكون البيانات غير القابلة للمسح بشكل أساسي من سجلات السجل والملفات ذات الصلة. يعتمد حجمه على السجلات التي تستوردها وإدارة تخزين Android. لا يمكن لـ HistoryLib التحكم فيه أو تقليله أو مسحه.</value>
+  </data>
+  <data name="manage_cache_clear_action" xml:space="preserve">
+    <value>سيؤدي المسح إلى إزالة %1$s فقط من بيانات ذاكرة التخزين المؤقت.</value>
+  </data>
+  <data name="manage_cache_cleared" xml:space="preserve">
+    <value>تم مسح ذاكرة التخزين المؤقت (%1$s).</value>
+  </data>
+  <data name="manage_batch_range_hint" xml:space="preserve">
+    <value>النطاق الافتراضي هو نطاق السجلات بالكامل.</value>
+  </data>
+  <data name="manage_batch_range_unavailable" xml:space="preserve">
+    <value>لا توجد سجلات متاحة حتى الآن.</value>
+  </data>
+  <data name="manage_import_done_imported.Zero" xml:space="preserve">
+    <value>لم يتم استيراد أي سجلات</value>
+  </data>
+  <data name="manage_import_done_imported.One" xml:space="preserve">
+    <value>تم استيراد سجل واحد</value>
+  </data>
+  <data name="manage_import_done_imported.Two" xml:space="preserve">
+    <value>تم استيراد سجلين</value>
+  </data>
+  <data name="manage_import_done_imported.Few" xml:space="preserve">
+    <value>تم استيراد %1$d سجلات</value>
+  </data>
+  <data name="manage_import_done_imported.Many" xml:space="preserve">
+    <value>تم استيراد %1$d سجلًا</value>
+  </data>
+  <data name="manage_import_done_imported.Other" xml:space="preserve">
+    <value>تم استيراد %1$d سجل</value>
+  </data>
+  <data name="manage_import_done_skipped.Zero" xml:space="preserve">
+    <value>لم يتم تخطي أي سجلات</value>
+  </data>
+  <data name="manage_import_done_skipped.One" xml:space="preserve">
+    <value>تم تخطي سجل واحد</value>
+  </data>
+  <data name="manage_import_done_skipped.Two" xml:space="preserve">
+    <value>تم تخطي سجلين</value>
+  </data>
+  <data name="manage_import_done_skipped.Few" xml:space="preserve">
+    <value>تم تخطي %1$d سجلات</value>
+  </data>
+  <data name="manage_import_done_skipped.Many" xml:space="preserve">
+    <value>تم تخطي %1$d سجلًا</value>
+  </data>
+  <data name="manage_import_done_skipped.Other" xml:space="preserve">
+    <value>تم تخطي %1$d سجل</value>
+  </data>
+  <data name="manage_export_done.Zero" xml:space="preserve">
+    <value>لم يتم تصدير أي سجلات.</value>
+  </data>
+  <data name="manage_export_done.One" xml:space="preserve">
+    <value>تم تصدير سجل واحد.</value>
+  </data>
+  <data name="manage_export_done.Two" xml:space="preserve">
+    <value>تم تصدير سجلين.</value>
+  </data>
+  <data name="manage_export_done.Few" xml:space="preserve">
+    <value>تم تصدير %1$d سجلات.</value>
+  </data>
+  <data name="manage_export_done.Many" xml:space="preserve">
+    <value>تم تصدير %1$d سجلًا.</value>
+  </data>
+  <data name="manage_export_done.Other" xml:space="preserve">
+    <value>تم تصدير %1$d سجل.</value>
+  </data>
+  <data name="manage_batch_preview.Zero" xml:space="preserve">
+    <value>لا توجد سجلات مطابقة</value>
+  </data>
+  <data name="manage_batch_preview.One" xml:space="preserve">
+    <value>سجل مطابق واحد</value>
+  </data>
+  <data name="manage_batch_preview.Two" xml:space="preserve">
+    <value>سجلان متطابقان</value>
+  </data>
+  <data name="manage_batch_preview.Few" xml:space="preserve">
+    <value>%1$d سجلات مطابقة</value>
+  </data>
+  <data name="manage_batch_preview.Many" xml:space="preserve">
+    <value>%1$d سجلًا مطابقًا</value>
+  </data>
+  <data name="manage_batch_preview.Other" xml:space="preserve">
+    <value>%1$d سجل مطابق</value>
+  </data>
+  <data name="manage_delete_confirm_body.Zero" xml:space="preserve">
+    <value>لن يتم حذف أي سجلات.</value>
+  </data>
+  <data name="manage_delete_confirm_body.One" xml:space="preserve">
+    <value>سيتم حذف سجل واحد نهائيًا ولا يمكن التراجع عن ذلك.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Two" xml:space="preserve">
+    <value>سيتم حذف سجلين نهائيًا ولا يمكن التراجع عن ذلك.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Few" xml:space="preserve">
+    <value>سيتم حذف %1$d سجلات نهائيًا ولا يمكن التراجع عن ذلك.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Many" xml:space="preserve">
+    <value>سيتم حذف %1$d سجلًا نهائيًا ولا يمكن التراجع عن ذلك.</value>
+  </data>
+  <data name="manage_delete_confirm_body.Other" xml:space="preserve">
+    <value>سيتم حذف %1$d سجل نهائيًا ولا يمكن التراجع عن ذلك.</value>
+  </data>
+</root>
+
+
+
