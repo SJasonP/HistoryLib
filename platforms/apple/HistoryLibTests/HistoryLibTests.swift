@@ -9,6 +9,43 @@ import ZIPFoundation
 @Suite("History Data Path Tests")
 @MainActor
 struct HistoryLibTests {
+    @Test("Apple imports the shared Safari fixture")
+    func importsSharedSafariFixture() async throws {
+        let fixture = try TestFixture()
+        defer { fixture.cleanup() }
+        let report = try await HistoryImporter().importFrom(
+            url: TestFixture.sharedFixtureURL("import/safari-valid.json"),
+            modelContext: fixture.context
+        )
+        #expect(report.importedRecordCount == 2)
+        #expect(try fixture.recordCount() == 2)
+    }
+
+    @Test("Apple imports the shared Chrome fixture")
+    func importsSharedChromeFixture() async throws {
+        let fixture = try TestFixture()
+        defer { fixture.cleanup() }
+        let report = try await HistoryImporter().importFrom(
+            url: TestFixture.sharedFixtureURL("import/chrome-valid.json"),
+            modelContext: fixture.context
+        )
+        #expect(report.importedRecordCount == 2)
+        #expect(try fixture.recordCount() == 2)
+    }
+
+    @Test("Apple rejects the shared unknown fixture without writes")
+    func rejectsSharedUnknownFixture() async throws {
+        let fixture = try TestFixture()
+        defer { fixture.cleanup() }
+        await #expect(throws: HistoryImportError.self) {
+            _ = try await HistoryImporter().importFrom(
+                url: TestFixture.sharedFixtureURL("import/unknown-browser-history-string.json"),
+                modelContext: fixture.context
+            )
+        }
+        #expect(try fixture.recordCount() == 0)
+    }
+
     @Test("Safari import applies strict dedup for exact duplicates")
     func safariImportStrictDedup() async throws {
         let fixture = try TestFixture()

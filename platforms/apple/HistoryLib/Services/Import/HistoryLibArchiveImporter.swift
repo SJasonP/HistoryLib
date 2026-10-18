@@ -47,6 +47,8 @@ enum HistoryLibImportError: LocalizedError {
 final class HistoryLibArchiveImporter {
     private let insertBatchSize = 1_000
     private let decoder = JSONDecoder()
+    private let maxManifestBytes = 1 * 1024 * 1024
+    private let maxIndexBytes = 64 * 1024 * 1024
 
     func importFrom(
         url: URL,
@@ -244,18 +246,15 @@ final class HistoryLibArchiveImporter {
         chunkPath: String,
         pendingRecords: inout [PendingImportRecord]
     ) throws {
-        let data = try Data(contentsOf: chunkURL, options: [.mappedIfSafe])
+        let handle = try FileHandle(forReadingFrom: chunkURL)
+        defer { try? handle.close() }
+        var pendingLine = Data()
+        var lineIndex = 0
 
-        // Split on the raw newline byte so we never materialize the whole chunk
-        // as one Swift String. Each line is decoded exactly once.
-        for (lineIndex, lineSlice) in data.split(separator: UInt8(ascii: "\n"), omittingEmptySubsequences: true).enumerated() {
-            var lineData = Data(lineSlice)
-            if lineData.last == UInt8(ascii: "\r") {
-                lineData.removeLast()
-            }
-            if lineData.isEmpty {
-                continue
-            }
+        func process(_ rawLine: Data) throws {
+            var lineData = rawLine
+            if lineData.last == UInt8(ascii: "\r") { lineData.removeLast() }
+            if lineData.isEmpty { return }
 
             guard let record = try? decoder.decode(HLChunkRecord.self, from: lineData),
                   let rawURLValue = record.u?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
@@ -307,6 +306,19 @@ final class HistoryLibArchiveImporter {
                 )
             )
         }
+
+        while let data = try handle.read(upToCount: 1024 * 1024), !data.isEmpty {
+            for byte in data {
+                if byte == UInt8(ascii: "\n") {
+                    try process(pendingLine)
+                    pendingLine.removeAll(keepingCapacity: true)
+                    lineIndex += 1
+                } else {
+                    pendingLine.append(byte)
+                }
+            }
+        }
+        if !pendingLine.isEmpty { try process(pendingLine) }
     }
 
     private func validatedChunkEntries(
@@ -324,7 +336,7 @@ final class HistoryLibArchiveImporter {
             throw HistoryLibImportError.missingChunkIndex
         }
 
-        let indexData = try Data(contentsOf: indexURL)
+        let indexData = try boundedData(contentsOf: indexURL, maximumBytes: maxIndexBytes)
         let parsedEntries = try decoder.decode([HLChunkIndexEntryEnvelope].self, from: indexData)
         if parsedEntries.isEmpty {
             if manifest.recordCount == 0, manifest.chunkCount == 0 {
@@ -366,14 +378,13 @@ final class HistoryLibArchiveImporter {
                 throw HistoryLibImportError.invalidPath(entry.path)
             }
 
-            let chunkData = try Data(contentsOf: chunkURL, options: [.mappedIfSafe])
-            let digest = SHA256.hash(data: chunkData)
-            let sha256 = digest.map { String(format: "%02x", $0) }.joined()
+            let validation = try validateChunkFile(at: chunkURL)
+            let sha256 = validation.sha256
             guard sha256.lowercased() == entry.sha256.lowercased() else {
                 throw HistoryLibImportError.checksumMismatch(chunkPath: entry.path)
             }
 
-            let actualRecordCount = newlineDelimitedLineCount(chunkData)
+            let actualRecordCount = validation.recordCount
             if actualRecordCount != entry.recordCount {
                 throw HistoryLibImportError.manifestCountMismatch(
                     field: "record_count(\(entry.path))",
@@ -403,25 +414,34 @@ final class HistoryLibArchiveImporter {
         return sortedEntries
     }
 
-    private func newlineDelimitedLineCount(_ data: Data) -> Int {
+    private func validateChunkFile(at url: URL) throws -> (sha256: String, recordCount: Int) {
+        let handle = try FileHandle(forReadingFrom: url)
+        defer { try? handle.close() }
+        var hasher = SHA256()
         let newline = UInt8(ascii: "\n")
         let carriage = UInt8(ascii: "\r")
         var count = 0
         var lineHasContent = false
-        for byte in data {
-            if byte == newline {
-                if lineHasContent {
-                    count += 1
+        while let data = try handle.read(upToCount: 1024 * 1024), !data.isEmpty {
+            hasher.update(data: data)
+            for byte in data {
+                if byte == newline {
+                    if lineHasContent { count += 1 }
+                    lineHasContent = false
+                } else if byte != carriage {
+                    lineHasContent = true
                 }
-                lineHasContent = false
-            } else if byte != carriage {
-                lineHasContent = true
             }
         }
-        if lineHasContent {
-            count += 1
-        }
-        return count
+        if lineHasContent { count += 1 }
+        let digest = hasher.finalize().map { String(format: "%02x", $0) }.joined()
+        return (digest, count)
+    }
+
+    private func boundedData(contentsOf url: URL, maximumBytes: Int) throws -> Data {
+        let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
+        guard size <= maximumBytes else { throw HistoryLibImportError.invalidManifest }
+        return try Data(contentsOf: url, options: [.mappedIfSafe])
     }
 
     private func findHistoryLibManifest(in directoryURL: URL) -> (URL, HLManifestEnvelope)? {
@@ -444,7 +464,7 @@ final class HistoryLibArchiveImporter {
                   values.isRegularFile == true else {
                 continue
             }
-            guard let data = try? Data(contentsOf: fileURL),
+            guard let data = try? boundedData(contentsOf: fileURL, maximumBytes: maxManifestBytes),
                   let manifest = try? decoder.decode(HLManifestEnvelope.self, from: data),
                   manifest.format.lowercased() == "historylib" else {
                 continue
@@ -479,9 +499,12 @@ final class HistoryLibArchiveImporter {
 
             var data = Data()
             do {
+                guard UInt64(entry.uncompressedSize) <= UInt64(maxManifestBytes) else { continue }
                 _ = try archive.extract(entry) { chunk in
+                    guard data.count <= self.maxManifestBytes - chunk.count else { return }
                     data.append(chunk)
                 }
+                guard data.count <= maxManifestBytes else { continue }
                 let manifest = try decoder.decode(HLManifestEnvelope.self, from: data)
                 if manifest.format.lowercased() == "historylib" {
                     return true

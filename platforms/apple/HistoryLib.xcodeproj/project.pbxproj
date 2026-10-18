@@ -219,8 +219,13 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"en-US",
 				Base,
 				"zh-Hans",
+				ar,
+				fr,
+				ru,
+				es,
 			);
 			mainGroup = 036F4C7B2F43139100811CC1;
 			minimizedProjectReferenceProxies = 1;
@@ -313,7 +318,7 @@
 				CODE_SIGN_ENTITLEMENTS = HistoryLib/HistoryLib.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = HistoryLib/HistoryLib.macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BC2V2ASFWV;
 				ENABLE_APP_SANDBOX = YES;
@@ -367,7 +372,7 @@
 				CODE_SIGN_ENTITLEMENTS = HistoryLib/HistoryLib.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = HistoryLib/HistoryLib.macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BC2V2ASFWV;
 				ENABLE_APP_SANDBOX = YES;

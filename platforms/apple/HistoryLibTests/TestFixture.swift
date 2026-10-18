@@ -5,6 +5,14 @@ import ZIPFoundation
 @testable import History_Lib
 
 struct TestFixture {
+    static func sharedFixtureURL(_ relativePath: String) -> URL {
+        URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .appendingPathComponent("../../../shared/fixtures", isDirectory: true)
+            .appendingPathComponent(relativePath)
+            .standardizedFileURL
+    }
+
     struct SafariRecord {
         let url: String
         let timeUsec: Int64
@@ -211,4 +219,3 @@ struct TestFixture {
         return zipURL
     }
 }
-

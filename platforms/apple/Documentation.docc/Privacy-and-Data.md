@@ -1,5 +1,9 @@
 # Privacy and Data
 
+The platform-neutral privacy contract is maintained at
+[`shared/specs/privacy-and-data.md`](../../../shared/specs/privacy-and-data.md).
+This topic documents the Apple implementation details that satisfy it.
+
 HistoryLib is built around browser history data. URLs, page titles, visit
 timestamps, source browser names, and redirect metadata can reveal private
 activity. Treat local databases, iCloud data, and exported files as sensitive.

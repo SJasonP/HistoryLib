@@ -28,7 +28,7 @@ actor FaviconStore {
         configuration.timeoutIntervalForResource = 12
         configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         configuration.urlCache = nil
-        session = URLSession(configuration: configuration)
+        session = URLSession(configuration: configuration, delegate: FaviconRedirectDelegate(), delegateQueue: nil)
     }
 
     func faviconData(for pageURLString: String) async -> Data? {
@@ -174,7 +174,8 @@ actor FaviconStore {
         guard let (data, response) = try? await session.data(for: request),
               let http = response as? HTTPURLResponse,
               (200..<400).contains(http.statusCode),
-              !data.isEmpty else {
+              !data.isEmpty,
+              data.count <= 300_000 else {
             return nil
         }
 
@@ -198,7 +199,8 @@ actor FaviconStore {
         guard let (data, response) = try? await session.data(for: request),
               let http = response as? HTTPURLResponse,
               (200..<400).contains(http.statusCode),
-              !data.isEmpty else {
+              !data.isEmpty,
+              data.count <= 5 * 1024 * 1024 else {
             return nil
         }
 
@@ -236,7 +238,8 @@ actor FaviconStore {
             urls.append(resolved)
         }
 
-        return urls
+        let originalHost = pageURL.host?.lowercased()
+        return urls.filter { $0.host?.lowercased() == originalHost }
     }
 
     private func attributeValue(named name: String, in tag: String) -> String? {
@@ -306,9 +309,24 @@ actor FaviconStore {
     }
 
     private func isValidImageData(_ data: Data) -> Bool {
+        guard data.count <= 5 * 1024 * 1024 else { return false }
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
             return false
         }
         return CGImageSourceGetCount(source) > 0
+    }
+}
+
+private final class FaviconRedirectDelegate: NSObject, URLSessionTaskDelegate {
+    func urlSession(
+        _ session: URLSession,
+        task: URLSessionTask,
+        willPerformHTTPRedirection response: HTTPURLResponse,
+        newRequest request: URLRequest,
+        completionHandler: @escaping (URLRequest?) -> Void
+    ) {
+        // Imported history is untrusted; do not turn a favicon lookup into a
+        // redirect-based request to an unrelated or private destination.
+        completionHandler(nil)
     }
 }

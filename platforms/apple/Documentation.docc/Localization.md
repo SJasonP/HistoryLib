@@ -1,5 +1,9 @@
 # Localization
 
+The platform-neutral language policy is maintained at
+[`shared/specs/localization.md`](../../../shared/specs/localization.md). This
+topic documents Apple resource locations and verification steps.
+
 HistoryLib ships full support for two languages and treats them as equals:
 
 - **English (US)** — `en`, the development/base language.

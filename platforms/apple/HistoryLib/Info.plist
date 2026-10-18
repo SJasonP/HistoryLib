@@ -5,7 +5,12 @@
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>
+		<string>en-US</string>
 		<string>zh-Hans</string>
+		<string>ar</string>
+		<string>fr</string>
+		<string>ru</string>
+		<string>es</string>
 	</array>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2026 SJasonP</string>

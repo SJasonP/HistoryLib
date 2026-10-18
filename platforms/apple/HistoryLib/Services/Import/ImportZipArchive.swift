@@ -2,6 +2,10 @@ import Foundation
 import ZIPFoundation
 
 enum ImportZipArchive {
+    private static let maxEntryCount = 100_000
+    private static let maxEntryBytes: UInt64 = 4 * 1024 * 1024 * 1024
+    private static let minimumFreeSpaceReserve: Int64 = 512 * 1024 * 1024
+
     static func extractZip(at zipURL: URL, to destinationDirectoryURL: URL) throws {
         let archive: Archive
         do {
@@ -16,8 +20,23 @@ enum ImportZipArchive {
 
         let fileManager = FileManager.default
         try fileManager.createDirectory(at: destinationDirectoryURL, withIntermediateDirectories: true)
+        let availableCapacity = try? destinationDirectoryURL.resourceValues(
+            forKeys: [.volumeAvailableCapacityForImportantUsageKey]
+        ).volumeAvailableCapacityForImportantUsage
+        let extractionBudget = availableCapacity.map { UInt64(max(0, $0 - minimumFreeSpaceReserve)) }
 
+        var entryCount = 0
+        var extractedBytes: UInt64 = 0
         for entry in archive {
+            entryCount += 1
+            guard entryCount <= maxEntryCount else {
+                throw NSError(domain: "HistoryImport", code: 64, userInfo: [NSLocalizedDescriptionKey: String(localized: "ZIP archive contains too many entries.")])
+            }
+            let entryBytes = UInt64(entry.uncompressedSize)
+            guard entryBytes <= maxEntryBytes,
+                  extractionBudget.map({ extractedBytes <= $0 && entryBytes <= $0 - extractedBytes }) ?? true else {
+                throw NSError(domain: "HistoryImport", code: 65, userInfo: [NSLocalizedDescriptionKey: String(localized: "ZIP archive is too large to import safely.")])
+            }
             if entry.type == .symlink {
                 throw NSError(
                     domain: "HistoryImport",
@@ -55,6 +74,7 @@ enum ImportZipArchive {
             let parentURL = destinationURL.deletingLastPathComponent()
             try fileManager.createDirectory(at: parentURL, withIntermediateDirectories: true)
             _ = try archive.extract(entry, to: destinationURL)
+            extractedBytes += entryBytes
         }
     }
 
