@@ -10,7 +10,8 @@ pushes autonomously as needed for authorized project work. This supersedes the
 earlier user-only commit preference for this repository.
 
 - Preserve existing user work and inspect the complete staged diff before
-  committing. Keep unrelated work in separate commits where practical.
+  committing. Group commits by concern; do not combine all outstanding work
+  into a single catch-all commit.
 - Follow `~/AGENTS.md` for the dedicated AI signing key, `ai-git`, author and
   committer identity, pinentry, and signature verification. Never fall back to
   another key or unsigned commits.
