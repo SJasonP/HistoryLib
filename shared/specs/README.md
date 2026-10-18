@@ -10,6 +10,8 @@ differ when the behavior remains equivalent.
 
 ## Specifications
 
+- [`search.md`](search.md): structured search and optional Apple intelligence integration.
+
 - [`product-parity.md`](product-parity.md): required shared feature surface.
 - [`history-record.md`](history-record.md): logical persistent record and time semantics.
 - [`browser-history-formats.md`](browser-history-formats.md): Safari and Chrome JSON contracts.

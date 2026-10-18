@@ -91,6 +91,7 @@ xcodebuild \
 
 ## Documentation
 
+- [Intelligent search, Siri, and Shortcuts](docs/Intelligent-Search.md)
 - [Adaptive layout and iPhone Duo](docs/Adaptive-Layout.md)
 - [Project documentation](Documentation.docc/Documentation.md)
 - [Shared archive format](../../shared/specs/hlz-v1.md)

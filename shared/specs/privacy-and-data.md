@@ -61,3 +61,11 @@ disclosure.
 Production logs must not include full URLs, titles, passwords, archive record
 payloads, decrypted content, or cloud credentials. Diagnostic events should use
 counts, phases, error categories, and non-sensitive identifiers.
+
+## Optional intelligent search
+
+Apple's explicit on-device interpretation processes only the user's request and
+reference date/time zone. It does not receive stored history or use a cloud
+fallback. Proposed filters require user review before execution. Siri and
+Shortcuts receive the query the user supplies, but the current app actions
+return no history contents and create no system history index. See `search.md`.
