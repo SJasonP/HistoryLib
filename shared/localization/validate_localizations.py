@@ -158,6 +158,15 @@ def validate() -> list[str]:
         )
         errors.extend(require_same(settings_source, translated, f"Apple Settings {locale}"))
 
+    shortcuts = json.loads((APPLE_ROOT / "AppShortcuts.xcstrings").read_text(encoding="utf-8"))
+    for phrase, entry in shortcuts["strings"].items():
+        for locale in APPLE_LOCALES:
+            value = entry.get("localizations", {}).get(locale, {}).get("stringUnit", {}).get("value", "")
+            if not value.strip():
+                errors.append(f"Apple Shortcuts {locale}: missing translation for {phrase!r}")
+            elif value.count("${applicationName}") != phrase.count("${applicationName}"):
+                errors.append(f"Apple Shortcuts {locale}: application-name placeholder mismatch")
+
     windows_plural_keys = {
         f"{name}.{quantity.title()}"
         for name in android_source_plurals
