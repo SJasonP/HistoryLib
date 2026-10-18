@@ -60,6 +60,7 @@ struct ContentView: View {
     @State var isFileExporterPresented = false
     @State var searchText = ""
     @State var selectedTab: AppTab = .summary
+    @State var libraryNavigationPath: [HistoryYearDestination] = []
     @State var expandedYears: Set<Int> = []
     @State var expandedMonths: Set<Date> = []
     @State var expandedDays: Set<Date> = []
@@ -228,6 +229,9 @@ struct ContentView: View {
                 }
             }
             .onChange(of: searchText) { _, _ in
+                // Search results belong to the library root, not a previously
+                // selected year that the new query may no longer contain.
+                libraryNavigationPath.removeAll()
                 scheduleSearchReload()
             }
             .onChange(of: persistenceBackend) { _, backend in
@@ -260,7 +264,6 @@ struct ContentView: View {
                 searchReloadTask?.cancel()
                 searchLoadTask?.cancel()
                 derivedRefreshTask?.cancel()
-                importTask?.cancel()
             }
     }
 

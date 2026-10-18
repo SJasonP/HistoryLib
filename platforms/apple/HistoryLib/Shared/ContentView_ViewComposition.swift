@@ -83,6 +83,8 @@ extension ContentView {
     }
 
     var shouldShowDirectSearchResults: Bool {
+        // This is an existing phone-specific user preference, not a layout
+        // decision. Keep the result presentation unchanged while folding.
         isIPhone && isSearching && showDirectSearchResultsOnIPhone
     }
 
@@ -168,48 +170,23 @@ extension ContentView {
                 .tag(AppTab.manage)
         }
 #else
-        if isIPhone {
-            AnyView(
-                TabView(selection: $selectedTab) {
-                    Tab("Summary", systemImage: "square.grid.2x2.fill", value: AppTab.summary) {
-                        summaryContainer
-                    }
+        // Keep one tab/navigation tree as the window changes size. The system
+        // moves the same controls between tab bar, vertical bar, and sidebar.
+        TabView(selection: $selectedTab) {
+            Tab("Summary", systemImage: "square.grid.2x2.fill", value: AppTab.summary) {
+                summaryContainer
+            }
 
-                    Tab("Manage", systemImage: "slider.horizontal.3", value: AppTab.manage) {
-                        manageContainer
-                    }
+            Tab("Manage", systemImage: "slider.horizontal.3", value: AppTab.manage) {
+                manageContainer
+            }
 
-                    Tab(
-                        "Search",
-                        systemImage: "magnifyingglass",
-                        value: AppTab.library,
-                        role: .search
-                    ) {
-                        libraryContainer
-#if os(iOS)
-                        .searchToolbarBehavior(.minimize)
-#endif
-                        .searchable(text: $searchText, prompt: "Search keywords")
-                    }
-                }
-            )
-        } else {
-            AnyView(
-                TabView(selection: $selectedTab) {
-                    summaryContainer
-                        .tabItem { Text("Summary") }
-                        .tag(AppTab.summary)
-
-                    libraryContainer
-                        .tabItem { Text("Library") }
-                        .tag(AppTab.library)
-
-                    manageContainer
-                        .tabItem { Text("Manage") }
-                        .tag(AppTab.manage)
-                }
-            )
+            Tab("Search", systemImage: "magnifyingglass", value: AppTab.library, role: .search) {
+                libraryContainer
+            }
         }
+        .tabViewStyle(.sidebarAdaptable)
+        .historySidebarPlacement()
 #endif
     }
 
@@ -222,30 +199,14 @@ extension ContentView {
     }
 
     var libraryContainer: some View {
-#if os(iOS)
-        if isIPad {
-            AnyView(
-                navigationContainer(title: "Library") {
-                    libraryContent
-                }
-                .searchable(
-                    text: $searchText,
-                    placement: .navigationBarDrawer(displayMode: .always),
-                    prompt: "Search keywords"
-                )
-            )
-        } else {
-            AnyView(
-                navigationContainer(title: "Library") {
-                    libraryContent
-                }
-            )
-        }
-#else
-        navigationContainer(title: "Library") {
+        NavigationStack(path: $libraryNavigationPath) {
             libraryContent
-                .searchable(text: $searchText, prompt: "Search keywords")
+                .navigationTitle("Library")
+                .toolbar { topToolbar }
         }
+        .searchable(text: $searchText, prompt: "Search keywords")
+#if os(iOS)
+        .searchToolbarBehavior(.minimize)
 #endif
     }
 
@@ -301,12 +262,8 @@ extension ContentView {
     }
 
     var exportProgressOverlay: some View {
-        ZStack {
-            Color.black.opacity(0.22)
-                .ignoresSafeArea()
-
+        TransferProgressOverlay {
             exportProgressPanel
-            .padding(.horizontal, 24)
         }
     }
 
@@ -336,12 +293,8 @@ extension ContentView {
     }
 
     var importProgressOverlay: some View {
-        ZStack {
-            Color.black.opacity(0.22)
-                .ignoresSafeArea()
-
+        TransferProgressOverlay {
             importProgressPanel
-            .padding(.horizontal, 24)
         }
     }
 
@@ -414,14 +367,6 @@ extension ContentView {
     var isIPhone: Bool {
 #if os(iOS)
         UIDevice.current.userInterfaceIdiom == .phone
-#else
-        false
-#endif
-    }
-
-    var isIPad: Bool {
-#if os(iOS)
-        UIDevice.current.userInterfaceIdiom == .pad
 #else
         false
 #endif

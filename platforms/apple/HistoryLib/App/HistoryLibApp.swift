@@ -8,6 +8,11 @@ struct HistoryLibApp: App {
             Item.self,
             SummarySnapshot.self,
         ])
+#if DEBUG
+        if ProcessInfo.processInfo.environment["HISTORYLIB_UI_TESTING"] == "1" {
+            return UITestStore.makeContainer(schema: schema)
+        }
+#endif
         let defaults = UserDefaults.standard
         let isICloudSyncEnabled = defaults.object(forKey: "enable_icloud_sync") as? Bool ?? false
       

@@ -1,8 +1,10 @@
 import SwiftUI
 
-#if os(iOS)
-import UIKit
-#endif
+/// A value route outlives a compact/regular root-list transition. A closure
+/// destination attached only to the compact list would disappear on unfolding.
+struct HistoryYearDestination: Hashable {
+    let year: Int
+}
 
 struct HistoryMonthID: Hashable {
     let value: Date
@@ -63,6 +65,7 @@ enum HistoryHierarchyExpansion {
 
 struct HistoryListView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     let yearGroups: [HistoryYearGroup]
     let flatSearchItems: [Item]
@@ -112,10 +115,30 @@ struct HistoryListView: View {
                     )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-            } else if isIPhone {
-                iPhoneNavigationList
+            } else if usesCompactNavigation {
+                compactNavigationList
             } else {
                 desktopGroupedList
+            }
+        }
+        .navigationDestination(for: HistoryYearDestination.self) { destination in
+            if let yearGroup = yearGroups.first(where: { $0.year == destination.year }) {
+                HistoryMonthNavigationList(
+                    yearGroup: yearGroup,
+                    showTime: showTime,
+                    showSiteIcons: showSiteIcons,
+                    enableDelete: enableDelete,
+                    openTapCount: openTapCount,
+                    dayCountProvider: dayCountProvider,
+                    dayItemsProvider: dayItemsProvider,
+                    dayHasMoreProvider: dayHasMoreProvider,
+                    dayIsLoadingProvider: dayIsLoadingProvider,
+                    onOpenItem: onOpenItem,
+                    onDeleteItem: onDeleteItem,
+                    onEnsureDayCount: onEnsureDayCount,
+                    onEnsureDayItems: onEnsureDayItems,
+                    onLoadMoreDayItems: onLoadMoreDayItems
+                )
             }
         }
     }
@@ -141,8 +164,8 @@ struct HistoryListView: View {
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-        } else if isIPhone {
-            iPhoneNavigationList
+        } else if usesCompactNavigation {
+            compactNavigationList
         } else {
             desktopGroupedList
         }
@@ -334,27 +357,10 @@ struct HistoryListView: View {
         }
     }
 
-    private var iPhoneNavigationList: some View {
+    private var compactNavigationList: some View {
         List {
             ForEach(yearGroups) { yearGroup in
-                NavigationLink {
-                    HistoryMonthNavigationList(
-                        yearGroup: yearGroup,
-                        showTime: showTime,
-                        showSiteIcons: showSiteIcons,
-                        enableDelete: enableDelete,
-                        openTapCount: openTapCount,
-                        dayCountProvider: dayCountProvider,
-                        dayItemsProvider: dayItemsProvider,
-                        dayHasMoreProvider: dayHasMoreProvider,
-                        dayIsLoadingProvider: dayIsLoadingProvider,
-                        onOpenItem: onOpenItem,
-                        onDeleteItem: onDeleteItem,
-                        onEnsureDayCount: onEnsureDayCount,
-                        onEnsureDayItems: onEnsureDayItems,
-                        onLoadMoreDayItems: onLoadMoreDayItems
-                    )
-                } label: {
+                NavigationLink(value: HistoryYearDestination(year: yearGroup.year)) {
                     HStack {
                         Text(yearGroup.title)
                             .font(.headline)
@@ -379,9 +385,9 @@ struct HistoryListView: View {
         }
     }
 
-    private var isIPhone: Bool {
+    private var usesCompactNavigation: Bool {
 #if os(iOS)
-        UIDevice.current.userInterfaceIdiom == .phone
+        horizontalSizeClass == .compact
 #else
         false
 #endif

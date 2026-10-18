@@ -81,6 +81,7 @@ xcodebuild \
 
 ## 文档
 
+- [自适应布局与 iPhone Duo 验收](docs/Adaptive-Layout.md)
 - [项目文档](Documentation.docc/Documentation.md)
 - [公共归档格式](../../shared/specs/hlz-v1.md)
 - [公共规范](../../shared/specs/README.md)
