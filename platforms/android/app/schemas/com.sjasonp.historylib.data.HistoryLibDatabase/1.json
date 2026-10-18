@@ -1,0 +1,333 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "0322eacfd738154b9f7dd2eb43691f0d",
+    "entities": [
+      {
+        "tableName": "history_records",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uniqueKey` TEXT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `visitedAtUsec` INTEGER NOT NULL, `visitCount` INTEGER NOT NULL, `sourceBrowser` TEXT NOT NULL, `sourceFileName` TEXT NOT NULL, `rawTimeUsec` INTEGER NOT NULL, `sourceUrl` TEXT, `sourceTimeUsec` INTEGER, `destinationUrl` TEXT, `destinationTimeUsec` INTEGER, `latestVisitWasHttpGet` INTEGER, `importedAtUsec` INTEGER NOT NULL, `host` TEXT NOT NULL, `urlFold` TEXT NOT NULL, `titleFold` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uniqueKey",
+            "columnName": "uniqueKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "visitedAtUsec",
+            "columnName": "visitedAtUsec",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "visitCount",
+            "columnName": "visitCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceBrowser",
+            "columnName": "sourceBrowser",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceFileName",
+            "columnName": "sourceFileName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rawTimeUsec",
+            "columnName": "rawTimeUsec",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceUrl",
+            "columnName": "sourceUrl",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "sourceTimeUsec",
+            "columnName": "sourceTimeUsec",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "destinationUrl",
+            "columnName": "destinationUrl",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "destinationTimeUsec",
+            "columnName": "destinationTimeUsec",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "latestVisitWasHttpGet",
+            "columnName": "latestVisitWasHttpGet",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "importedAtUsec",
+            "columnName": "importedAtUsec",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "host",
+            "columnName": "host",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "urlFold",
+            "columnName": "urlFold",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "titleFold",
+            "columnName": "titleFold",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_history_records_uniqueKey",
+            "unique": false,
+            "columnNames": [
+              "uniqueKey"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_history_records_uniqueKey` ON `${TABLE_NAME}` (`uniqueKey`)"
+          },
+          {
+            "name": "index_history_records_visitedAtUsec",
+            "unique": false,
+            "columnNames": [
+              "visitedAtUsec"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_history_records_visitedAtUsec` ON `${TABLE_NAME}` (`visitedAtUsec`)"
+          },
+          {
+            "name": "index_history_records_host",
+            "unique": false,
+            "columnNames": [
+              "host"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_history_records_host` ON `${TABLE_NAME}` (`host`)"
+          }
+        ]
+      },
+      {
+        "tableName": "directory_counts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `year` INTEGER NOT NULL, `month` INTEGER NOT NULL, `day` INTEGER NOT NULL, `recordCount` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "year",
+            "columnName": "year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "month",
+            "columnName": "month",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "day",
+            "columnName": "day",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordCount",
+            "columnName": "recordCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "summary_snapshot",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `totalRecords` INTEGER NOT NULL, `averagePerDay` REAL NOT NULL, `averagePerMonth` REAL NOT NULL, `averagePerYear` REAL NOT NULL, `earliestVisitUsec` INTEGER, `latestVisitUsec` INTEGER, `generatedAtUsec` INTEGER NOT NULL, `topSitesJson` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalRecords",
+            "columnName": "totalRecords",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averagePerDay",
+            "columnName": "averagePerDay",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averagePerMonth",
+            "columnName": "averagePerMonth",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averagePerYear",
+            "columnName": "averagePerYear",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earliestVisitUsec",
+            "columnName": "earliestVisitUsec",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "latestVisitUsec",
+            "columnName": "latestVisitUsec",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "generatedAtUsec",
+            "columnName": "generatedAtUsec",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "topSitesJson",
+            "columnName": "topSitesJson",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "import_runs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `startedAtUsec` INTEGER NOT NULL, `finishedAtUsec` INTEGER, `resolvedFormat` TEXT NOT NULL, `status` TEXT NOT NULL, `scannedFileCount` INTEGER NOT NULL, `validFileCount` INTEGER NOT NULL, `importedRecordCount` INTEGER NOT NULL, `skippedRecordCount` INTEGER NOT NULL, `failureMessage` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAtUsec",
+            "columnName": "startedAtUsec",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "finishedAtUsec",
+            "columnName": "finishedAtUsec",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "resolvedFormat",
+            "columnName": "resolvedFormat",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scannedFileCount",
+            "columnName": "scannedFileCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "validFileCount",
+            "columnName": "validFileCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "importedRecordCount",
+            "columnName": "importedRecordCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "skippedRecordCount",
+            "columnName": "skippedRecordCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "failureMessage",
+            "columnName": "failureMessage",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0322eacfd738154b9f7dd2eb43691f0d')"
+    ]
+  }
+}

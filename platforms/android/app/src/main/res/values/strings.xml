@@ -1,0 +1,137 @@
+<resources>
+    <string name="app_name">HistoryLib</string>
+    <string name="destination_summary">Summary</string>
+    <string name="destination_library">Library</string>
+    <string name="destination_manage">Manage</string>
+    <string name="summary_total_records">Total Records</string>
+    <string name="summary_avg_day">Avg / Day</string>
+    <string name="summary_avg_month">Avg / Month</string>
+    <string name="summary_avg_year">Avg / Year</string>
+    <string name="summary_top_sites">Top 10 Sites</string>
+    <string name="summary_last_modified">Last modified: %1$s</string>
+    <string name="summary_empty">No history yet. Import Safari, Chrome Takeout, or HistoryLib data from Manage.</string>
+
+    <string name="library_search_hint">Search URL or title</string>
+    <string name="library_empty">No records match.</string>
+    <string name="library_delete">Delete</string>
+    <string name="library_today">Today</string>
+    <string name="library_yesterday">Yesterday</string>
+    <string name="library_load_more">Load more</string>
+
+    <string name="manage_import">Import</string>
+    <string name="manage_import_file">Import file</string>
+    <string name="manage_import_folder">Import folder</string>
+    <string name="manage_export">Export</string>
+    <string name="manage_export_historylib">HistoryLib archive</string>
+    <string name="manage_export_safari">Safari ZIP</string>
+    <string name="manage_transfer_running">Working… (%1$s)</string>
+    <string name="manage_import_done">%1$s; %2$s.</string>
+    <plurals name="manage_import_done_imported">
+        <item quantity="one">Imported %1$d record</item>
+        <item quantity="other">Imported %1$d records</item>
+    </plurals>
+    <plurals name="manage_import_done_skipped">
+        <item quantity="one">skipped %1$d record</item>
+        <item quantity="other">skipped %1$d records</item>
+    </plurals>
+    <string name="manage_import_failed">Import failed: %1$s</string>
+    <string name="manage_import_cancelled">Import cancelled.</string>
+    <string name="manage_import_error_generic">Import failed. Check that the selected item is readable and uses a supported format.</string>
+    <string name="manage_export_error_generic">Export failed. Check the destination and available storage, then try again.</string>
+    <string name="import_error_unrecognized">The selected item is not a supported history format.</string>
+    <string name="import_error_invalid_structure">The history data is incomplete or has an invalid structure.</string>
+    <string name="import_error_checksum">Archive verification failed. The file may be damaged or incomplete.</string>
+    <string name="import_error_authentication">The archive password is incorrect or the encrypted file is damaged.</string>
+    <string name="import_error_io">The selected item could not be read.</string>
+    <plurals name="manage_export_done">
+        <item quantity="one">Exported %1$d record.</item>
+        <item quantity="other">Exported %1$d records.</item>
+    </plurals>
+    <string name="manage_settings">Settings</string>
+    <string name="manage_sync">Sync</string>
+    <string name="manage_sync_unsupported">Sync is not available on Android 1.4. History remains local unless you explicitly export it.</string>
+    <string name="manage_cancel_transfer">Cancel</string>
+    <string name="manage_show_visit_time">Show visit time</string>
+    <string name="manage_show_site_icons">Show site icons</string>
+    <string name="manage_open_link_on_tap">Open link on tap</string>
+    <string name="manage_enable_deletion">Enable deletion</string>
+    <string name="manage_default_expand">Default expand to</string>
+    <string name="manage_cache">Cache</string>
+    <string name="manage_clear_cache">Clear cache</string>
+    <string name="manage_batch_delete">Batch delete</string>
+    <string name="manage_batch_start">Start date</string>
+    <string name="manage_batch_end">End date</string>
+    <string name="manage_date_placeholder">yyyy-MM-dd</string>
+    <plurals name="manage_batch_preview">
+        <item quantity="one">Matching record: %1$d</item>
+        <item quantity="other">Matching records: %1$d</item>
+    </plurals>
+    <string name="manage_delete_range">Delete matching records</string>
+    <string name="manage_delete_confirm_title">Delete records?</string>
+    <plurals name="manage_delete_confirm_body">
+        <item quantity="one">This will permanently delete %1$d record and cannot be undone.</item>
+        <item quantity="other">This will permanently delete %1$d records and cannot be undone.</item>
+    </plurals>
+    <string name="manage_delete_confirm">Delete</string>
+    <string name="manage_help">Help</string>
+    <string name="manage_help_body">Import Safari history, Google Takeout Chrome history, or HistoryLib .hlz archives. Export is user-initiated data transfer, not backup. Site icons may reveal visited domains to their servers.</string>
+    <string name="manage_back">Back</string>
+    <string name="help_helper_title">HistoryLib Helper</string>
+    <string name="help_helper_tagline">Bring browser history into HistoryLib.</string>
+    <string name="help_helper_description">HistoryLib Helper is a separate local-only tool for Windows and macOS. It reads supported browser history and exports a .hlz file that HistoryLib can import.</string>
+    <string name="help_supported_browsers_title">Supported Browsers</string>
+    <string name="help_supported_browsers_body">Google Chrome, Microsoft Edge, Brave, Vivaldi, Opera, Chromium, and Firefox are supported.</string>
+    <string name="help_import_options_title">Import Options</string>
+    <string name="help_import_options_body_1">HistoryLib can directly import only Safari history, Google Takeout exports, and .hlz archives.</string>
+    <string name="help_import_options_body_2">To import history from a computer or from more browsers, use HistoryLib Helper to create a .hlz archive, then import that archive into HistoryLib.</string>
+    <string name="help_how_it_works_title">How It Works</string>
+    <string name="help_step_1">Download and open HistoryLib Helper on your computer.</string>
+    <string name="help_step_2">Select the history you want to export.</string>
+    <string name="help_step_3">Choose whether to protect the .hlz file with a password, then export it.</string>
+    <string name="help_step_4">Transfer the .hlz file to this device and import it from Manage.</string>
+    <string name="help_privacy_title">Privacy</string>
+    <string name="help_privacy_body">The Helper runs locally, opens browser history databases read-only, and does not upload your history.</string>
+    <string name="help_download_helper">Download HistoryLib Helper</string>
+    <string name="manage_password_title">Archive password</string>
+    <string name="manage_password">Password</string>
+    <string name="manage_password_confirm">Confirm password</string>
+    <string name="manage_password_optional_note">Leave the password empty to export an unencrypted HistoryLib archive.</string>
+    <string name="manage_weak_password">Passwords under 12 characters are weaker.</string>
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
+
+    <string name="manage_export_format">Export format</string>
+    <string name="manage_export_format_historylib">HistoryLib archive</string>
+    <string name="manage_export_format_safari">Safari ZIP</string>
+    <string name="manage_export_layout">Safari layout</string>
+    <string name="manage_export_layout_single">Single file</string>
+    <string name="manage_export_layout_by_day">By day</string>
+    <string name="manage_export_layout_by_month">By month</string>
+    <string name="manage_export_layout_by_year">By year</string>
+    <string name="manage_export_historylib_note">HistoryLib archives always use one optimized archive file.</string>
+    <string name="manage_export_action">Export</string>
+
+    <string name="expand_level_none">None</string>
+    <string name="expand_level_year">Year</string>
+    <string name="expand_level_month">Month</string>
+    <string name="expand_level_day">Day</string>
+
+    <string name="transfer_phase_detecting">Detecting</string>
+    <string name="transfer_phase_authenticating">Authenticating</string>
+    <string name="transfer_phase_reading">Reading</string>
+    <string name="transfer_phase_validating">Validating</string>
+    <string name="transfer_phase_writing">Writing</string>
+    <string name="transfer_phase_merging">Merging</string>
+    <string name="transfer_phase_cleaning_up">Cleaning up</string>
+
+    <string name="manage_cache_measuring">Calculating cache size…</string>
+    <string name="manage_cache_clear_title">Clear cache?</string>
+    <string name="manage_cache_clearable">Clearable cache: %1$s</string>
+    <string name="manage_cache_non_clearable">Non-clearable data (not cache): %1$s</string>
+    <string name="manage_cache_explanation">Non-clearable data mainly consists of your history records and related files. Its size depends on the records you import and Android storage management. HistoryLib cannot control, reduce, or clear it.</string>
+    <string name="manage_cache_clear_action">Clearing will only remove %1$s of cache data.</string>
+    <string name="manage_cache_cleared">Cache cleared (%1$s).</string>
+
+    <string name="manage_batch_range_hint">Defaults to the full record range.</string>
+    <string name="manage_batch_range_unavailable">No records available yet.</string>
+</resources>
