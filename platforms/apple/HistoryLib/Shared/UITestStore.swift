@@ -5,14 +5,18 @@ import SwiftData
 /// UI regression tests use synthetic records and never open the user's store.
 @MainActor
 enum UITestStore {
-    static func makeContainer(schema: Schema) -> ModelContainer {
+    static var isUnitTesting: Bool {
+        ProcessInfo.processInfo.environment["HISTORYLIB_TESTING"] == "unit"
+    }
+
+    static func makeContainer(schema: Schema, seedRecords: Bool = true) -> ModelContainer {
         do {
             let configuration = ModelConfiguration(
                 schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none
             )
             let container = try ModelContainer(for: schema, configurations: [configuration])
             let context = container.mainContext
-            for index in 0..<12 {
+            for index in 0..<(seedRecords ? 12 : 0) {
                 let date = Date(timeIntervalSince1970: 1_768_478_400 + Double(index * 86_400))
                 context.insert(Item(
                     uniqueKey: "adaptive-layout-\(index)",

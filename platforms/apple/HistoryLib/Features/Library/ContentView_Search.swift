@@ -1,9 +1,22 @@
 import Foundation
-import SwiftData
 
 extension ContentView {
+    var effectiveSearchFilter: HistorySearchFilter {
+        var filter = searchFilter
+        if !normalizedSearchText.isEmpty { filter.keywords.append(normalizedSearchText) }
+        return filter
+    }
+
     func scheduleSearchReload() {
         searchReloadTask?.cancel()
+        searchLoadTask?.cancel()
+        searchGeneration += 1
+        searchResults.removeAll(keepingCapacity: true)
+        searchScanOffset = 0
+        hasMoreSearchResults = isSearching
+        // Reserve loading while debouncing so an appearing pagination sentinel
+        // cannot start the new query at the old query's cursor.
+        isLoadingSearchResults = isSearching
         searchReloadTask = Task { @MainActor in
             try? await Task.sleep(nanoseconds: 250_000_000)
             guard !Task.isCancelled else { return }
@@ -13,86 +26,64 @@ extension ContentView {
 
     func resetSearchPaginationAndMaybeReload() {
         searchLoadTask?.cancel()
+        searchGeneration += 1
         searchResults.removeAll(keepingCapacity: false)
         searchScanOffset = 0
         isLoadingSearchResults = false
         hasMoreSearchResults = isSearching
-        if isSearching {
-            loadNextSearchPage()
-        }
+        if isSearching { loadNextSearchPage() }
     }
 
     func loadNextSearchPage() {
-        guard isSearching, !isLoadingSearchResults, hasMoreSearchResults else {
-            return
-        }
-
+        guard isSearching, !isLoadingSearchResults, hasMoreSearchResults else { return }
         isLoadingSearchResults = true
-        let query = normalizedSearchText
+        let filter = effectiveSearchFilter
+        let offset = searchScanOffset
+        let generation = searchGeneration
         searchLoadTask = Task { @MainActor in
-            defer { isLoadingSearchResults = false }
-            await appendNextSearchPage(query: query)
+            defer {
+                if generation == searchGeneration { isLoadingSearchResults = false }
+            }
+            do {
+                let page = try await HistorySearchEngine.page(
+                    in: modelContext, filter: filter, offset: offset,
+                    scanLimit: searchScanChunkSize, targetMatches: searchPageSize
+                )
+                try Task.checkCancellation()
+                guard generation == searchGeneration, filter == effectiveSearchFilter else { return }
+                searchResults.append(contentsOf: page.records)
+                searchScanOffset = page.nextOffset
+                hasMoreSearchResults = page.hasMore
+            } catch is CancellationError {
+                return
+            } catch {
+                guard generation == searchGeneration else { return }
+                hasMoreSearchResults = false
+                searchErrorMessage = String(localized: "Search could not be completed. Please try again.")
+                showingSearchError = true
+            }
         }
     }
 
-    // Scans the store in chunks until a full page of matches is collected or the
-    // end is reached. It yields between chunks so the UI never blocks, and it
-    // never truncates a chunk's matches, so no match is silently skipped.
-    private func appendNextSearchPage(query: String) async {
-        guard !query.isEmpty else {
-            hasMoreSearchResults = false
-            return
-        }
+    func applySearchFilter(_ filter: HistorySearchFilter) {
+        searchText = ""
+        searchFilter = filter
+        libraryNavigationPath.removeAll()
+        selectedTab = .library
+    }
 
-        var collected = 0
-
-        do {
-            while true {
-                try Task.checkCancellation()
-
-                var descriptor = FetchDescriptor<Item>(
-                    sortBy: [SortDescriptor(\Item.visitedAt, order: .reverse)]
-                )
-                descriptor.fetchLimit = searchScanChunkSize
-                descriptor.fetchOffset = searchScanOffset
-
-                let scanned = try modelContext.fetch(descriptor)
-                if scanned.isEmpty {
-                    hasMoreSearchResults = false
-                    return
-                }
-
-                searchScanOffset += scanned.count
-
-                let matches = scanned.filter { item in
-                    item.url.localizedCaseInsensitiveContains(query)
-                        || item.title.localizedCaseInsensitiveContains(query)
-                }
-                if !matches.isEmpty {
-                    searchResults.append(contentsOf: matches)
-                    collected += matches.count
-                }
-
-                if scanned.count < searchScanChunkSize {
-                    // Reached the end of the store.
-                    hasMoreSearchResults = false
-                    return
-                }
-
-                if collected >= searchPageSize {
-                    // Page filled; keep the cursor for the next page.
-                    hasMoreSearchResults = true
-                    return
-                }
-
-                await Task.yield()
-            }
-        } catch is CancellationError {
-            return
-        } catch {
-            hasMoreSearchResults = false
-            deleteFeedbackMessage = String(localized: "Failed to load search results: \(error.localizedDescription)")
-            showingDeleteFeedback = true
+    func consumeSearchRequest() {
+        guard !isFileImporterPresented, !isFileExporterPresented, !showingImportPasswordPrompt,
+              !showingSearchFilters,
+              let request = searchRequests.consume(isBusy: isImporting || isPreparingExport) else { return }
+        selectedTab = .library
+        libraryNavigationPath.removeAll()
+        if request.mode == .naturalLanguage {
+            naturalSearchRequest = request.query
+            showingSearchFilters = true
+        } else {
+            searchFilter = HistorySearchFilter()
+            searchText = request.query
         }
     }
 }

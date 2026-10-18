@@ -75,7 +75,7 @@ extension ContentView {
     }
 
     var isSearching: Bool {
-        !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        effectiveSearchFilter.isActive
     }
 
     var normalizedSearchText: String {
@@ -200,9 +200,34 @@ extension ContentView {
 
     var libraryContainer: some View {
         NavigationStack(path: $libraryNavigationPath) {
-            libraryContent
-                .navigationTitle("Library")
-                .toolbar { topToolbar }
+            VStack(spacing: 0) {
+                if searchFilter.isActive {
+                    HStack {
+                        Button("Review Filters") {
+                            naturalSearchRequest = ""
+                            showingSearchFilters = true
+                        }
+                        Spacer()
+                        Button("Clear Filters") { searchFilter = HistorySearchFilter() }
+                    }
+                    .font(.footnote)
+                    .padding()
+                }
+                libraryContent
+            }
+            .navigationTitle("Library")
+            .toolbar {
+                topToolbar
+                ToolbarItem {
+                    Button {
+                        naturalSearchRequest = ""
+                        showingSearchFilters = true
+                    } label: {
+                        Label("Search Filters", systemImage: "line.3.horizontal.decrease.circle")
+                    }
+                    .disabled(isImporting || isPreparingExport)
+                }
+            }
         }
         .searchable(text: $searchText, prompt: "Search keywords")
 #if os(iOS)

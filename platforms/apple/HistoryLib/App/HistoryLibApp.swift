@@ -9,6 +9,9 @@ struct HistoryLibApp: App {
             SummarySnapshot.self,
         ])
 #if DEBUG
+        if UITestStore.isUnitTesting {
+            return UITestStore.makeContainer(schema: schema, seedRecords: false)
+        }
         if ProcessInfo.processInfo.environment["HISTORYLIB_UI_TESTING"] == "1" {
             return UITestStore.makeContainer(schema: schema)
         }
@@ -85,12 +88,27 @@ struct HistoryLibApp: App {
         }
     }()
 
+    @ViewBuilder
+    private var rootContent: some View {
+#if DEBUG
+        if UITestStore.isUnitTesting {
+            Color.clear
+        } else {
+            applicationContent
+        }
+#else
+        applicationContent
+#endif
+    }
+
+    private var applicationContent: some View {
+        ContentView()
+            .task { AppSettingsCloudSync.shared.refreshActivationState() }
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .task {
-                    AppSettingsCloudSync.shared.refreshActivationState()
-                }
+            rootContent
         }
         .modelContainer(sharedModelContainer)
 

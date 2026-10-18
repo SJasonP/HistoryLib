@@ -93,6 +93,13 @@ struct ContentView: View {
     @State var importArchivePassword = ""
     @State var importPasswordErrorMessage = ""
 
+    @State var searchFilter = HistorySearchFilter()
+    @State var searchGeneration = 0
+    @State var showingSearchFilters = false
+    @State var naturalSearchRequest = ""
+    @State var searchRequests = HistorySearchRequests.shared
+    @State var showingSearchError = false
+    @State var searchErrorMessage = ""
     @State var searchResults: [Item] = []
     @State var hasMoreSearchResults = false
     @State var isLoadingSearchResults = false
@@ -169,6 +176,17 @@ struct ContentView: View {
                 )
                 .interactiveDismissDisabled()
             }
+            .sheet(isPresented: $showingSearchFilters, onDismiss: consumeSearchRequest) {
+                HistorySearchSheet(
+                    initialFilter: effectiveSearchFilter, initialRequest: naturalSearchRequest,
+                    onApply: applySearchFilter
+                )
+            }
+            .alert("Search Error", isPresented: $showingSearchError) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(searchErrorMessage)
+            }
             .alert("Import Result", isPresented: $showingImportFeedback) {
                 Button("OK", role: .cancel) { }
             } message: {
@@ -215,6 +233,7 @@ struct ContentView: View {
                 }
                 AppSettingsCloudSync.shared.refreshActivationState()
                 scheduleBackgroundDedupIfNeeded(reason: "app launch")
+                consumeSearchRequest()
             }
             .onChange(of: visibleDayKeys) { _, _ in
                 applyDefaultExpansion(reset: false)
@@ -234,6 +253,16 @@ struct ContentView: View {
                 libraryNavigationPath.removeAll()
                 scheduleSearchReload()
             }
+            .onChange(of: searchFilter) { _, _ in
+                libraryNavigationPath.removeAll()
+                scheduleSearchReload()
+            }
+            .onChange(of: searchRequests.pending?.id) { _, _ in consumeSearchRequest() }
+            .onChange(of: isImporting) { _, _ in consumeSearchRequest() }
+            .onChange(of: isPreparingExport) { _, _ in consumeSearchRequest() }
+            .onChange(of: isFileImporterPresented) { _, _ in consumeSearchRequest() }
+            .onChange(of: isFileExporterPresented) { _, _ in consumeSearchRequest() }
+            .onChange(of: showingImportPasswordPrompt) { _, _ in consumeSearchRequest() }
             .onChange(of: persistenceBackend) { _, backend in
                 if shouldEnforceCloudWriteProtection, backend != "cloudKit" {
                     showingStorageModeAlert = true

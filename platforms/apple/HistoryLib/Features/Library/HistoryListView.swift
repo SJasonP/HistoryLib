@@ -320,12 +320,7 @@ struct HistoryListView: View {
     private var directSearchResultsList: some View {
         Group {
             if flatSearchItems.isEmpty {
-                ContentUnavailableView(
-                    "No Matching Results",
-                    systemImage: "magnifyingglass",
-                    description: Text("Try a different keyword.")
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                groupedSearchResultsView
             } else {
                 List {
                     ForEach(flatSearchItems) { item in
