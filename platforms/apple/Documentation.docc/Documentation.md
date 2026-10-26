@@ -27,8 +27,8 @@ time-bucket indexes inside one ZIP container.
   `manifest.json`.
 - HistoryLib export: writes one `.hlz` archive with chunks, indexes, and an
   optional summary snapshot.
-- Cloud write protection: blocks history mutations when iCloud sync is enabled
-  but the CloudKit-backed SwiftData store is unavailable.
+- Storage recovery protection: blocks history mutations after the primary
+  container fails to open; cloud availability and sync errors do not lock writes.
 
 ## Data Flow
 

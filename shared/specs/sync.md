@@ -46,7 +46,7 @@ Every platform that ships sync must expose equivalent meaning for:
 - activation state;
 - an accessible status surface, updated automatically or by an explicit action;
 - unavailable/error state;
-- protection against writes that would create unintended divergence;
+- protection against silently accepting writes into a recovery store;
 - duplicate cleanup after remote changes;
 - settings that participate in sync.
 
@@ -58,6 +58,14 @@ must not present a backup mechanism as sync.
 System iCloud settings are the sole sync control. The app-specific switch and
 its saved preference are removed; the existing store is retained. Release notes
 must explain that the old app-level opt-out no longer applies.
+
+An opened primary store remains writable regardless of connectivity, account
+availability, cloud quota, or observed sync errors. CloudKit scheduling and
+retry behavior belong to the system; local saves do not promise remote delivery.
+If the primary container cannot open, persistent and in-memory recovery modes
+remain read-only for history. Do not silently redirect mutations to recovery.
+System account/access changes can affect mirrored local data; this policy does
+not guarantee that disabling iCloud preserves a separate local library.
 
 Manage displays account availability and local/cloud history counts when
 readable. Account availability does not prove that the system's per-app switch
@@ -79,8 +87,8 @@ platform-supported entry point. Do not promise a direct iCloud subpage link.
 - Android Auto Backup is not sync.
 - Periodically copying a live SwiftData, Room, or SQLite database file is not
   record synchronization.
-- A client must not write local-only mutations while claiming that an enabled
-  but unavailable sync store is authoritative.
+- A client must not claim that a successful local save proves remote delivery,
+  or silently accept mutations into a recovery store after primary-store failure.
 - A platform that ships without sync must not present local-only storage as
   sync, and a platform that ships sync must not present it as backup.
 

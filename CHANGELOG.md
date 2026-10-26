@@ -22,6 +22,9 @@ Windows releases are deferred; their source is not a shipping claim.
 
 ### Changed
 
+- iCloud availability and sync errors no longer govern history write access.
+  Local changes remain available when the primary store opens; storage recovery
+  modes remain read-only.
 - Removed HistoryLib's own iCloud switch. Sync now follows system iCloud
   settings; a previously disabled in-app switch no longer prevents syncing.
   Manage shows account availability and local/cloud record counts. Use Change

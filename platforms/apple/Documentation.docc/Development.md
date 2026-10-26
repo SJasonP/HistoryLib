@@ -151,15 +151,14 @@ Exporters should:
 - keep passwords ephemeral and clean up temporary plaintext on success, error,
   and cancellation.
 
-## CloudKit Write Protection
+## Storage Recovery Protection
 
-When iCloud sync is enabled, mutation actions should check
-`canMutateHistoryData` before writing history data. If the active backend is not
-CloudKit, show a clear blocked-mutation message instead of silently writing to a
-fallback local store.
-
-This rule is important because history data is expected to be one synced data
-set when iCloud sync is enabled.
+Mutation actions check `canMutateHistoryData` before writing history data.
+An opened primary container accepts writes even when the network, cloud account,
+quota, or transfers are unavailable. Sync diagnostics never control write access.
+The `primary` backend marker means the normal container opened, not that remote
+sync succeeded. If initialization fails, persistent and in-memory recovery modes
+remain read-only for history, with a storage-error message.
 
 From v1.4, system iCloud settings are the only sync control. Always initialize
 SwiftData with automatic CloudKit integration, keep the original store location,
@@ -202,7 +201,7 @@ round trips. Required coverage includes:
 - checksum mismatch, manifest/chunk count mismatch, and malformed chunk lines;
 - dedup merge behavior (visit counts are summed, not dropped);
 - near-duplicate tolerance edge cases;
-- CloudKit write-protection gating of import and delete;
+- storage recovery protection of import and delete, independent of sync errors;
 - search pagination returning the expected matches without dropping results.
 
 `HistoryLibUITests` should host real launch/flow assertions rather than template
