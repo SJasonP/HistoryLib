@@ -91,7 +91,7 @@ xcodebuild \
 
 ## Documentation
 
-- [Apple v1.4 release readiness](docs/Release-1.4.md)
+- [Changelog](../../CHANGELOG.md)
 - [Intelligent search, Siri, and Shortcuts](docs/Intelligent-Search.md)
 - [Adaptive layout and iPhone Duo](docs/Adaptive-Layout.md)
 - [Project documentation](Documentation.docc/Documentation.md)

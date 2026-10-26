@@ -161,15 +161,10 @@ fallback local store.
 This rule is important because history data is expected to be one synced data
 set when iCloud sync is enabled.
 
-The persistence backend (local vs. CloudKit) is chosen once when the store is
-created at launch, from the saved iCloud Sync setting. Changing the iCloud Sync
-setting therefore takes effect on the next launch. The app must:
-
-- tell the user a relaunch is required after the setting changes; and
-- keep write protection consistent with the **on-disk** backend until relaunch,
-  so the active store never receives writes that contradict the selected mode
-  (for example, never write to a CloudKit-backed store after the user has just
-  turned iCloud sync off).
+From v1.4, system iCloud settings are the only sync control. Always initialize
+SwiftData with automatic CloudKit integration, keep the original store location,
+and explicitly use `.none` in recovery configurations. Do not restore the old
+app toggle or its relaunch gate.
 
 ## Performance and Data Loading
 

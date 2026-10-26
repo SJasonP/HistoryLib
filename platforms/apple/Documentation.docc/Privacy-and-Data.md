@@ -30,11 +30,11 @@ aggregate counts and top-site statistics derived from the imported records.
 
 ## Local Storage
 
-iCloud sync is opt-in and off by default. Out of the box, HistoryLib uses a
-local SwiftData store, and browser history stays on the current device unless
-the user exports it, includes it in a backup, or shares the app container
-through system tools. Syncing history to iCloud only happens after the user
-explicitly turns it on.
+From v1.4, system iCloud settings control synchronization. HistoryLib's own
+iCloud switch is removed, and its previously saved value is discarded. If
+system settings permit access, records may sync even when the former in-app
+switch was off. The release notes describe this behavior change. A local copy
+remains in SwiftData. System backups and explicit exports are separate from sync.
 
 If local persistent storage cannot be initialized, the app can fall back to an
 in-memory store to remain launchable. In-memory data is not durable: history
@@ -43,22 +43,22 @@ store can be opened after relaunch.
 
 ## iCloud and CloudKit
 
-When iCloud sync is enabled, HistoryLib tries to initialize SwiftData with
-CloudKit. In this mode, imported history records can sync through the user's
-iCloud account.
+HistoryLib initializes SwiftData with automatic CloudKit integration. The system
+controls whether and when records sync; the app no longer maintains a second
+sync preference or app-toggle relaunch requirement. The existing store location
+and data model are retained. Recovery configurations explicitly use `.none`.
 
-The storage backend is selected when the store is created at launch. Changing
-the iCloud Sync setting takes effect on the next launch, and the app tells the
-user a relaunch is needed. Until then, history mutations stay protected so the
-on-disk data never diverges from the selected mode.
+If the CloudKit-backed container cannot initialize and a recovery store is used,
+HistoryLib blocks history mutations instead of silently writing to that fallback.
+Temporary network loss alone does not block local changes in a working
+CloudKit-backed store; the system manages pending synchronization.
 
-If CloudKit is unavailable while iCloud sync is enabled, HistoryLib blocks
-history mutations such as import and delete. This prevents the app from creating
-local-only changes that would diverge from the intended CloudKit-backed data
-set.
-
-User settings are synced separately through `NSUbiquitousKeyValueStore` when
-iCloud sync is enabled.
+User settings use `NSUbiquitousKeyValueStore` under the same system control.
+Manage reads cloud history counts using paginated zone changes, requesting no
+record fields/assets. Only history record identities and change tokens are held
+in memory for the current visible session. No cloud count is inferred from the
+local count, and failures do not appear as zero. Account availability does not
+prove that the system's per-app iCloud switch is enabled.
 
 ## Library Directory Cache
 
@@ -115,22 +115,22 @@ after success, failure, or cancellation.
 
 ## Cache Clearing
 
-The Clear Cache action reports the clearable cache size separately from the
-non-clearable history data, then removes the contents of the app's Caches and
-temporary directories, related in-memory icon state, and the Library directory
-count cache after user confirmation. In-flight favicon requests are cancelled so
-they cannot repopulate the cache after clearing. It does not delete history
-records, summary snapshots, exported files, or synced data. The directory count
-cache is rebuilt when a later data refresh or app launch requires it.
+Manage displays clearable cache, protected data, database size, and database
+journal size. Measurements refresh only while Manage is visible and active.
 
-The non-clearable data value is calculated as the app's sandbox data minus the
-clearable cache. This is equivalent to total local storage minus the app bundle
-and clearable cache, without unnecessarily scanning the app bundle. It includes
-history records, settings, and other data that cannot be removed by Clear Cache.
-Its size is determined mainly by the number of imported history records and
-Apple's storage management. HistoryLib cannot control, reduce, or clear it.
-System Settings may use different accounting rules, so its displayed value may
-differ.
+Clear Cache removes Caches, known completed import/export/staging temporary
+folders, icon state, the directory-count cache, and loaded search/day results.
+It disables site icons and cancels their requests before clearing. Active
+transfers disable the action. Unknown framework temporary files are retained.
+
+SQLite is asked to checkpoint and truncate completed WAL pages without waiting
+on active transactions. Busy journals are retained. The action does not unlink
+history databases or their journals, delete indexes or sync metadata, execute
+VACUUM, or remove history records. Reclaimable journal space may shrink; database
+files and system-reported app usage are not guaranteed to shrink.
+
+Protected data is sandbox data minus identified disposable caches. System
+Settings may use different storage-accounting rules.
 
 ## Logging
 

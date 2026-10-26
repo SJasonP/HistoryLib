@@ -81,7 +81,7 @@ xcodebuild \
 
 ## 文档
 
-- [Apple v1.4 发布准备与验收](docs/Release-1.4.md)
+- [更新日志](../../CHANGELOG.md)
 - [智能搜索、Siri 与快捷指令](docs/Intelligent-Search.md)
 - [自适应布局与 iPhone Duo 验收](docs/Adaptive-Layout.md)
 - [项目文档](Documentation.docc/Documentation.md)

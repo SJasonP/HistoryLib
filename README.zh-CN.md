@@ -24,7 +24,7 @@ HistoryLib 是一个原生多平台应用，用于导入、浏览、搜索、去
 
 - Apple 1.4 正在进行安全审计前的发布准备。
 - Android 和 Windows 属于开发中的客户端，暂缓发布。
-- 检查结果和人工验收项目见 [Apple 发布准备记录](platforms/apple/docs/Release-1.4.md)。
+- 1.4 计划发布的变更见 [CHANGELOG.md](CHANGELOG.md)。
 
 各平台的构建方式见对应目录内的 README。
 

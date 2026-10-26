@@ -6,8 +6,9 @@ reveal private activity.
 
 ## Data boundary
 
-- History remains in platform-private storage unless the user explicitly
-  exports it or enables a documented sync feature.
+- History remains in platform-private storage unless exported or synced through
+  a documented platform service. From Apple 1.4, system iCloud settings control
+  synchronization; the removed app-level switch is no longer an opt-out.
 - HistoryLib does not expose a product-level backup feature.
 - Export is explicit data portability, not automatic backup.
 - Sync is a separate feature and must not be described as backup.
@@ -57,6 +58,9 @@ disclosure.
 - Platform backup or extraction configuration must not include decrypted
   temporary files or caches.
 - Cache clearing cancels in-flight writers before removing cached data.
+- Apple cache clearing may request a SQLite-managed WAL checkpoint/truncation.
+  It never unlinks database/journal files, removes database indexes, or changes
+  history/sync metadata. Busy journals are retained without waiting on readers.
 
 ## Logging
 

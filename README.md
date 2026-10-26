@@ -32,8 +32,7 @@ Shared specifications are indexed in [`shared/specs/README.md`](shared/specs/REA
 
 - Apple 1.4 is being prepared for security audit and release.
 - Android and Windows are development clients; their releases are deferred.
-- See the [Apple release-readiness record](platforms/apple/docs/Release-1.4.md)
-  for checks and remaining human acceptance gates.
+- See [CHANGELOG.md](CHANGELOG.md) for the planned v1.4 changes.
 
 See each platform directory for platform-specific build instructions.
 

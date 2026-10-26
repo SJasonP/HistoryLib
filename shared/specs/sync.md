@@ -11,7 +11,7 @@ define conflict and availability behavior.
 HistoryLib 1.4 uses **platform-local sync**. Each platform syncs only within
 its own platform ecosystem:
 
-- Apple: iCloud (CloudKit), as shipped in Apple 1.3.
+- Apple: iCloud (CloudKit), controlled by system iCloud settings in Apple 1.4.
 - Android: an Android-native sync provider, if implemented.
 - Windows: a Windows-native sync provider, if implemented.
 
@@ -44,7 +44,7 @@ Every platform that ships sync must expose equivalent meaning for:
 - sync disabled and local-only storage;
 - sync enabled;
 - activation state;
-- manual status or retry action;
+- an accessible status surface, updated automatically or by an explicit action;
 - unavailable/error state;
 - protection against writes that would create unintended divergence;
 - duplicate cleanup after remote changes;
@@ -52,6 +52,22 @@ Every platform that ships sync must expose equivalent meaning for:
 
 Platform-native service names and authorization UI may differ, but the product
 must not present a backup mechanism as sync.
+
+### Apple 1.4 system control
+
+System iCloud settings are the sole sync control. The app-specific switch and
+its saved preference are removed; the existing store is retained. Release notes
+must explain that the old app-level opt-out no longer applies.
+
+Manage displays account availability and local/cloud history counts when
+readable. Account availability does not prove that the system's per-app switch
+is enabled or synchronization has completed. Incomplete/failed counts display
+unavailable rather than partial counts or a false zero. Diagnostics update only
+while the page is visible and active.
+
+Change iCloud Settings shows an explanation of Apple's control and navigation
+directions, with only an OK action; OK opens system settings through the
+platform-supported entry point. Do not promise a direct iCloud subpage link.
 
 ## Prohibited shortcuts
 

@@ -20,6 +20,13 @@ Windows releases are deferred; their source is not a shipping claim.
 
 ### Changed
 
+- Removed HistoryLib's own iCloud switch. Sync now follows system iCloud
+  settings; a previously disabled in-app switch no longer prevents syncing.
+  Manage shows account availability and local/cloud record counts. Use Change
+  iCloud Settings to open system settings and manage HistoryLib's access.
+- Manage shows cache/data/database sizes directly and refreshes diagnostics only
+  while visible and active. Clear Cache also releases loaded search results and
+  attempts a SQLite-managed checkpoint of completed database journals.
 - Adaptable tab/sidebar navigation, compact/regular library layouts, retained
   navigation routes, and fold-aware scrollable transfer progress for iPhone Duo.
 - Repository structure separates native clients from shared specifications and

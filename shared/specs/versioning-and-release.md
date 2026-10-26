@@ -40,5 +40,6 @@ another platform compatible.
 
 Historical tags `v1.0` through `v1.3` remain unchanged. Create `v1.4` only after
 its Apple gates are satisfied and publication is explicitly authorized. Never
-create or move a release tag merely to mark an audit candidate. Record remaining
-checks in `platforms/apple/docs/Release-1.4.md`, not in `AGENTS.md`.
+create or move a release tag merely to mark an audit candidate. Release notes
+belong in the existing `CHANGELOG.md`. Keep temporary verification and audit
+preparation records outside the repository.
