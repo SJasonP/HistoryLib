@@ -6,7 +6,7 @@ test_destination="${1:-platform=iOS Simulator,name=iPhone Duo}"
 test_derived_data="${HISTORYLIB_TEST_DERIVED_DATA:-$(mktemp -d "${TMPDIR:-/tmp}/historylib-unit-tests.XXXXXX")}"
 xcodebuild -project "$project_directory/HistoryLib.xcodeproj" -scheme HistoryLib \
   -destination "$test_destination" -derivedDataPath "$test_derived_data" \
-  build-for-testing CODE_SIGNING_ALLOWED=NO
+  -onlyUsePackageVersionsFromResolvedFile build-for-testing CODE_SIGNING_ALLOWED=NO
 python3 - "$test_derived_data/Build/Products" <<'PY'
 from pathlib import Path
 import plistlib
