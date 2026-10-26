@@ -20,6 +20,7 @@ struct HistoryLibApp: App {
         // Sync consent is controlled by system iCloud settings from v1.4.
         defaults.removeObject(forKey: "enable_icloud_sync")
         defaults.removeObject(forKey: "persistence_launch_icloud_enabled")
+        HistorySyncActivity.shared.startObserving()
 
         let cloudConfiguration = ModelConfiguration(
             schema: schema,
@@ -29,6 +30,7 @@ struct HistoryLibApp: App {
 
         do {
             let container = try ModelContainer(for: schema, configurations: [cloudConfiguration])
+            HistorySyncActivity.shared.bind(to: container)
             defaults.set("cloudKit", forKey: "persistence_backend")
             defaults.removeObject(forKey: "persistence_error")
             print("Persistence backend: CloudKit")
