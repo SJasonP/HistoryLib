@@ -213,13 +213,14 @@ extension HistoryLibTests {
         let applicationSupport = libraryDirectory.appendingPathComponent("Application Support", isDirectory: true)
         let cloudKitDirectory = libraryDirectory.appendingPathComponent("cloudkit", isDirectory: true)
         let cloudKitAssets = applicationSupport.appendingPathComponent("default_ckAssets", isDirectory: true)
-        for directory in [faviconDirectory, temporaryDirectory, applicationSupport, cloudKitDirectory, cloudKitAssets] {
+        let importTemporaryDirectory = temporaryDirectory.appendingPathComponent("Import", isDirectory: true)
+        for directory in [faviconDirectory, importTemporaryDirectory, applicationSupport, cloudKitDirectory, cloudKitAssets] {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         }
 
         let favicon = faviconDirectory.appendingPathComponent("example.bin")
         let directoryCountCache = applicationSupport.appendingPathComponent("directory-count-cache.json")
-        let temporaryFile = temporaryDirectory.appendingPathComponent("stale-import.bin")
+        let temporaryFile = importTemporaryDirectory.appendingPathComponent("stale-import.bin")
         let store = applicationSupport.appendingPathComponent("default.store")
         let wal = applicationSupport.appendingPathComponent("default.store-wal")
         let shm = applicationSupport.appendingPathComponent("default.store-shm")
@@ -235,7 +236,8 @@ extension HistoryLibTests {
             cachesDirectory: cachesDirectory,
             temporaryDirectory: temporaryDirectory,
             directoryCountCacheURL: directoryCountCache,
-            dataContainerDirectory: dataContainer
+            dataContainerDirectory: dataContainer,
+            databaseURLs: [store]
         )
         let allocatedSize: (URL) -> Int64 = { url in
             let keys: Set<URLResourceKey> = [
@@ -261,6 +263,8 @@ extension HistoryLibTests {
                 == [store, wal, shm, cloudAsset, cloudMetadata, unrelated]
                     .reduce(0) { $0 + allocatedSize($1) }
         )
+        #expect(usage.databaseBytes == allocatedSize(store))
+        #expect(usage.databaseJournalBytes == allocatedSize(wal) + allocatedSize(shm))
 
         ClearCacheStorageUsageCalculator.clearDirectoryContents(at: cachesDirectory)
         ClearCacheStorageUsageCalculator.clearDirectoryContents(at: temporaryDirectory)

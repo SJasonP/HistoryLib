@@ -3,21 +3,24 @@ import Foundation
 struct ClearCacheStorageUsage: Sendable {
     let clearableCacheBytes: Int64
     let nonClearableDataBytes: Int64
+    let databaseBytes: Int64
+    let databaseJournalBytes: Int64
 
-    nonisolated init(clearableCacheBytes: Int64, nonClearableDataBytes: Int64) {
+    nonisolated init(clearableCacheBytes: Int64, nonClearableDataBytes: Int64, databaseBytes: Int64 = 0, databaseJournalBytes: Int64 = 0) {
         self.clearableCacheBytes = clearableCacheBytes
         self.nonClearableDataBytes = nonClearableDataBytes
+        self.databaseBytes = databaseBytes
+        self.databaseJournalBytes = databaseJournalBytes
     }
 }
 
 enum ClearCacheStorageUsageCalculator {
-    nonisolated static func measure() async -> ClearCacheStorageUsage {
-        await Task.detached(priority: .utility) {
-            measureSynchronously()
-        }.value
+    nonisolated static func measure(databaseURLs: [URL] = []) async -> ClearCacheStorageUsage {
+        let task = Task.detached(priority: .utility) { measureSynchronously(databaseURLs: databaseURLs) }
+        return await withTaskCancellationHandler { await task.value } onCancel: { task.cancel() }
     }
 
-    private nonisolated static func measureSynchronously() -> ClearCacheStorageUsage {
+    private nonisolated static func measureSynchronously(databaseURLs: [URL]) -> ClearCacheStorageUsage {
         let fileManager = FileManager.default
         let applicationSupport = fileManager.urls(
             for: .applicationSupportDirectory,
@@ -34,7 +37,8 @@ enum ClearCacheStorageUsageCalculator {
             temporaryDirectory: temporaryDirectory,
             directoryCountCacheURL: directoryCountCacheURL,
             dataContainerDirectory: dataContainerDirectory,
-            fileManager: fileManager
+            fileManager: fileManager,
+            databaseURLs: databaseURLs
         )
     }
 
@@ -43,7 +47,8 @@ enum ClearCacheStorageUsageCalculator {
         temporaryDirectory: URL?,
         directoryCountCacheURL: URL?,
         dataContainerDirectory: URL?,
-        fileManager: FileManager = .default
+        fileManager: FileManager = .default,
+        databaseURLs: [URL] = []
     ) -> ClearCacheStorageUsage {
         var clearableCacheBytes: Int64 = 0
         if let cachesDirectory {
@@ -53,10 +58,9 @@ enum ClearCacheStorageUsageCalculator {
             )
         }
         if let temporaryDirectory {
-            clearableCacheBytes += allocatedSize(
-                of: temporaryDirectory,
-                fileManager: fileManager
-            )
+            for directory in disposableTemporaryDirectories(in: temporaryDirectory) {
+                clearableCacheBytes += allocatedSize(of: directory, fileManager: fileManager)
+            }
         }
         if let directoryCountCacheURL {
             clearableCacheBytes += allocatedSize(
@@ -72,7 +76,13 @@ enum ClearCacheStorageUsageCalculator {
 
         return ClearCacheStorageUsage(
             clearableCacheBytes: clearableCacheBytes,
-            nonClearableDataBytes: nonClearableDataBytes
+            nonClearableDataBytes: nonClearableDataBytes,
+            databaseBytes: databaseURLs.reduce(0) { $0 + allocatedSize(of: $1, fileManager: fileManager) },
+            databaseJournalBytes: databaseURLs.reduce(0) { total, url in
+                total + ["-wal", "-shm"].reduce(0) {
+                    $0 + allocatedSize(of: URL(fileURLWithPath: url.path + $1), fileManager: fileManager)
+                }
+            }
         )
     }
 
@@ -81,8 +91,21 @@ enum ClearCacheStorageUsageCalculator {
             let fileManager = FileManager.default
             let caches = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first
             clearDirectoryContents(at: caches, fileManager: fileManager)
-            clearDirectoryContents(at: fileManager.temporaryDirectory, fileManager: fileManager)
+            clearDisposableTemporaryDirectories(in: fileManager.temporaryDirectory, fileManager: fileManager)
         }.value
+    }
+
+    nonisolated static func disposableTemporaryDirectories(in root: URL) -> [URL] {
+        // Never delete framework-owned SQLite scratch/journal files or live stores.
+        ["Import", "EncryptedImport", "Export", "Staging", "ImportedExportDocument"].map {
+            root.appendingPathComponent($0, isDirectory: true)
+        }
+    }
+
+    nonisolated static func clearDisposableTemporaryDirectories(in root: URL, fileManager: FileManager = .default) {
+        for directory in disposableTemporaryDirectories(in: root) {
+            clearDirectoryContents(at: directory, fileManager: fileManager)
+        }
     }
 
     nonisolated static func clearDirectoryContents(
@@ -129,6 +152,7 @@ enum ClearCacheStorageUsageCalculator {
 
         var total: Int64 = 0
         for case let fileURL as URL in enumerator {
+            if Task.isCancelled { break }
             guard let values = try? fileURL.resourceValues(forKeys: Set(keys)),
                   values.isRegularFile == true else {
                 continue
