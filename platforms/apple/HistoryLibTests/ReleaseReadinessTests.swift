@@ -7,16 +7,10 @@ import Testing
 struct ReleaseReadinessTests {
     @Test("Memory recovery never accepts history mutations, regardless of sync settings")
     func recoveryIsReadOnly() {
-        for sync in [true, false] {
-            for launchSync in [true, false] {
-                #expect(!HistoryStoragePolicy.canMutate(backend: "memoryFallback", syncEnabled: sync, launchSyncEnabled: launchSync))
-            }
-        }
-        #expect(HistoryStoragePolicy.canMutate(backend: "localUserDisabledICloud", syncEnabled: false, launchSyncEnabled: false))
-        #expect(HistoryStoragePolicy.canMutate(backend: "cloudKit", syncEnabled: true, launchSyncEnabled: true))
-        #expect(!HistoryStoragePolicy.canMutate(backend: "localFallback", syncEnabled: true, launchSyncEnabled: true))
-        #expect(!HistoryStoragePolicy.canMutate(backend: "cloudKit", syncEnabled: false, launchSyncEnabled: true))
-        #expect(!HistoryStoragePolicy.canMutate(backend: "localUserDisabledICloud", syncEnabled: true, launchSyncEnabled: false))
+        #expect(!HistoryStoragePolicy.canMutate(backend: "memoryFallback"))
+        #expect(HistoryStoragePolicy.canMutate(backend: "cloudKit"))
+        #expect(!HistoryStoragePolicy.canMutate(backend: "localFallback"))
+        #expect(!HistoryStoragePolicy.canMutate(backend: "unknown"))
     }
 
     @Test("Favicon lookup drops recorded path, query, fragment, and credentials")

@@ -3,7 +3,6 @@ import Foundation
 @MainActor
 final class AppSettingsCloudSync {
     static let shared = AppSettingsCloudSync()
-    private let iCloudToggleKey = "enable_icloud_sync"
 
     private enum ValueKind {
         case bool
@@ -33,15 +32,10 @@ final class AppSettingsCloudSync {
     private init() {}
 
     func refreshActivationState() {
-        if isICloudSyncEnabled {
-            startIfNeeded()
-        } else {
-            stopIfNeeded()
-        }
+        startIfNeeded()
     }
 
     func startIfNeeded() {
-        guard isICloudSyncEnabled else { return }
         guard !didStart else { return }
         didStart = true
 
@@ -74,10 +68,6 @@ final class AppSettingsCloudSync {
         NotificationCenter.default.removeObserver(self)
         didStart = false
         lastSnapshot = [:]
-    }
-
-    private var isICloudSyncEnabled: Bool {
-        defaults.object(forKey: iCloudToggleKey) as? Bool ?? false
     }
 
     @objc private func handleDefaultsDidChange() {

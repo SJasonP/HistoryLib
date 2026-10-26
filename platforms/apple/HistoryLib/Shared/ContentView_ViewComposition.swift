@@ -1,23 +1,9 @@
 import SwiftUI
+import SwiftData
 
 extension ContentView {
-    var shouldEnforceCloudWriteProtection: Bool {
-        enableICloudSync
-    }
-
-    /// The persistence backend is selected once, when the store is created at
-    /// launch. If the saved iCloud Sync setting no longer matches the mode the
-    /// store was actually built with, a relaunch is required before the setting
-    /// can take effect.
-    var pendingSyncRelaunch: Bool {
-        enableICloudSync != launchICloudEnabled
-    }
-
     var canMutateHistoryData: Bool {
-        HistoryStoragePolicy.canMutate(
-            backend: persistenceBackend, syncEnabled: enableICloudSync,
-            launchSyncEnabled: launchICloudEnabled
-        )
+        HistoryStoragePolicy.canMutate(backend: persistenceBackend)
     }
 
     var storageModeAlertTitle: String {
@@ -30,29 +16,12 @@ extension ContentView {
         if persistenceBackend == "memoryFallback" {
             return String(localized: "History storage could not be opened. Changes are paused. Restart the app after resolving the storage problem.")
         }
-        if pendingSyncRelaunch {
-            return enableICloudSync
-                ? String(localized: "iCloud Sync was turned on. Relaunch HistoryLib to apply the change. History changes are blocked until then so on-device data does not diverge.")
-                : String(localized: "iCloud Sync was turned off. Relaunch HistoryLib to apply the change. History changes are blocked until then so on-device data does not diverge.")
-        }
-
-        if !shouldEnforceCloudWriteProtection {
-            return String(localized: "iCloud sync is disabled in Settings. History changes are stored locally on this device.")
-        }
-
-        if persistenceBackend == "cloudKit" {
-            return String(localized: "iCloud sync is on.")
-        }
-
         return String(localized: "iCloud is currently unavailable. Changes are paused so your history stays consistent across your devices.")
     }
 
     var storageModeBannerText: String {
         if persistenceBackend == "memoryFallback" {
             return String(localized: "History storage unavailable. Changes are paused.")
-        }
-        if pendingSyncRelaunch {
-            return String(localized: "Relaunch required to apply the iCloud Sync change. History changes are blocked.")
         }
         return String(localized: "iCloud unavailable. Changes are paused.")
     }
@@ -277,15 +246,16 @@ extension ContentView {
     var manageContainer: some View {
         navigationContainer(title: "Manage") {
             ManageView(
-                isSyncing: isSyncing,
                 isPreparingExport: isPreparingExport,
                 enableDelete: enableDelete,
-                isICloudSyncEnabled: enableICloudSync,
+                isActive: selectedTab == .manage,
+                isImporting: isImporting || isFileImporterPresented || isFileExporterPresented || showingImportPasswordPrompt,
+                storageModeMessage: storageModeMessage,
                 canMutateHistoryData: canMutateHistoryData,
                 oldestRecordDate: oldestRecordDate,
                 newestRecordDate: newestRecordDate,
                 onImport: startImport,
-                onRetryICloudSync: retryICloudSync,
+                onCountLocalRecords: { try modelContext.fetchCount(FetchDescriptor<Item>()) },
                 onExport: exportHistory,
                 onMeasureStorageUsage: measureClearCacheStorageUsage,
                 onClearCache: clearCaches,

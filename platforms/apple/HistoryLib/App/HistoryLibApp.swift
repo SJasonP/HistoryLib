@@ -17,35 +17,9 @@ struct HistoryLibApp: App {
         }
 #endif
         let defaults = UserDefaults.standard
-        let isICloudSyncEnabled = defaults.object(forKey: "enable_icloud_sync") as? Bool ?? false
-      
-        // Record the sync mode the store is actually being created with, so the UI
-        // can detect when the saved setting has changed and a relaunch is required.
-        defaults.set(isICloudSyncEnabled, forKey: "persistence_launch_icloud_enabled")
-
-        if !isICloudSyncEnabled {
-            let localConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-            do {
-                let container = try ModelContainer(for: schema, configurations: [localConfiguration])
-                defaults.set("localUserDisabledICloud", forKey: "persistence_backend")
-                defaults.removeObject(forKey: "persistence_error")
-                print("Persistence backend: Local (iCloud disabled by user)")
-                return container
-            } catch {
-                let localError = String(describing: error)
-                print("Local ModelContainer init failed: \(localError)")
-                let memoryOnlyConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-                do {
-                    let container = try ModelContainer(for: schema, configurations: [memoryOnlyConfiguration])
-                    defaults.set("memoryFallback", forKey: "persistence_backend")
-                    defaults.set("Local error: \(localError)", forKey: "persistence_error")
-                    print("Persistence backend: In-memory fallback")
-                    return container
-                } catch {
-                    fatalError("Could not create ModelContainer: \(error)")
-                }
-            }
-        }
+        // Sync consent is controlled by system iCloud settings from v1.4.
+        defaults.removeObject(forKey: "enable_icloud_sync")
+        defaults.removeObject(forKey: "persistence_launch_icloud_enabled")
 
         let cloudConfiguration = ModelConfiguration(
             schema: schema,
@@ -63,7 +37,7 @@ struct HistoryLibApp: App {
             // Keep the app usable even if CloudKit capability/signing is not ready.
             let cloudError = String(describing: error)
             print("CloudKit ModelContainer init failed: \(cloudError)")
-            let localConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+            let localConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .none)
             do {
                 let container = try ModelContainer(for: schema, configurations: [localConfiguration])
                 defaults.set("localFallback", forKey: "persistence_backend")
@@ -74,7 +48,7 @@ struct HistoryLibApp: App {
                 // Final fallback for schema migration/debug issues.
                 let localError = String(describing: error)
                 print("Local ModelContainer init failed: \(localError)")
-                let memoryOnlyConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+                let memoryOnlyConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
                 do {
                     let container = try ModelContainer(for: schema, configurations: [memoryOnlyConfiguration])
                     defaults.set("memoryFallback", forKey: "persistence_backend")

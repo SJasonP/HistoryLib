@@ -46,11 +46,9 @@ struct ContentView: View {
     @AppStorage("open_record_in_browser_on_click") var openRecordInBrowserOnDoubleClick = true
     @AppStorage("default_expand_level") var defaultExpandLevelRaw = HistoryDefaultExpandLevel.day.rawValue
     @AppStorage("show_direct_search_results_on_iphone") var showDirectSearchResultsOnIPhone = true
-    @AppStorage("enable_icloud_sync") var enableICloudSync = false
     @AppStorage("last_selected_tab") var lastSelectedTabRaw = AppTab.summary.rawValue
     @AppStorage("persistence_backend") var persistenceBackend = "unknown"
     @AppStorage("persistence_error") var persistenceError = ""
-    @AppStorage("persistence_launch_icloud_enabled") var launchICloudEnabled = false
 
 #if os(macOS)
     @Environment(\.openSettings) var openSettings
@@ -66,9 +64,6 @@ struct ContentView: View {
     @State var expandedDays: Set<Date> = []
     @State var importFeedbackMessage = ""
     @State var showingImportFeedback = false
-    @State var isSyncing = false
-    @State var syncFeedbackMessage = ""
-    @State var showingSyncFeedback = false
     @State var deleteFeedbackMessage = ""
     @State var showingDeleteFeedback = false
     @State var exportFeedbackMessage = ""
@@ -192,11 +187,6 @@ struct ContentView: View {
             } message: {
                 Text(importFeedbackMessage)
             }
-            .alert("iCloud Sync Information", isPresented: $showingSyncFeedback) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(syncFeedbackDisplayMessage)
-            }
             .alert("Delete Result", isPresented: $showingDeleteFeedback) {
                 Button("OK", role: .cancel) { }
             } message: {
@@ -246,6 +236,9 @@ struct ContentView: View {
                 if tab == .library, isSearching, searchResults.isEmpty {
                     resetSearchPaginationAndMaybeReload()
                 }
+                if tab == .library, !directoryCountsAreComplete, !isDirectoryLoading {
+                    rebuildDirectorySkeleton(preferCache: true)
+                }
             }
             .onChange(of: searchText) { _, _ in
                 // Search results belong to the library root, not a previously
@@ -269,12 +262,6 @@ struct ContentView: View {
                 }
                 scheduleBackgroundDedupIfNeeded(reason: "backend changed")
             }
-            .onChange(of: enableICloudSync) { _, _ in
-                AppSettingsCloudSync.shared.refreshActivationState()
-                if !canMutateHistoryData {
-                    showingStorageModeAlert = true
-                }
-            }
             .onChange(of: scenePhase) { _, phase in
                 if phase == .active {
                     scheduleBackgroundDedupIfNeeded(reason: "app became active")
@@ -296,10 +283,6 @@ struct ContentView: View {
             }
     }
 
-    private var syncFeedbackDisplayMessage: String {
-        let systemControlNotice = String(localized: "iCloud syncing is handled entirely by Apple. HistoryLib cannot see the current sync progress, force a sync, or control which records sync and when.")
-        return "\(syncFeedbackMessage)\n\n\(systemControlNotice)"
-    }
 }
 
 #Preview {

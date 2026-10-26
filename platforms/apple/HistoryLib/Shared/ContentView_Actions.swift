@@ -55,7 +55,6 @@ extension ContentView {
     enum BlockedAction {
         case importHistory
         case deleteRecords
-        case checkSync
 
         var localized: String {
             switch self {
@@ -63,17 +62,13 @@ extension ContentView {
                 return String(localized: "import")
             case .deleteRecords:
                 return String(localized: "delete records")
-            case .checkSync:
-                return String(localized: "check iCloud sync")
             }
         }
     }
 
     private func blockedMutationMessage(for action: BlockedAction) -> String {
+        if persistenceBackend == "memoryFallback" { return storageModeMessage }
         let actionText = action.localized
-        if pendingSyncRelaunch {
-            return String(localized: "Cannot \(actionText) until you relaunch HistoryLib to apply the iCloud Sync change. History changes are blocked until then so on-device data does not diverge.")
-        }
         return String(localized: "Cannot \(actionText) because iCloud is unavailable. Changes are paused to keep your history consistent.")
     }
 
@@ -306,51 +301,7 @@ extension ContentView {
         return nil
     }
 
-    func retryICloudSync() {
-        Task { @MainActor in
-            guard !isSyncing else { return }
-            isSyncing = true
-            defer { isSyncing = false }
-
-            guard enableICloudSync else {
-                syncFeedbackMessage = String(localized: "iCloud sync is disabled in Settings.")
-                showingSyncFeedback = true
-                return
-            }
-
-            guard persistenceBackend == "cloudKit" else {
-                syncFeedbackMessage = blockedMutationMessage(for: .checkSync)
-                showingSyncFeedback = true
-                return
-            }
-
-            do {
-                let networkStatus = await detectCurrentNetworkPathStatus()
-                _ = NSUbiquitousKeyValueStore.default.synchronize()
-                let recordCount = try modelContext.fetchCount(FetchDescriptor<Item>())
-                let syncLine: String
-                switch networkStatus {
-                case .satisfied:
-                    syncLine = String(localized: "Online. iCloud sync should proceed automatically.")
-                case .unsatisfied:
-                    syncLine = String(localized: "Offline. Changes are saved on this device and will sync when you are back online.")
-                case .requiresConnection:
-                    syncLine = String(localized: "A connection is required. Changes are saved on this device until you are back online.")
-                @unknown default:
-                    syncLine = String(localized: "Sync status is unknown. iCloud sync is managed by the system.")
-                }
-                syncFeedbackMessage = String(localized: "iCloud sync is on.\nRecords on this device: \(recordCount)\n\(syncLine)")
-                showingSyncFeedback = true
-                scheduleBackgroundDedupIfNeeded(reason: "manual sync check")
-            } catch {
-                syncFeedbackMessage = String(localized: "Sync failed: \(error.localizedDescription)")
-                showingSyncFeedback = true
-            }
-        }
-    }
-
     func scheduleBackgroundDedupIfNeeded(reason: String) {
-        guard enableICloudSync else { return }
         guard persistenceBackend == "cloudKit" else { return }
         guard !isBackgroundDedupRunning else { return }
         guard !isPreparingExport else { return }
@@ -562,18 +513,30 @@ extension ContentView {
     }
 
     func measureClearCacheStorageUsage() async -> ClearCacheStorageUsage {
-        await ClearCacheStorageUsageCalculator.measure()
+        await ClearCacheStorageUsageCalculator.measure(databaseURLs: modelContext.container.configurations.map(\.url))
     }
 
-    func clearCaches() {
+    func clearCaches() async -> DatabaseJournalMaintenance.Outcome {
+        guard !isImporting, !isPreparingExport, !isFileExporterPresented,
+              !isFileImporterPresented, !showingImportPasswordPrompt else { return .busy }
+        searchReloadTask?.cancel()
+        searchLoadTask?.cancel()
+        searchGeneration += 1
+        searchResults.removeAll(keepingCapacity: false)
+        isLoadingSearchResults = false
+        hasMoreSearchResults = isSearching
+        searchScanOffset = 0
+        clearDayCaches()
+        directoryBuildTask?.cancel()
+        directoryBuildGeneration += 1
+        isDirectoryLoading = false
         DirectoryCountCache.clear()
         directoryCountsAreComplete = false
-
-        Task { @MainActor in
-            await FaviconStore.shared.clearAllCache()
-            await ClearCacheStorageUsageCalculator.clearCacheDirectories()
-            await FaviconStore.shared.ensureCacheDirectoryExists()
-        }
+        URLCache.shared.removeAllCachedResponses()
+        await FaviconStore.shared.clearAllCache()
+        await ClearCacheStorageUsageCalculator.clearCacheDirectories()
+        await FaviconStore.shared.ensureCacheDirectoryExists()
+        return await DatabaseJournalMaintenance.reclaim(databaseURLs: modelContext.container.configurations.map(\.url))
     }
 
     func exportHistory(_ format: HistoryExportFormat, _ split: HistoryExportSplit, _ password: String?) {

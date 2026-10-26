@@ -38,16 +38,6 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Enable iCloud Sync</string>
-			<key>Key</key>
-			<string>enable_icloud_sync</string>
-			<key>DefaultValue</key>
-			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
 			<string>Show Results Directly While Searching</string>
 			<key>SupportedUserInterfaceIdioms</key>
 			<array>

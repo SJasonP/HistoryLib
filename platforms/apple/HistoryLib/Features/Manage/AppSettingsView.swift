@@ -4,7 +4,6 @@ struct AppSettingsView: View {
     @AppStorage("show_history_time") private var showHistoryTime = true
     @AppStorage("show_site_icons") private var showSiteIcons = true
     @AppStorage("enable_delete") private var enableDelete = false
-    @AppStorage("enable_icloud_sync") private var enableICloudSync = false
     @AppStorage("open_record_in_browser_on_click") private var openRecordInBrowserOnDoubleClick = true
     @AppStorage("default_expand_level") private var defaultExpandLevelRaw = HistoryDefaultExpandLevel.day.rawValue
 
@@ -37,11 +36,6 @@ struct AppSettingsView: View {
                     isOn: $enableDelete
                 )
 
-                SettingsToggleRow(
-                    title: "Enable iCloud Sync",
-                    description: "When off, the app uses local-only storage and skips all iCloud operations.",
-                    isOn: $enableICloudSync
-                )
             }
 
             Section("Opening") {

@@ -1,30 +1,38 @@
 import SwiftUI
+import CloudKit
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 
 struct ManageView: View {
-    @AppStorage("show_site_icons") private var showSiteIcons = true
+    @AppStorage("show_site_icons") var showSiteIcons = true
+    @Environment(\.scenePhase) var scenePhase
+    @State var diagnostics = ManageDiagnostics()
+    @State var isVisible = false
+    @State private var accountGeneration = 0
+    @State var showingICloudGuide = false
 
-    let isSyncing: Bool
     let isPreparingExport: Bool
     let enableDelete: Bool
-    let isICloudSyncEnabled: Bool
+    let isActive: Bool
+    let isImporting: Bool
+    let storageModeMessage: String
     let canMutateHistoryData: Bool
     let oldestRecordDate: Date?
     let newestRecordDate: Date?
     let onImport: () -> Void
-    let onRetryICloudSync: () -> Void
+    let onCountLocalRecords: () throws -> Int
     let onExport: (HistoryExportFormat, HistoryExportSplit, String?) -> Void
     let onMeasureStorageUsage: () async -> ClearCacheStorageUsage
-    let onClearCache: () -> Void
+    let onClearCache: () async -> DatabaseJournalMaintenance.Outcome
     let onBatchDelete: (ClosedRange<Date>) -> Int
     let onCountRecordsInRange: (ClosedRange<Date>) -> Int
 
     @State private var selectedExportFormat: HistoryExportFormat = .historyLib
     @State private var selectedExportSplit: HistoryExportSplit = .single
     @State private var isShowingBatchDeleteSheet = false
-    @State private var isShowingClearCacheAlert = false
-    @State private var isMeasuringStorageUsage = false
-    @State private var storageUsage: ClearCacheStorageUsage?
-    @State private var shouldDisableIconsAfterClear = false
     @State private var startDate = Date()
     @State private var endDate = Date()
     @State private var isShowingDeleteConfirmation = false
@@ -39,7 +47,7 @@ struct ManageView: View {
         List {
             if !canMutateHistoryData {
                 Section {
-                    Label("iCloud is unavailable. Changes are paused.", systemImage: "exclamationmark.triangle.fill")
+                    Label(storageModeMessage, systemImage: "exclamationmark.triangle.fill")
                         .foregroundStyle(.orange)
                 }
             }
@@ -51,7 +59,7 @@ struct ManageView: View {
                     Label("Import", systemImage: "square.and.arrow.down")
                 }
                 .foregroundStyle(importButtonColor)
-                .disabled(!canMutateHistoryData)
+                .disabled(!canMutateHistoryData || diagnostics.isClearing)
             }
 
             Section("Export") {
@@ -96,31 +104,21 @@ struct ManageView: View {
                         Label("Export", systemImage: "square.and.arrow.up")
                     }
                 }
-                .disabled(isPreparingExport || !passwordsMatch)
+                .disabled(isPreparingExport || !passwordsMatch || diagnostics.isClearing)
             }
 
-            Section("Data") {
-                Button("Check iCloud Sync", action: onRetryICloudSync)
-                    .disabled(isSyncing || !isICloudSyncEnabled)
+            syncSection
+            cacheSection
 
-                Button {
-                    prepareClearCacheConfirmation()
-                } label: {
-                    if isMeasuringStorageUsage {
-                        Label("Calculating Cache Size...", systemImage: "hourglass")
-                    } else {
-                        Text("Clear Cache")
-                    }
-                }
-                .disabled(isMeasuringStorageUsage)
-
-                if enableDelete && canMutateHistoryData {
+            if enableDelete && canMutateHistoryData {
+                Section("Data") {
                     Button(role: .destructive) {
                         prepareBatchDeleteDefaults()
                         isShowingBatchDeleteSheet = true
                     } label: {
                         Text("Batch Delete")
                     }
+                    .disabled(diagnostics.isClearing)
                 }
             }
 
@@ -135,19 +133,10 @@ struct ManageView: View {
         .sheet(isPresented: $isShowingBatchDeleteSheet) {
             batchDeleteSheet
         }
-        .alert(clearCacheTitle, isPresented: $isShowingClearCacheAlert) {
-            Button("Cancel", role: .cancel) {
-                storageUsage = nil
-            }
-            Button("Clear Cache", role: .destructive) {
-                if shouldDisableIconsAfterClear {
-                    showSiteIcons = false
-                }
-                onClearCache()
-                storageUsage = nil
-            }
+        .alert("Change iCloud Settings", isPresented: $showingICloudGuide) {
+            Button("OK", action: openSystemSettings)
         } message: {
-            Text(clearCacheMessage)
+            Text(iCloudSettingsGuide)
         }
         .alert("Weak Password", isPresented: $isShowingWeakPasswordAlert) {
             Button("Cancel", role: .cancel) { }
@@ -160,7 +149,19 @@ struct ManageView: View {
                 clearExportPassword()
             }
         }
-        .onDisappear(perform: clearExportPassword)
+        .onAppear { isVisible = true }
+        .onDisappear { isVisible = false; clearExportPassword() }
+        .task(id: monitoringEnabled) {
+            guard monitoringEnabled else { return }
+            await diagnostics.monitorLocal(count: onCountLocalRecords, measure: onMeasureStorageUsage)
+        }
+        .task(id: "\(monitoringEnabled)-\(accountGeneration)") {
+            guard monitoringEnabled else { return }
+            await diagnostics.monitorCloud()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .CKAccountChanged)) { _ in
+            accountGeneration += 1
+        }
     }
 
     private var batchDeleteSheet: some View {
@@ -316,39 +317,4 @@ struct ManageView: View {
         isShowingDeleteConfirmation = false
     }
 
-    private var clearCacheTitle: LocalizedStringKey {
-        "Clear Cache"
-    }
-
-    private var clearCacheMessage: String {
-        guard let storageUsage else { return "" }
-        let clearableCacheSize = formattedByteCount(storageUsage.clearableCacheBytes)
-        let nonClearableDataSize = formattedByteCount(storageUsage.nonClearableDataBytes)
-        let clearActionMessage = shouldDisableIconsAfterClear
-            ? String(localized: "Continuing will only clear \(clearableCacheSize) of cache data and turn off Show Site Icons.")
-            : String(localized: "Continuing will only clear \(clearableCacheSize) of cache data.")
-        let paragraphs = [
-            String(localized: "Clearable cache: \(clearableCacheSize)"),
-            String(localized: "Non-clearable data (not cache): \(nonClearableDataSize)"),
-            String(localized: "Non-clearable data mainly consists of your history records and related files, and its size is determined by the number of records you import and Apple's storage management. HistoryLib cannot control, reduce, or clear it."),
-            clearActionMessage
-        ]
-        return paragraphs.joined(separator: "\n\n")
-    }
-
-    private func prepareClearCacheConfirmation() {
-        guard !isMeasuringStorageUsage else { return }
-        isMeasuringStorageUsage = true
-        Task { @MainActor in
-            let measuredUsage = await onMeasureStorageUsage()
-            storageUsage = measuredUsage
-            shouldDisableIconsAfterClear = showSiteIcons
-            isMeasuringStorageUsage = false
-            isShowingClearCacheAlert = true
-        }
-    }
-
-    private func formattedByteCount(_ bytes: Int64) -> String {
-        ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
-    }
 }
