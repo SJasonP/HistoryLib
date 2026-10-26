@@ -1,8 +1,12 @@
 # HistoryLib for Android
 
+**Release status:** deferred. HistoryLib v1.4 ships for iOS and macOS only.
+The implementation below is retained for future releases and is not a v1.4
+shipping or acceptance claim.
+
 The Android client is the native Kotlin and Jetpack Compose implementation of
 HistoryLib. It targets Android API 36 and later, supports only the `arm64-v8a`
-ABI, and is being completed for the coordinated HistoryLib 1.4 release.
+ABI, and remains under development for a future release.
 Its product UI supports American English, Simplified Chinese, Arabic, French,
 Russian, and Spanish. Arabic uses Android's native right-to-left layout.
 

@@ -224,8 +224,8 @@ behavior.
 
 ## Localization Rules
 
-HistoryLib fully supports English (US) and Simplified Chinese. Any user-facing
+HistoryLib supports all six product languages. Any user-facing
 string you add must be localizable through the String Catalog and ship a
-translation in both languages; do not display hard-coded English. See
+translation in all six product languages; do not display hard-coded English. See
 <doc:Localization> for how strings are stored, the `String(localized:)` pattern
 for code-built messages, and the separately localized Settings bundle.

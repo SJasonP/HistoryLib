@@ -1,7 +1,11 @@
 # HistoryLib for Windows
 
-This directory contains the native Windows client for the coordinated
-HistoryLib 1.4 release. The implementation uses C# with WinUI 3 and the
+**Release status:** deferred. HistoryLib v1.4 ships for iOS and macOS only.
+The implementation below is retained for future releases and is not a v1.4
+shipping or acceptance claim.
+
+This directory contains the native Windows client for a future
+HistoryLib release. The implementation uses C# with WinUI 3 and the
 Windows App SDK. Product behavior follows `../../shared/specs`.
 
 ## Build

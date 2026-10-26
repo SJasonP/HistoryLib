@@ -81,6 +81,7 @@ xcodebuild \
 
 ## 文档
 
+- [Apple v1.4 发布准备与验收](docs/Release-1.4.md)
 - [智能搜索、Siri 与快捷指令](docs/Intelligent-Search.md)
 - [自适应布局与 iPhone Duo 验收](docs/Adaptive-Layout.md)
 - [项目文档](Documentation.docc/Documentation.md)
@@ -92,6 +93,6 @@ xcodebuild \
 
 ## 许可证
 
-HistoryLib 使用 MIT License 授权。请参阅 [LICENSE](LICENSE)。
+HistoryLib 使用 MIT License 授权。请参阅 [LICENSE](../../LICENSE)。
 
 第三方依赖声明列在 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。

@@ -3,6 +3,37 @@
 All notable changes to HistoryLib are documented here. This project adheres to
 [Keep a Changelog](https://keepachangelog.com/) and uses [Semantic Versioning](https://semver.org/).
 
+## [1.4] - Unreleased
+
+This release ships only for Apple platforms (iOS and macOS). Android and
+Windows releases are deferred; their source is not a shipping claim.
+
+### Added
+
+- Editable search filters for literal terms, domain, browser, and local dates.
+- Optional on-device natural-language interpretation with manual fallback.
+- Authenticated foreground Siri/Shortcuts search actions and the 27 system
+  application-search schema. Results remain in HistoryLib; no history index or
+  record content is donated to Siri by this implementation.
+- Full resources for the six United Nations official languages.
+- Apple privacy manifest and isolated, synthetic-data automated test tooling.
+
+### Changed
+
+- Adaptable tab/sidebar navigation, compact/regular library layouts, retained
+  navigation routes, and fold-aware scrollable transfer progress for iPhone Duo.
+- Repository structure separates native clients from shared specifications and
+  synthetic fixtures. Apple archive/model compatibility remains unchanged.
+
+### Fixed
+
+- Prevent history mutations when persistent storage fails and only an in-memory
+  recovery store is available.
+- Cancel old search pages and clear their cursors when search conditions change.
+- Complete translations for ZIP import entry-count and size-limit errors.
+- Limit favicon discovery to the site origin, removing recorded URL paths,
+  queries, fragments, and credentials from discovery requests.
+
 ## [1.3] - 2026-08-13
 
 ### Added

@@ -37,7 +37,9 @@ through system tools. Syncing history to iCloud only happens after the user
 explicitly turns it on.
 
 If local persistent storage cannot be initialized, the app can fall back to an
-in-memory store to remain launchable. In-memory data is not durable.
+in-memory store to remain launchable. In-memory data is not durable: history
+mutations are blocked and a storage error is shown until a working persistent
+store can be opened after relaunch.
 
 ## iCloud and CloudKit
 
@@ -78,13 +80,16 @@ changes any history record.
 When site icons are enabled, HistoryLib may request favicon resources for hosts
 found in history records. The favicon service can:
 
-- fetch HTML from a page URL or site root to discover icon links;
+- fetch HTML only from the site origin to discover icon links, without the
+  recorded page path, query, fragment, or credentials;
 - request standard icon paths such as `/favicon.ico`,
   `/apple-touch-icon.png`, and `/apple-touch-icon-precomposed.png`;
 - cache valid image data on disk and in memory;
 - remember temporary misses to avoid repeated failed requests.
 
-These network requests can disclose visited domains to the destination servers.
+Icon discovery remains at the same origin, HTTPS is not downgraded to HTTP,
+and redirects are not followed. These requests can disclose visited domains
+and the client IP address to destination servers.
 Disable site icons if that is not acceptable for your use case.
 
 ## Exported Files

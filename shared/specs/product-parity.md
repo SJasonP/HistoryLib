@@ -1,15 +1,16 @@
 # Product Parity Contract
 
-Status: draft for HistoryLib 1.4
+Status: shared baseline for native clients; v1.4 ships Apple only
 
 The Android implementation baseline is documented in
 `platforms/android/docs/Android-1.4-Specification.zh-CN.md`.
 
 ## Release rule
 
-HistoryLib 1.4 is ready only when the Apple, Android, and Windows clients pass
-the same required behavior and interoperability checks. Platform-specific
-internal build numbers may differ; the public product version must be 1.4.
+Apple v1.4 ships for iOS and macOS only. Android and Windows are deferred.
+The requirements below remain the target behavior for native clients, but an
+unreleased client does not block the Apple release. Apply these gates to every
+client included in a future coordinated release. See `versioning-and-release.md`.
 
 ## Required feature areas
 
@@ -28,14 +29,14 @@ internal build numbers may differ; the public product version must be 1.4.
 - Provide equivalent deletion controls and destructive confirmations.
 - Provide equivalent settings and sync state, subject only to documented
   platform limitations.
-- Ship English and Simplified Chinese localization.
+- Ship all six product languages defined in `localization.md`.
 
 Sync follows `sync.md`: HistoryLib 1.4 uses platform-local sync, and a
 platform may document that it ships without sync when platform-local sync is
 technically impractical. Such a platform must expose an explicit unsupported
 state and must not claim parity for sync.
 
-Documented 1.4 limitation: Android ships without sync and exposes an explicit
+Documented Android development limitation: Android has no sync and exposes an explicit
 unsupported state (see `platforms/android/docs/Android-1.4-Specification.zh-CN.md`).
 
 ## Allowed platform differences

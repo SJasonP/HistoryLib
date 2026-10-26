@@ -1,7 +1,7 @@
 # Search and Optional Intelligence
 
 Status: Apple enhancement; other clients retain their existing keyword search.
-This is an optional platform capability, not a new coordinated 1.4 parity gate.
+This is an optional Apple capability. Android and Windows are deferred from v1.4.
 
 ## Structured search
 

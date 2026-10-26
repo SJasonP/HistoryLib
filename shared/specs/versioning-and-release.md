@@ -1,35 +1,44 @@
 # Versioning and Release Contract
 
-HistoryLib is one product with native Apple, Android, and Windows clients in one
-Git repository.
+HistoryLib is one product with native clients in one Git repository. The root
+`VERSION` is the intended public feature version. Platform build identifiers
+may differ; they do not define separate feature versions.
 
-## Product version
+## Current release scope
 
-- The repository root `VERSION` file is the intended public product version.
-- User-visible platform versions must match `VERSION` for a coordinated
-  release.
-- Platform build identifiers may differ because app stores use different
-  schemes: Apple build number, Android `versionCode`, and Windows revision.
-- A platform-specific build identifier does not create a different product
-  feature version.
+On October 26, 2026, the release scope was changed to **Apple only** for v1.4:
+iOS and macOS. Android and Windows releases are deferred. Their source and
+shared format contracts remain available for future work, but their builds,
+parity status, and bidirectional interoperability are not blockers for this
+Apple-only release and must not be advertised as released capabilities.
 
-## History and 1.4 transition
+A later Android/Windows release must explicitly define its version and scope,
+and pass its own implementation and compatibility gates before shipping.
+Future coordinated releases require parity and interoperability for every
+platform included in that release; do not imply that an Apple release proves
+another platform compatible.
 
-- Tags `v1.0` through `v1.3` describe the historical Apple-only repository.
-- HistoryLib 1.4 is planned as the first coordinated Apple, Android, and Windows
-  release.
-- Existing historical tags must not be moved or rewritten.
-- The coordinated `v1.4` tag is created only from a commit that satisfies the
-  shared parity and interoperability gates for all three platforms.
+## Apple v1.4 gates
 
-## Release gate
+- The Apple app marketing version matches `VERSION`; the build number is
+  greater than previously distributed Apple builds.
+- Required Apple behavior, six-language resources, `.hlz` compatibility,
+  read-only recovery behavior, and privacy declarations are verified.
+- Apple unit/integration tests, static checks, iOS/macOS Release builds, and
+  final artifact metadata checks pass. Human interactive acceptance is recorded
+  separately from automated test results.
+- The security audit is completed against the final source revision and pinned
+  dependencies; required fixes are applied and revalidated.
+- Humans verify interactive upgrades, CloudKit sync, visual behavior, and
+  optional on-device-model/Siri behavior and fallback.
+- Before distribution, verify the CloudKit production schema and entitlements,
+  signed archives, store metadata/privacy answers, and export-compliance answers.
+- Release notes describe the changes since v1.3 and identify the Apple-only
+  scope. A prepared changelog entry is not proof of publication.
 
-A coordinated release requires:
+## Tags and publication
 
-- required parity features complete on all platforms;
-- shared import, deduplication, archive, privacy, and localization contracts
-  satisfied;
-- platform unit, integration, UI, static-analysis, and release builds passing;
-- cross-platform `.hlz` fixtures passing in both directions;
-- release notes based on the requested base tag through the release commit;
-- platform store metadata showing the same public product version.
+Historical tags `v1.0` through `v1.3` remain unchanged. Create `v1.4` only after
+its Apple gates are satisfied and publication is explicitly authorized. Never
+create or move a release tag merely to mark an audit candidate. Record remaining
+checks in `platforms/apple/docs/Release-1.4.md`, not in `AGENTS.md`.

@@ -4,7 +4,7 @@
 
 HistoryLib 是一个原生多平台应用，用于导入、浏览、搜索、去重、同步和重新导出浏览器历史记录。
 
-1.4 将是 Apple、Android 和 Windows 第一次统一发布的版本。三个客户端分别使用平台原生语言和 UI 技术，共享规范与测试数据用于保证行为和数据格式一致。
+1.4 仅发布 Apple 客户端（iOS 和 macOS）。Android 和 Windows 暂缓发布，代码保留在仓库中供后续开发。各客户端采用平台原生技术，通过共享规范和虚构测试数据保持行为与格式一致。
 
 所有客户端统一支持联合国六种官方语言：美式英语、简体中文、阿拉伯语、法语、俄语和西班牙语。阿拉伯语使用平台原生从右到左布局，涉及数量的文案遵循各平台的复数规则。
 
@@ -12,19 +12,19 @@ HistoryLib 是一个原生多平台应用，用于导入、浏览、搜索、去
 
 - `platforms/apple`：Swift、SwiftUI、SwiftData 与 CloudKit 客户端。
 - `platforms/android`：Kotlin 与 Jetpack Compose 客户端，最低 API 36。
-- `platforms/windows`：计划使用 C# 与 WinUI 3 的客户端位置。
+- `platforms/windows`：C# 与 WinUI 3 客户端源码，不包含在本次发布中。
 - `shared/specs`：跨平台行为与格式契约。
 - `shared/fixtures`：虚构的互操作和拒绝测试数据。
 
-整个产品只有一份 Git 历史和一个产品版本。各应用商店使用的内部构建号可以不同，但公开功能版本必须保持一致。
+整个产品只有一份 Git 历史和一个产品版本。各应用商店的内部构建号可以不同。实际发布的客户端使用产品版本号；暂缓发布的客户端不宣称已经发布或完成兼容性验收。
 
 公共规范索引见 [`shared/specs/README.md`](shared/specs/README.md)。
 
 ## 当前状态
 
-- Apple 1.3 是当前已经完成的客户端。
-- Android 1.4 原生客户端已具备完整功能，当前处于发布加固阶段。
-- Windows 1.4 尚待开发。
+- Apple 1.4 正在进行安全审计前的发布准备。
+- Android 和 Windows 属于开发中的客户端，暂缓发布。
+- 检查结果和人工验收项目见 [Apple 发布准备记录](platforms/apple/docs/Release-1.4.md)。
 
 各平台的构建方式见对应目录内的 README。
 

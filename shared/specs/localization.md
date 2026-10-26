@@ -32,7 +32,7 @@ parity across the checked-in resources.
 
 - Do not embed user-visible literals in business logic.
 - Interpolated values use locale-aware placeholders and number/date formatting.
-- Sentences must allow natural word order in both languages.
+- Sentences must allow natural word order in all six languages.
 - Product terms, format names, and destructive-action wording retain equivalent
   meaning across platforms.
 - Arabic interfaces support right-to-left layout; embedded file extensions,

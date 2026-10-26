@@ -33,6 +33,8 @@ rebuilding them must never mutate history records.
 
 Fetching a favicon can disclose a visited domain to its server. The setting
 must explain this effect, and disabling icons must stop new favicon requests.
+Apple icon lookup uses only the origin and icon paths, not the original page
+path/query/credentials. HTTPS is not downgraded; redirects are not followed.
 Positive results and temporary misses may be cached to reduce repeated network
 disclosure.
 
