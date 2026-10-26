@@ -10,6 +10,7 @@ struct ManageView: View {
     @AppStorage("show_site_icons") var showSiteIcons = true
     @Environment(\.scenePhase) var scenePhase
     @State var diagnostics = ManageDiagnostics()
+    let syncActivity = HistorySyncActivity.shared
     @State var isVisible = false
     @State private var accountGeneration = 0
     @State var showingICloudGuide = false

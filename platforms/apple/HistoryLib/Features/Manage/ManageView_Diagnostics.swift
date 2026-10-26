@@ -12,11 +12,28 @@ extension ManageView {
         Section("iCloud") {
             LabeledContent("Sync Control", value: String(localized: "Managed by System"))
             LabeledContent("iCloud Account", value: diagnostics.accountMessage)
+            LabeledContent("Sync Activity", value: syncActivityText)
+            LabeledContent("Last Synced") {
+                if let date = syncActivity.lastSuccessfulTransfer {
+                    Text(date, format: .dateTime.year().month().day().hour().minute().second())
+                } else {
+                    Text("Not Observed")
+                }
+            }
+            Text("Sync time is the latest successful upload or download observed during this app session. It does not confirm that all devices are up to date.")
+                .font(.footnote).foregroundStyle(.secondary)
             LabeledContent("Local Records", value: countText(diagnostics.localCount))
             LabeledContent("Cloud Records", value: countText(diagnostics.cloudCount))
             Text(diagnostics.cloudMessage).font(.footnote).foregroundStyle(.secondary)
             Button("Change iCloud Settings") { showingICloudGuide = true }
         }
+    }
+
+    var syncActivityText: String {
+        guard syncActivity.isBound else { return String(localized: "Unavailable") }
+        if syncActivity.isSyncing { return String(localized: "Syncing…") }
+        if syncActivity.hasObservedFailure { return String(localized: "Sync Issue Detected") }
+        return String(localized: "No Active Transfer Observed")
     }
 
     var cacheSection: some View {
@@ -71,7 +88,7 @@ extension ManageView {
     }
 
     var iCloudSettingsGuide: String {
-        let notice = String(localized: "iCloud syncing is handled entirely by Apple. HistoryLib cannot see the current sync progress, force a sync, or control which records sync and when.")
+        let notice = String(localized: "Apple controls iCloud sync scheduling. HistoryLib can observe sync activity, but cannot force a sync, choose which records sync, or confirm that all devices are up to date.")
         let directions = String(localized: "Tap OK to open system settings. Select your Apple Account, then iCloud, then See All, and change HistoryLib. HistoryLib cannot read this system switch directly.")
         return "\(notice)\n\n\(directions)"
     }

@@ -12,6 +12,8 @@ Windows releases are deferred; their source is not a shipping claim.
 
 - Editable search filters for literal terms, domain, browser, and local dates.
 - Optional on-device natural-language interpretation with manual fallback.
+- Observed sync activity and the last successful upload/download time in Manage
+  for the current app session.
 - Authenticated foreground Siri/Shortcuts search actions and the 27 system
   application-search schema. Results remain in HistoryLib; no history index or
   record content is donated to Siri by this implementation.

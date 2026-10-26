@@ -65,6 +65,11 @@ is enabled or synchronization has completed. Incomplete/failed counts display
 unavailable rather than partial counts or a false zero. Diagnostics update only
 while the page is visible and active.
 
+Manage also shows observed upload/download activity and the latest successful
+transfer time in the current app session. Passive sync-event capture continues
+outside Manage without starting polling or network requests. Setup success is
+not a successful transfer, and no active event is not proof of completed sync.
+
 Change iCloud Settings shows an explanation of Apple's control and navigation
 directions, with only an OK action; OK opens system settings through the
 platform-supported entry point. Do not promise a direct iCloud subpage link.

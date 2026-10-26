@@ -10023,6 +10023,334 @@
           }
         }
       }
+    },
+    "Sync Activity": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync Activity"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步活动"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نشاط المزامنة"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activité de synchronisation"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Активность синхронизации"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actividad de sincronización"
+          }
+        }
+      }
+    },
+    "Last Synced": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last Synced"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上次同步于"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "آخر مزامنة"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière synchronisation"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Последняя синхронизация"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última sincronización"
+          }
+        }
+      }
+    },
+    "Not Observed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Observed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未观察到"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يُرصد بعد"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non observé"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не наблюдалось"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No observado"
+          }
+        }
+      }
+    },
+    "Syncing…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Syncing…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在同步…"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ المزامنة…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisation…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Синхронизация…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizando…"
+          }
+        }
+      }
+    },
+    "Sync Issue Detected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync Issue Detected"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "检测到同步问题"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم رصد مشكلة في المزامنة"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Problème de synchronisation détecté"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Обнаружена проблема синхронизации"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Problema de sincronización detectado"
+          }
+        }
+      }
+    },
+    "No Active Transfer Observed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Active Transfer Observed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未观察到正在进行的同步传输"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد عملية نقل مزامنة نشطة مرصودة"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun transfert actif observé"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Активная передача не наблюдается"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se observa una transferencia activa"
+          }
+        }
+      }
+    },
+    "Sync time is the latest successful upload or download observed during this app session. It does not confirm that all devices are up to date.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync time is the latest successful upload or download observed during this app session. It does not confirm that all devices are up to date."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步时间表示本次应用运行中观察到的最近一次成功上传或下载，不代表所有设备均已同步完成。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وقت المزامنة هو آخر تحميل أو تنزيل ناجح رُصد خلال جلسة التطبيق الحالية. ولا يؤكد أن جميع الأجهزة محدّثة."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’heure indique le dernier envoi ou téléchargement réussi observé pendant cette session de l’app. Elle ne confirme pas que tous les appareils sont à jour."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Время означает последнюю успешную отправку или загрузку, наблюдавшуюся в текущем сеансе приложения. Оно не подтверждает актуальность данных на всех устройствах."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La hora indica la última subida o descarga correcta observada durante esta sesión de la app. No confirma que todos los dispositivos estén actualizados."
+          }
+        }
+      }
+    },
+    "Apple controls iCloud sync scheduling. HistoryLib can observe sync activity, but cannot force a sync, choose which records sync, or confirm that all devices are up to date.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple controls iCloud sync scheduling. HistoryLib can observe sync activity, but cannot force a sync, choose which records sync, or confirm that all devices are up to date."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud 同步调度由 Apple 控制。HistoryLib 可以观察同步活动，但无法强制同步、选择同步哪些记录，或确认所有设备均已同步完成。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تتحكم Apple في جدولة مزامنة iCloud. يستطيع HistoryLib رصد نشاط المزامنة، لكنه لا يستطيع فرض المزامنة أو اختيار السجلات التي تتم مزامنتها أو تأكيد تحديث جميع الأجهزة."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple contrôle la planification de la synchronisation iCloud. HistoryLib peut observer l’activité, mais ne peut pas forcer la synchronisation, choisir les enregistrements synchronisés ni confirmer que tous les appareils sont à jour."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple управляет расписанием синхронизации iCloud. HistoryLib может наблюдать активность, но не может принудительно запустить синхронизацию, выбрать синхронизируемые записи или подтвердить актуальность всех устройств."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple controla la programación de la sincronización de iCloud. HistoryLib puede observar la actividad, pero no puede forzar la sincronización, elegir qué registros se sincronizan ni confirmar que todos los dispositivos estén actualizados."
+          }
+        }
+      }
     }
   },
   "version": "1.2"
