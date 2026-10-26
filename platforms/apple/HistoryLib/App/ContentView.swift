@@ -207,7 +207,7 @@ struct ContentView: View {
             } message: {
                 Text(exportFeedbackMessage)
             }
-            .alert("Cloud Sync Unavailable", isPresented: $showingStorageModeAlert) {
+            .alert(storageModeAlertTitle, isPresented: $showingStorageModeAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(storageModeMessage)
@@ -228,7 +228,7 @@ struct ContentView: View {
                 }
                 rebuildDirectorySkeleton(preferCache: true)
                 resetSearchPaginationAndMaybeReload()
-                if shouldEnforceCloudWriteProtection && !canMutateHistoryData {
+                if !canMutateHistoryData {
                     showingStorageModeAlert = true
                 }
                 AppSettingsCloudSync.shared.refreshActivationState()
@@ -263,8 +263,8 @@ struct ContentView: View {
             .onChange(of: isFileImporterPresented) { _, _ in consumeSearchRequest() }
             .onChange(of: isFileExporterPresented) { _, _ in consumeSearchRequest() }
             .onChange(of: showingImportPasswordPrompt) { _, _ in consumeSearchRequest() }
-            .onChange(of: persistenceBackend) { _, backend in
-                if shouldEnforceCloudWriteProtection, backend != "cloudKit" {
+            .onChange(of: persistenceBackend) { _, _ in
+                if !canMutateHistoryData {
                     showingStorageModeAlert = true
                 }
                 scheduleBackgroundDedupIfNeeded(reason: "backend changed")

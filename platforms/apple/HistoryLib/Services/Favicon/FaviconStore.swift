@@ -122,35 +122,17 @@ actor FaviconStore {
         var urls: [URL] = []
         var seen: Set<String> = []
 
-        let htmlSources = [pageURL, rootURL(of: pageURL)].compactMap { $0 }
-        for sourceURL in htmlSources {
-            if let html = await fetchHTML(url: sourceURL) {
-                for iconURL in parseIconURLs(fromHTML: html, pageURL: sourceURL) {
-                    if seen.insert(iconURL.absoluteString).inserted {
-                        urls.append(iconURL)
-                    }
+        guard let origin = FaviconRequestPolicy.origin(for: pageURL) else { return [] }
+        if let html = await fetchHTML(url: origin) {
+            for iconURL in parseIconURLs(fromHTML: html, pageURL: origin) {
+                if FaviconRequestPolicy.permitsIcon(iconURL, from: origin),
+                   seen.insert(iconURL.absoluteString).inserted {
+                    urls.append(iconURL)
                 }
             }
         }
-
-        if let host = pageURL.host {
-            let preferredScheme = (pageURL.scheme?.lowercased() == "http" || pageURL.scheme?.lowercased() == "https")
-                ? pageURL.scheme!.lowercased()
-                : nil
-            let fallbackSchemes = [preferredScheme, "https", "http"].compactMap { $0 }
-
-            for scheme in fallbackSchemes {
-                for path in ["/favicon.ico", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png"] {
-                    var components = URLComponents()
-                    components.scheme = scheme
-                    components.host = host
-                    components.path = path
-                    if let fallback = components.url,
-                       seen.insert(fallback.absoluteString).inserted {
-                        urls.append(fallback)
-                    }
-                }
-            }
+        for fallback in FaviconRequestPolicy.fallbackURLs(for: origin) {
+            if seen.insert(fallback.absoluteString).inserted { urls.append(fallback) }
         }
 
         return urls
@@ -294,18 +276,6 @@ actor FaviconStore {
         } else {
             activeFetches = max(0, activeFetches - 1)
         }
-    }
-
-    private func rootURL(of url: URL) -> URL? {
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              let scheme = components.scheme?.lowercased(),
-              scheme == "http" || scheme == "https" else {
-            return nil
-        }
-        components.path = "/"
-        components.query = nil
-        components.fragment = nil
-        return components.url
     }
 
     private func isValidImageData(_ data: Data) -> Bool {

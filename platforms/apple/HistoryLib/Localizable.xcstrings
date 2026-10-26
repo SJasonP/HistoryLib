@@ -2554,11 +2554,12 @@
       }
     },
     "Failed to load search results: %@": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "加载搜索结果失败：%@"
+            "value": "فشل تحميل نتائج البحث: %@"
           }
         },
         "en-US": {
@@ -2567,10 +2568,10 @@
             "value": "Failed to load search results: %@"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "فشل تحميل نتائج البحث: %@"
+            "value": "No se pudieron cargar los resultados de búsqueda: %@"
           }
         },
         "fr": {
@@ -2585,10 +2586,10 @@
             "value": "Не удалось загрузить результаты поиска: %@"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se pudieron cargar los resultados de búsqueda: %@"
+            "value": "加载搜索结果失败：%@"
           }
         }
       }
@@ -8910,6 +8911,211 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hasta (inclusive)"
+          }
+        }
+      }
+    },
+    "ZIP archive contains too many entries.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP archive contains too many entries."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 归档包含的条目过多。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحتوي أرشيف ZIP على عدد كبير جدًا من الإدخالات."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’archive ZIP contient trop d’éléments."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Архив ZIP содержит слишком много записей."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El archivo ZIP contiene demasiadas entradas."
+          }
+        }
+      }
+    },
+    "ZIP archive is too large to import safely.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP archive is too large to import safely."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 归档过大，无法安全导入。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أرشيف ZIP كبير جدًا ولا يمكن استيراده بأمان."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’archive ZIP est trop volumineuse pour être importée en toute sécurité."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Архив ZIP слишком велик для безопасного импорта."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El archivo ZIP es demasiado grande para importarlo de forma segura."
+          }
+        }
+      }
+    },
+    "Storage Unavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage Unavailable"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "存储不可用"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التخزين غير متاح"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stockage indisponible"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хранилище недоступно"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Almacenamiento no disponible"
+          }
+        }
+      }
+    },
+    "History storage unavailable. Changes are paused.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History storage unavailable. Changes are paused."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "历史记录存储不可用，已暂停更改。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تخزين السجل غير متاح. تم إيقاف التغييرات مؤقتًا."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le stockage de l’historique est indisponible. Les modifications sont suspendues."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хранилище истории недоступно. Изменения приостановлены."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El almacenamiento del historial no está disponible. Los cambios están en pausa."
+          }
+        }
+      }
+    },
+    "History storage could not be opened. Changes are paused. Restart the app after resolving the storage problem.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History storage could not be opened. Changes are paused. Restart the app after resolving the storage problem."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开历史记录存储，已暂停更改。解决存储问题后，请重新启动应用。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذر فتح تخزين السجل. تم إيقاف التغييرات مؤقتًا. أعد تشغيل التطبيق بعد حل مشكلة التخزين."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible d’ouvrir le stockage de l’historique. Les modifications sont suspendues. Relancez l’app après avoir résolu le problème de stockage."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удалось открыть хранилище истории. Изменения приостановлены. После устранения проблемы с хранилищем перезапустите приложение."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo abrir el almacenamiento del historial. Los cambios están en pausa. Reinicia la app después de resolver el problema de almacenamiento."
           }
         }
       }

@@ -14,16 +14,22 @@ extension ContentView {
     }
 
     var canMutateHistoryData: Bool {
-        // Block writes until a relaunch reconciles the store with the setting,
-        // so the active store never receives writes that contradict the chosen
-        // mode (e.g. writing to a CloudKit store after sync was turned off).
-        if pendingSyncRelaunch {
-            return false
-        }
-        return !shouldEnforceCloudWriteProtection || persistenceBackend == "cloudKit"
+        HistoryStoragePolicy.canMutate(
+            backend: persistenceBackend, syncEnabled: enableICloudSync,
+            launchSyncEnabled: launchICloudEnabled
+        )
+    }
+
+    var storageModeAlertTitle: String {
+        persistenceBackend == "memoryFallback"
+            ? String(localized: "Storage Unavailable")
+            : String(localized: "Cloud Sync Unavailable")
     }
 
     var storageModeMessage: String {
+        if persistenceBackend == "memoryFallback" {
+            return String(localized: "History storage could not be opened. Changes are paused. Restart the app after resolving the storage problem.")
+        }
         if pendingSyncRelaunch {
             return enableICloudSync
                 ? String(localized: "iCloud Sync was turned on. Relaunch HistoryLib to apply the change. History changes are blocked until then so on-device data does not diverge.")
@@ -42,6 +48,9 @@ extension ContentView {
     }
 
     var storageModeBannerText: String {
+        if persistenceBackend == "memoryFallback" {
+            return String(localized: "History storage unavailable. Changes are paused.")
+        }
         if pendingSyncRelaunch {
             return String(localized: "Relaunch required to apply the iCloud Sync change. History changes are blocked.")
         }
