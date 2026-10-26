@@ -541,86 +541,6 @@
         }
       }
     },
-    "Cannot %@ because iCloud is unavailable. Changes are paused to keep your history consistent.": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "无法%@，因为 iCloud 不可用。更改已暂停，以保持历史记录一致。"
-          }
-        },
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cannot %@ because iCloud is unavailable. Changes are paused to keep your history consistent."
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لا يمكن %@ لأن iCloud غير متاح. يتم إيقاف التغييرات مؤقتًا للحفاظ على اتساق سجلك."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impossible %@ car iCloud n'est pas disponible. Les modifications sont suspendues pour maintenir la cohérence de votre historique."
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Невозможно %@, поскольку iCloud недоступен. Изменения приостановлены, чтобы сохранить целостность вашей истории."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se puede %@ porque iCloud no está disponible. Los cambios se pausan para mantener la coherencia del historial."
-          }
-        }
-      }
-    },
-    "Cannot %@ until you relaunch HistoryLib to apply the iCloud Sync change. History changes are blocked until then so on-device data does not diverge.": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "在重新启动 HistoryLib 应用 iCloud 同步更改之前，无法%@。在此之前历史更改将被阻止，以免设备上的数据发生分歧。"
-          }
-        },
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cannot %@ until you relaunch HistoryLib to apply the iCloud Sync change. History changes are blocked until then so on-device data does not diverge."
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لا يمكن %@ حتى تقوم بإعادة تشغيل HistoryLib لتطبيق تغيير iCloud Sync. يتم حظر تغييرات السجل حتى ذلك الحين حتى لا تتباعد البيانات الموجودة على الجهاز."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impossible de %@ tant que vous n'avez pas relancé HistoryLib pour appliquer la modification de la synchronisation iCloud. Les modifications de l'historique sont bloquées jusque-là afin que les données sur l'appareil ne divergent pas."
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Невозможно %@, пока вы не перезапустите HistoryLib, чтобы применить изменения синхронизации iCloud. До этого момента изменения истории блокируются, поэтому данные на устройстве не расходятся."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se puede %@ hasta que reinicies HistoryLib para aplicar el cambio de iCloud Sync. Los cambios del historial están bloqueados hasta entonces para que los datos del dispositivo no diverjan."
-          }
-        }
-      }
-    },
     "check iCloud sync": {
       "localizations": {
         "zh-Hans": {
@@ -817,46 +737,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Caché borrable: %@"
-          }
-        }
-      }
-    },
-    "Cloud Sync Unavailable": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "云同步暂不可用"
-          }
-        },
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cloud Sync Unavailable"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "المزامنة السحابية غير متاحة"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Synchronisation cloud indisponible"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Облачная синхронизация недоступна"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sincronización en la nube no disponible"
           }
         }
       }
@@ -2754,86 +2634,6 @@
         }
       }
     },
-    "iCloud is currently unavailable. Changes are paused so your history stays consistent across your devices.": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud 当前不可用。更改已暂停，以保持各设备上的历史记录一致。"
-          }
-        },
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud is currently unavailable. Changes are paused so your history stays consistent across your devices."
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud غير متوفر حاليًا. يتم إيقاف التغييرات مؤقتًا حتى يظل سجلك متسقًا عبر أجهزتك."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud est actuellement indisponible. Les modifications sont suspendues afin que votre historique reste cohérent sur tous vos appareils."
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud в настоящее время недоступен. Изменения приостанавливаются, поэтому ваша история остается единообразной на всех ваших устройствах."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud no está disponible actualmente. Los cambios se pausan para que su historial se mantenga consistente en todos sus dispositivos."
-          }
-        }
-      }
-    },
-    "iCloud is unavailable. Changes are paused.": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud 不可用，更改已暂停。"
-          }
-        },
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud is unavailable. Changes are paused."
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud غير متوفر. تم إيقاف التغييرات مؤقتًا."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud n'est pas disponible. Les modifications sont suspendues."
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud недоступен. Изменения приостановлены."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud no está disponible. Los cambios están en pausa."
-          }
-        }
-      }
-    },
     "iCloud Sync Information": {
       "localizations": {
         "zh-Hans": {
@@ -3100,86 +2900,6 @@
         }
       }
     },
-    "iCloud Sync was turned off. Relaunch HistoryLib to apply the change. History changes are blocked until then so on-device data does not diverge.": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud 同步已关闭。请重新启动 HistoryLib 以应用更改。在此之前历史更改将被阻止，以免设备上的数据发生分歧。"
-          }
-        },
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud Sync was turned off. Relaunch HistoryLib to apply the change. History changes are blocked until then so on-device data does not diverge."
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تم إيقاف تشغيل مزامنة iCloud. أعد تشغيل HistoryLib لتطبيق التغيير. يتم حظر تغييرات السجل حتى ذلك الحين حتى لا تتباعد البيانات الموجودة على الجهاز."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La synchronisation iCloud a été désactivée. Relancez HistoryLib pour appliquer la modification. Les modifications de l'historique sont bloquées jusque-là afin que les données sur l'appareil ne divergent pas."
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Синхронизация iCloud была отключена. Перезапустите HistoryLib, чтобы применить изменения. До этого момента изменения истории блокируются, поэтому данные на устройстве не расходятся."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La sincronización de iCloud estaba desactivada. Reinicie HistoryLib para aplicar el cambio. Los cambios del historial están bloqueados hasta entonces para que los datos del dispositivo no diverjan."
-          }
-        }
-      }
-    },
-    "iCloud Sync was turned on. Relaunch HistoryLib to apply the change. History changes are blocked until then so on-device data does not diverge.": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud 同步已开启。请重新启动 HistoryLib 以应用更改。在此之前历史更改将被阻止，以免设备上的数据发生分歧。"
-          }
-        },
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud Sync was turned on. Relaunch HistoryLib to apply the change. History changes are blocked until then so on-device data does not diverge."
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تم تشغيل مزامنة iCloud. أعد تشغيل HistoryLib لتطبيق التغيير. يتم حظر تغييرات السجل حتى ذلك الحين حتى لا تتباعد البيانات الموجودة على الجهاز."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud Sync a été activé. Relancez HistoryLib pour appliquer la modification. Les modifications de l'historique sont bloquées jusque-là afin que les données sur l'appareil ne divergent pas."
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Синхронизация iCloud была включена. Перезапустите HistoryLib, чтобы применить изменения. До этого момента изменения истории блокируются, поэтому данные на устройстве не расходятся."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La sincronización de iCloud estaba activada. Reinicie HistoryLib para aplicar el cambio. Los cambios del historial están bloqueados hasta entonces para que los datos del dispositivo no diverjan."
-          }
-        }
-      }
-    },
     "iCloud syncing is handled entirely by Apple. HistoryLib cannot see the current sync progress, force a sync, or control which records sync and when.": {
       "localizations": {
         "zh-Hans": {
@@ -3216,46 +2936,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "La sincronización de iCloud está a cargo exclusivamente de Apple. HistoryLib no puede ver el progreso de la sincronización actual, forzar una sincronización ni controlar qué registros se sincronizan y cuándo."
-          }
-        }
-      }
-    },
-    "iCloud unavailable. Changes are paused.": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud 不可用，更改已暂停。"
-          }
-        },
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud unavailable. Changes are paused."
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud غير متاح. تم إيقاف التغييرات مؤقتًا."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud indisponible. Les modifications sont suspendues."
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud недоступен. Изменения приостановлены."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud no disponible. Los cambios están en pausa."
           }
         }
       }
@@ -5282,46 +4962,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Preparando importación…"
-          }
-        }
-      }
-    },
-    "Relaunch required to apply the iCloud Sync change. History changes are blocked.": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "需要重新启动以应用 iCloud 同步更改。历史更改已被阻止。"
-          }
-        },
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Relaunch required to apply the iCloud Sync change. History changes are blocked."
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يلزم إعادة التشغيل لتطبيق تغيير iCloud Sync. تم حظر تغييرات التاريخ."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Relance requise pour appliquer la modification iCloud Sync. Les modifications de l'historique sont bloquées."
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Требуется перезапуск, чтобы применить изменения синхронизации iCloud. Изменения истории заблокированы."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Es necesario reiniciar para aplicar el cambio de iCloud Sync. Los cambios del historial están bloqueados."
           }
         }
       }

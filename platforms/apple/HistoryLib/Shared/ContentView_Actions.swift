@@ -52,26 +52,6 @@ extension ContentView {
         }
     }
 
-    enum BlockedAction {
-        case importHistory
-        case deleteRecords
-
-        var localized: String {
-            switch self {
-            case .importHistory:
-                return String(localized: "import")
-            case .deleteRecords:
-                return String(localized: "delete records")
-            }
-        }
-    }
-
-    private func blockedMutationMessage(for action: BlockedAction) -> String {
-        if persistenceBackend == "memoryFallback" { return storageModeMessage }
-        let actionText = action.localized
-        return String(localized: "Cannot \(actionText) because iCloud is unavailable. Changes are paused to keep your history consistent.")
-    }
-
     func startImport() {
         isFileImporterPresented = true
     }
@@ -126,7 +106,7 @@ extension ContentView {
 
     func handleImporterResult(_ result: Result<URL, Error>) {
         guard canMutateHistoryData else {
-            importFeedbackMessage = blockedMutationMessage(for: .importHistory)
+            importFeedbackMessage = storageModeMessage
             showingImportFeedback = true
             return
         }
@@ -302,7 +282,7 @@ extension ContentView {
     }
 
     func scheduleBackgroundDedupIfNeeded(reason: String) {
-        guard persistenceBackend == "cloudKit" else { return }
+        guard canMutateHistoryData else { return }
         guard !isBackgroundDedupRunning else { return }
         guard !isPreparingExport else { return }
 
@@ -348,7 +328,7 @@ extension ContentView {
 
     func deleteSingleRecord(_ item: Item) {
         guard canMutateHistoryData else {
-            deleteFeedbackMessage = blockedMutationMessage(for: .deleteRecords)
+            deleteFeedbackMessage = storageModeMessage
             showingDeleteFeedback = true
             return
         }
@@ -471,7 +451,7 @@ extension ContentView {
 
     func deleteRecordsInRange(_ range: ClosedRange<Date>) -> Int {
         guard canMutateHistoryData else {
-            deleteFeedbackMessage = blockedMutationMessage(for: .deleteRecords)
+            deleteFeedbackMessage = storageModeMessage
             showingDeleteFeedback = true
             return 0
         }

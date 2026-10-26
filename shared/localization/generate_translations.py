@@ -48,10 +48,6 @@ OVERRIDES = {
         "Safari ZIP": "أرشيف Safari بصيغة ZIP",
         "Safari layout": "تخطيط Safari",
         "%1$s; %2$s.": "%1$s؛ %2$s.",
-        "iCloud is unavailable. Changes are paused.":
-            "iCloud غير متوفر. تم إيقاف التغييرات مؤقتًا.",
-        "iCloud unavailable. Changes are paused.":
-            "iCloud غير متاح. تم إيقاف التغييرات مؤقتًا.",
     },
     "fr": {
         "HistoryLib": "HistoryLib",

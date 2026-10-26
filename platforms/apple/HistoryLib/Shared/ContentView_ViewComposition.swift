@@ -7,23 +7,15 @@ extension ContentView {
     }
 
     var storageModeAlertTitle: String {
-        persistenceBackend == "memoryFallback"
-            ? String(localized: "Storage Unavailable")
-            : String(localized: "Cloud Sync Unavailable")
+        String(localized: "Storage Unavailable")
     }
 
     var storageModeMessage: String {
-        if persistenceBackend == "memoryFallback" {
-            return String(localized: "History storage could not be opened. Changes are paused. Restart the app after resolving the storage problem.")
-        }
-        return String(localized: "iCloud is currently unavailable. Changes are paused so your history stays consistent across your devices.")
+        String(localized: "History storage could not be opened. Changes are paused. Restart the app after resolving the storage problem.")
     }
 
     var storageModeBannerText: String {
-        if persistenceBackend == "memoryFallback" {
-            return String(localized: "History storage unavailable. Changes are paused.")
-        }
-        return String(localized: "iCloud unavailable. Changes are paused.")
+        String(localized: "History storage unavailable. Changes are paused.")
     }
 
     var storageModeBanner: some View {

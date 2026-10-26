@@ -1,16 +1,41 @@
 import Foundation
+import SwiftData
 import Testing
 @testable import History_Lib
 
 @MainActor
 @Suite("Release Readiness")
 struct ReleaseReadinessTests {
-    @Test("Memory recovery never accepts history mutations, regardless of sync settings")
+    @Test("Only an opened primary store accepts history mutations")
     func recoveryIsReadOnly() {
         #expect(!HistoryStoragePolicy.canMutate(backend: "memoryFallback"))
-        #expect(HistoryStoragePolicy.canMutate(backend: "cloudKit"))
+        #expect(HistoryStoragePolicy.canMutate(backend: "primary"))
         #expect(!HistoryStoragePolicy.canMutate(backend: "localFallback"))
         #expect(!HistoryStoragePolicy.canMutate(backend: "unknown"))
+    }
+
+    @Test("A sync failure does not prevent local insertion or deletion")
+    func syncFailureLeavesPrimaryWritable() throws {
+        let activity = HistorySyncActivity()
+        activity.bind(storeIdentifiers: ["fictional-store"])
+        activity.receive(identifier: UUID(), store: "fictional-store", phase: .upload,
+                         endDate: Date(), succeeded: false, hasError: true)
+        #expect(activity.hasObservedFailure)
+        let container = try ModelContainer(for: Item.self, configurations:
+            ModelConfiguration(isStoredInMemoryOnly: true, cloudKitDatabase: .none))
+        let context = ModelContext(container)
+        try #require(HistoryStoragePolicy.canMutate(backend: "primary"))
+        let item = Item(uniqueKey: "sync-error-fixture", url: "https://example.test/",
+                        title: "Fictional record", visitedAt: Date(), visitCount: 1,
+                        sourceBrowser: "Safari", sourceFileName: "fixture", rawTimeUsec: 0)
+        context.insert(item)
+        try context.save()
+        #expect(try context.fetchCount(FetchDescriptor<Item>()) == 1)
+        try #require(HistoryStoragePolicy.canMutate(backend: "primary"))
+        context.delete(item)
+        try context.save()
+        #expect(try context.fetchCount(FetchDescriptor<Item>()) == 0)
+        #expect(activity.hasObservedFailure)
     }
 
     @Test("Favicon lookup drops recorded path, query, fragment, and credentials")

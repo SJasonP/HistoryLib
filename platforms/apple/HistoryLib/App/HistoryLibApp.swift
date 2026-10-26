@@ -31,12 +31,13 @@ struct HistoryLibApp: App {
         do {
             let container = try ModelContainer(for: schema, configurations: [cloudConfiguration])
             HistorySyncActivity.shared.bind(to: container)
-            defaults.set("cloudKit", forKey: "persistence_backend")
+            defaults.set("primary", forKey: "persistence_backend")
             defaults.removeObject(forKey: "persistence_error")
-            print("Persistence backend: CloudKit")
+            print("Persistence backend: Primary store (automatic CloudKit integration)")
             return container
         } catch {
-            // Keep the app usable even if CloudKit capability/signing is not ready.
+            // Recovery permits reading/exporting only; never silently accept
+            // mutations after the primary container fails to open.
             let cloudError = String(describing: error)
             print("CloudKit ModelContainer init failed: \(cloudError)")
             let localConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .none)
