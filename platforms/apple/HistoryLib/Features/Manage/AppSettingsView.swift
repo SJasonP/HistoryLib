@@ -6,6 +6,9 @@ struct AppSettingsView: View {
     @AppStorage("enable_delete") private var enableDelete = false
     @AppStorage("open_record_in_browser_on_click") private var openRecordInBrowserOnDoubleClick = true
     @AppStorage("default_expand_level") private var defaultExpandLevelRaw = HistoryDefaultExpandLevel.day.rawValue
+#if os(macOS)
+    @AppStorage("privacy_lock_enabled") private var privacyLockEnabled = true
+#endif
 
     var body: some View {
         Form {
@@ -45,6 +48,19 @@ struct AppSettingsView: View {
                     isOn: $openRecordInBrowserOnDoubleClick
                 )
             }
+
+#if os(macOS)
+            Section("Privacy") {
+                SettingsToggleRow(
+                    title: "Require authentication at launch",
+                    description: "Protects HistoryLib with your Mac's native authentication.",
+                    isOn: $privacyLockEnabled
+                )
+                .onChange(of: privacyLockEnabled) { _, enabled in
+                    MacPrivacyLock.shared.isEnabled = enabled
+                }
+            }
+#endif
         }
         .formStyle(.grouped)
         .navigationTitle("Settings")

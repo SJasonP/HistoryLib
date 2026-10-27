@@ -78,9 +78,17 @@ struct HistoryLibApp: App {
 #endif
     }
 
+    @ViewBuilder
     private var applicationContent: some View {
+#if os(macOS)
+        MacPrivacyLockGate {
+            ContentView()
+        }
+        .task { AppSettingsCloudSync.shared.refreshActivationState() }
+#else
         ContentView()
             .task { AppSettingsCloudSync.shared.refreshActivationState() }
+#endif
     }
 
     var body: some Scene {

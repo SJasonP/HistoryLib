@@ -10257,12 +10257,42 @@
     },
     "iCloud": {
       "localizations": {
-        "ar": { "stringUnit": { "state": "translated", "value": "iCloud" } },
-        "en-US": { "stringUnit": { "state": "translated", "value": "iCloud" } },
-        "es": { "stringUnit": { "state": "translated", "value": "iCloud" } },
-        "fr": { "stringUnit": { "state": "translated", "value": "iCloud" } },
-        "ru": { "stringUnit": { "state": "translated", "value": "iCloud" } },
-        "zh-Hans": { "stringUnit": { "state": "translated", "value": "iCloud" } }
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud"
+          }
+        }
       }
     },
     "Collapsed": {
@@ -10341,6 +10371,1006 @@
           "stringUnit": {
             "state": "translated",
             "value": "记录数量不可用"
+          }
+        }
+      }
+    },
+    "Protects HistoryLib with your Mac's native authentication.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحمي HistoryLib باستخدام المصادقة الأصلية في Mac."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protects HistoryLib with your Mac's native authentication."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protege HistoryLib con la autenticación nativa de tu Mac."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protège HistoryLib avec l’authentification native de votre Mac."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Защищает HistoryLib с помощью встроенной аутентификации Mac."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 Mac 的原生认证保护 HistoryLib。"
+          }
+        }
+      }
+    },
+    "Require authentication at launch": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "طلب المصادقة عند التشغيل"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Require authentication at launch"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requerir autenticación al iniciar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exiger une authentification au lancement"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Требовать аутентификацию при запуске"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启动时要求认证"
+          }
+        }
+      }
+    },
+    "Help Topics": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "موضوعات المساعدة"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Help Topics"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temas de ayuda"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sujets d’aide"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Разделы помощи"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "帮助主题"
+          }
+        }
+      }
+    },
+    "Want more browsers?": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هل تريد المزيد من المتصفحات؟"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Want more browsers?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Quieres más navegadores?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous voulez plus de navigateurs ?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нужны дополнительные браузеры?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "想要更多浏览器？"
+          }
+        }
+      }
+    },
+    "Use HistoryLib Helper to import supported desktop browsers.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استخدم HistoryLib Helper لاستيراد متصفحات سطح المكتب المدعومة."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use HistoryLib Helper to import supported desktop browsers."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa HistoryLib Helper para importar navegadores de escritorio compatibles."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilisez HistoryLib Helper pour importer les navigateurs de bureau pris en charge."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Используйте HistoryLib Helper для импорта поддерживаемых настольных браузеров."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 HistoryLib Helper 导入受支持的桌面浏览器。"
+          }
+        }
+      }
+    },
+    "Want to lock this app?": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هل تريد قفل هذا التطبيق؟"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Want to lock this app?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Quieres bloquear esta app?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous voulez verrouiller cette app ?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заблокировать приложение?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "想要锁定此应用？"
+          }
+        }
+      }
+    },
+    "Learn how HistoryLib protects access on each platform.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعرّف على كيفية حماية HistoryLib للوصول على كل منصة."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Learn how HistoryLib protects access on each platform."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descubre cómo protege HistoryLib el acceso en cada plataforma."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Découvrez comment HistoryLib protège l’accès sur chaque plateforme."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Узнайте, как HistoryLib защищает доступ на каждой платформе."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "了解 HistoryLib 如何在各个平台保护访问。"
+          }
+        }
+      }
+    },
+    "HistoryLib does not add a second app lock on iOS or iPadOS. Use Apple's system Lock App feature instead.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يضيف HistoryLib قفل تطبيق ثانياً على iOS أو iPadOS. استخدم ميزة قفل التطبيقات في Apple بدلاً من ذلك."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HistoryLib does not add a second app lock on iOS or iPadOS. Use Apple's system Lock App feature instead."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HistoryLib no añade un segundo bloqueo en iOS o iPadOS. Usa la función Bloquear apps del sistema de Apple."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HistoryLib n’ajoute pas de second verrouillage sur iOS ou iPadOS. Utilisez plutôt la fonction système de verrouillage des apps d’Apple."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HistoryLib не добавляет отдельную блокировку на iOS или iPadOS. Используйте системную функцию Apple для блокировки приложений."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HistoryLib 不会在 iOS 或 iPadOS 中另行提供应用锁，请改用 Apple 的系统应用锁功能。"
+          }
+        }
+      }
+    },
+    "Android uses the device or manufacturer's app lock or Private Space when available. HistoryLib does not add another Android app lock.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يستخدم Android قفل التطبيقات في الجهاز أو الشركة المصنّعة أو المساحة الخاصة عند توفرها. لا يضيف HistoryLib قفلاً آخر لتطبيق Android."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android uses the device or manufacturer's app lock or Private Space when available. HistoryLib does not add another Android app lock."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android usa el bloqueo de apps del dispositivo o del fabricante, o Espacio privado cuando está disponible. HistoryLib no añade otro bloqueo para Android."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android utilise le verrouillage d’apps de l’appareil ou du fabricant, ou l’Espace privé lorsqu’il est disponible. HistoryLib n’ajoute pas de second verrouillage Android."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android использует блокировку приложений устройства или производителя либо личное пространство, если они доступны. HistoryLib не добавляет отдельную блокировку Android."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android 使用设备或厂商提供的应用锁，或在可用时使用私密空间。HistoryLib 不会另行提供 Android 应用锁。"
+          }
+        }
+      }
+    },
+    "Desktop": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سطح المكتب"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desktop"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escritorio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordinateur"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Компьютер"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "桌面平台"
+          }
+        }
+      }
+    },
+    "macOS: HistoryLib's privacy lock is enabled by default. Open HistoryLib Settings and turn off Require authentication at launch if you do not want it.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS: قفل الخصوصية في HistoryLib مفعّل افتراضياً. افتح إعدادات HistoryLib وعطّل طلب المصادقة عند التشغيل إذا لم ترده."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS: HistoryLib's privacy lock is enabled by default. Open HistoryLib Settings and turn off Require authentication at launch if you do not want it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS: el bloqueo de privacidad de HistoryLib está activado de forma predeterminada. Abre los ajustes de HistoryLib y desactiva Requerir autenticación al iniciar si no lo quieres."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS : le verrouillage de confidentialité de HistoryLib est activé par défaut. Ouvrez les réglages de HistoryLib et désactivez Exiger une authentification au lancement si vous ne le souhaitez pas."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS: блокировка конфиденциальности HistoryLib включена по умолчанию. Откройте настройки HistoryLib и отключите требование аутентификации при запуске, если оно не нужно."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS：HistoryLib 默认启用隐私锁。如不需要，请打开 HistoryLib 设置并关闭“启动时要求认证”。"
+          }
+        }
+      }
+    },
+    "Windows: HistoryLib's privacy lock is enabled by default. Open Settings and turn off the authentication option if you do not want it.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows: قفل الخصوصية في HistoryLib مفعّل افتراضياً. افتح الإعدادات وعطّل خيار المصادقة إذا لم ترده."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows: HistoryLib's privacy lock is enabled by default. Open Settings and turn off the authentication option if you do not want it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows: el bloqueo de privacidad de HistoryLib está activado de forma predeterminada. Abre Ajustes y desactiva la opción de autenticación si no lo quieres."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows : le verrouillage de confidentialité de HistoryLib est activé par défaut. Ouvrez les paramètres et désactivez l’option d’authentification si vous ne le souhaitez pas."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows: блокировка конфиденциальности HistoryLib включена по умолчанию. Откройте настройки и отключите аутентификацию, если она не нужна."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows：HistoryLib 默认启用隐私锁。如不需要，请打开设置并关闭认证选项。"
+          }
+        }
+      }
+    },
+    "iOS and iPadOS": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS وiPadOS"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS and iPadOS"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS y iPadOS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS et iPadOS"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS и iPadOS"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS 和 iPadOS"
+          }
+        }
+      }
+    },
+    "On the Home Screen, touch and hold HistoryLib.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "في الشاشة الرئيسية، المس HistoryLib مطولاً."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On the Home Screen, touch and hold HistoryLib."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En la pantalla de inicio, mantén pulsada HistoryLib."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur l’écran d’accueil, maintenez HistoryLib appuyée."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На экране «Домой» нажмите и удерживайте HistoryLib."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在主屏幕上长按 HistoryLib。"
+          }
+        }
+      }
+    },
+    "Choose Require Face ID, Touch ID, or Passcode.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر طلب Face ID أو Touch ID أو رمز الدخول."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Require Face ID, Touch ID, or Passcode."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige Requerir Face ID, Touch ID o código."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez Exiger Face ID, Touch ID ou le code."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выберите «Требовать Face ID», Touch ID или код-пароль."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择“要求 Face ID”、“Touch ID”或密码。"
+          }
+        }
+      }
+    },
+    "Authenticate to lock or unlock the app. HistoryLib does not provide a second in-app lock.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صادق لقفل التطبيق أو إلغاء قفله. لا يوفر HistoryLib قفلاً ثانياً داخل التطبيق."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authenticate to lock or unlock the app. HistoryLib does not provide a second in-app lock."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autentícate para bloquear o desbloquear la app. HistoryLib no proporciona un segundo bloqueo dentro de la app."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authentifiez-vous pour verrouiller ou déverrouiller l’app. HistoryLib ne fournit pas de second verrouillage intégré."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пройдите аутентификацию, чтобы заблокировать или разблокировать приложение. HistoryLib не предоставляет дополнительную блокировку внутри приложения."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通过认证来锁定或解锁应用。HistoryLib 不会另行提供应用内锁。"
+          }
+        }
+      }
+    },
+    "Android": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        }
+      }
+    },
+    "Open your device's Security or Privacy settings.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح إعدادات الأمان أو الخصوصية في جهازك."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open your device's Security or Privacy settings."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre los ajustes de Seguridad o Privacidad del dispositivo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrez les réglages Sécurité ou Confidentialité de votre appareil."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Откройте настройки безопасности или конфиденциальности устройства."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开设备的安全或隐私设置。"
+          }
+        }
+      }
+    },
+    "Use the device or manufacturer App Lock, or Private Space when available.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استخدم قفل التطبيقات في الجهاز أو الشركة المصنّعة أو المساحة الخاصة عند توفرها."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the device or manufacturer App Lock, or Private Space when available."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa el bloqueo de apps del dispositivo o del fabricante, o Espacio privado cuando esté disponible."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilisez le verrouillage d’apps de l’appareil ou du fabricant, ou l’Espace privé lorsqu’il est disponible."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Используйте блокировку приложений устройства или производителя либо личное пространство, если они доступны."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用设备或厂商提供的应用锁，或在可用时使用私密空间。"
+          }
+        }
+      }
+    },
+    "Authenticate through the system feature before opening HistoryLib.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صادق عبر ميزة النظام قبل فتح HistoryLib."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authenticate through the system feature before opening HistoryLib."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autentícate mediante la función del sistema antes de abrir HistoryLib."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authentifiez-vous via la fonction système avant d’ouvrir HistoryLib."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пройдите аутентификацию с помощью системной функции перед открытием HistoryLib."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在打开 HistoryLib 前通过系统功能完成认证。"
+          }
+        }
+      }
+    },
+    "Authenticate to open HistoryLib": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صادق لفتح HistoryLib"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authenticate to open HistoryLib"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autentícate para abrir HistoryLib"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authentifiez-vous pour ouvrir HistoryLib"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пройдите аутентификацию, чтобы открыть HistoryLib"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "认证后打开 HistoryLib"
+          }
+        }
+      }
+    },
+    "Authentication failed. Try again.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فشلت المصادقة. حاول مرة أخرى."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authentication failed. Try again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La autenticación falló. Inténtalo de nuevo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec de l’authentification. Réessayez."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аутентификация не удалась. Повторите попытку."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "认证失败，请重试。"
+          }
+        }
+      }
+    },
+    "Retry authentication": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة محاولة المصادقة"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry authentication"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar autenticación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réessayer l’authentification"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторить аутентификацию"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重试认证"
+          }
+        }
+      }
+    },
+    "Unlock HistoryLib": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إلغاء قفل HistoryLib"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock HistoryLib"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear HistoryLib"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déverrouiller HistoryLib"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Разблокировать HistoryLib"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁 HistoryLib"
+          }
+        }
+      }
+    },
+    "Use Touch ID, Apple Watch, or your Mac password to continue.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استخدم Touch ID أو Apple Watch أو كلمة مرور Mac للمتابعة."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use Touch ID, Apple Watch, or your Mac password to continue."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa Touch ID, Apple Watch o la contraseña de tu Mac para continuar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilisez Touch ID, l’Apple Watch ou le mot de passe de votre Mac pour continuer."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Используйте Touch ID, Apple Watch или пароль Mac, чтобы продолжить."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 Touch ID、Apple Watch 或 Mac 密码继续。"
           }
         }
       }
