@@ -30,6 +30,9 @@ client included in a future coordinated release. See `versioning-and-release.md`
 - Provide equivalent settings and sync state, subject only to documented
   platform limitations.
 - Ship all six product languages defined in `localization.md`.
+- Protect the history library before usable content is shown: use the platform
+  system App Lock where it exists, and provide a default-on app-owned privacy
+  lock on desktop platforms without an equivalent system feature.
 
 Sync follows `sync.md`: HistoryLib 1.4 uses platform-local sync, and a
 platform may document that it ships without sync when platform-local sync is
@@ -47,6 +50,12 @@ unsupported state (see `platforms/android/docs/Android-1.4-Specification.zh-CN.m
   may use platform-native APIs.
 - A platform limitation must be documented here before it creates an observable
   behavior difference.
+
+The privacy-lock implementation differs by platform: iOS/iPadOS use the
+system Lock App feature; macOS and Windows use native local authentication
+with an app setting that defaults to enabled; Android may use a device or
+manufacturer privacy container and must document when that protection is not
+available.
 
 ## Backup
 

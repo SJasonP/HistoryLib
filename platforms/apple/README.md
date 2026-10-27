@@ -16,6 +16,10 @@ a ZIP-based `.hlz` archive with JSONL chunks and validation indexes.
 The Apple client is the v1.4 release target. The public archive format is
 versioned in `shared/specs`; platform UI and implementation details may evolve.
 
+On iOS and iPadOS, use Apple's system Lock App feature. On macOS, HistoryLib
+protects the library with a privacy lock enabled by default; it can be disabled
+in Settings and uses the Mac's native local authentication options.
+
 Browser history is sensitive personal data. Do not publish exported `.hlz`,
 `.zip`, or `.json` history files unless you have reviewed their contents.
 

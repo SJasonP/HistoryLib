@@ -19,6 +19,8 @@ Windows releases are deferred; their source is not a shipping claim.
   record content is donated to Siri by this implementation.
 - Full resources for the six United Nations official languages.
 - Apple privacy manifest and isolated, synthetic-data automated test tooling.
+- Default-on macOS privacy lock using native local authentication, with an
+  opt-out in app Settings. iOS uses Apple's system Lock App feature.
 
 ### Changed
 

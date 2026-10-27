@@ -31,6 +31,10 @@ another platform compatible.
   dependencies; required fixes are applied and revalidated.
 - Humans verify interactive upgrades, CloudKit sync, visual behavior, and
   optional on-device-model/Siri behavior and fallback.
+- macOS verifies the default privacy lock, successful and cancelled native
+  authentication, the Settings opt-out, and relaunch behavior. Windows keeps
+  the same contract for its deferred release; Android documents the device
+  privacy-lock boundary.
 - Before distribution, verify the CloudKit production schema and entitlements,
   signed archives, store metadata/privacy answers, and export-compliance answers.
 - Release notes describe the changes since v1.3 and identify the Apple-only

@@ -9,6 +9,10 @@ HistoryLib. It targets Android API 36 and later, supports only the `arm64-v8a`
 ABI, and remains under development for a future release.
 Its product UI supports American English, Simplified Chinese, Arabic, French,
 Russian, and Spanish. Arabic uses Android's native right-to-left layout.
+Android relies on the device or manufacturer privacy container for app-level
+locking when available; stock Android does not expose one universal app-lock
+API, so the client must document the protection available on each supported
+device class.
 
 ## Build
 

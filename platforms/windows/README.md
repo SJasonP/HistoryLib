@@ -8,6 +8,11 @@ This directory contains the native Windows client for a future
 HistoryLib release. The implementation uses C# with WinUI 3 and the
 Windows App SDK. Product behavior follows `../../shared/specs`.
 
+Windows uses an app-owned privacy lock enabled by default. Settings can disable
+it. The implementation must use Windows Hello or another native local
+authentication mechanism and must keep the library unavailable until launch
+authentication succeeds.
+
 ## Build
 
 Open `HistoryLib.Windows.sln` in Visual Studio, or run:

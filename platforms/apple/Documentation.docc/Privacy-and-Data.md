@@ -8,6 +8,16 @@ HistoryLib is built around browser history data. URLs, page titles, visit
 timestamps, source browser names, and redirect metadata can reveal private
 activity. Treat local databases, iCloud data, and exported files as sensitive.
 
+## Application privacy lock
+
+iOS and iPadOS use Apple's system Lock App feature. macOS uses HistoryLib's
+default-on app privacy lock with LocalAuthentication; it can be disabled from
+the app's Settings. The macOS lock uses Touch ID, Apple Watch, or the Mac
+login password when available. HistoryLib never stores biometric data or
+credentials. Authentication is required before the first usable library
+content appears after launch, and a failed or cancelled request leaves the
+library unavailable.
+
 ## Data Stored by the App
 
 History records are stored as SwiftData `Item` models. A record can contain:
