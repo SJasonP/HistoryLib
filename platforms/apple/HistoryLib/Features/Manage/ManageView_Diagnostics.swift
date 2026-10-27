@@ -10,8 +10,7 @@ extension ManageView {
 
     var syncSection: some View {
         Section("iCloud") {
-            LabeledContent("Sync Control", value: String(localized: "Managed by System"))
-            LabeledContent("iCloud Account", value: diagnostics.accountMessage)
+            LabeledContent("iCloud Service", value: diagnostics.accountMessage)
             LabeledContent("Sync Activity", value: syncActivityText)
             LabeledContent("Last Synced") {
                 if let date = syncActivity.lastSuccessfulTransfer {
@@ -48,34 +47,45 @@ extension ManageView {
             }
             Text("Clear Cache removes disposable files and releases loaded search results. It also asks the database to reclaim completed journals. History, indexes, sync metadata, and busy journals are preserved.")
                 .font(.footnote).foregroundStyle(.secondary)
-            Text("Site icons are turned off when clearing to prevent immediate downloads. Active transfers must finish first.")
-                .font(.footnote).foregroundStyle(.secondary)
             Button {
                 guard !diagnostics.isClearing else { return }
-                diagnostics.isClearing = true
-                showSiteIcons = false
-                Task { @MainActor in
-                    switch await onClearCache() {
-                    case .completed:
-                        diagnostics.cacheMessage = String(localized: "Cache clearing finished.")
-                    case .busy:
-                        diagnostics.cacheMessage = String(localized: "Cache cleared. Some database journals are busy; try again later.")
-                    case .unavailable:
-                        diagnostics.cacheMessage = String(localized: "Cache cleared. Database journal maintenance could not finish.")
-                    }
-                    if monitoringEnabled {
-                        let usage = await onMeasureStorageUsage()
-                        if monitoringEnabled { diagnostics.storageUsage = usage }
-                    }
-                    diagnostics.isClearing = false
-                }
+                showingClearCacheConfirmation = true
             } label: {
                 if diagnostics.isClearing { ProgressView() } else { Text("Clear Cache") }
             }
             .disabled(diagnostics.isClearing || isImporting || isPreparingExport)
-            if let message = diagnostics.cacheMessage {
-                Text(message).font(.footnote).foregroundStyle(.secondary)
+        }
+    }
+
+    var clearCacheConfirmationMessage: String {
+        let clearable = diagnostics.storageUsage.map { byteCount($0.clearableCacheBytes) } ?? String(localized: "the disposable cache")
+        if showSiteIcons {
+            return String(localized: "Continuing will only clear \(clearable) of cache data and turn off Show Site Icons.")
+        }
+        return String(localized: "Continuing will only clear \(clearable) of cache data.")
+    }
+
+    func beginClearCache() {
+        guard !diagnostics.isClearing else { return }
+        diagnostics.isClearing = true
+        showSiteIcons = false
+        Task { @MainActor in
+            let result: String
+            switch await onClearCache() {
+            case .completed:
+                result = String(localized: "Cache cleared successfully.")
+            case .busy:
+                result = String(localized: "Cache cleared. Some database journals are busy; try again later.")
+            case .unavailable:
+                result = String(localized: "Cache cleared. Database journal maintenance could not finish.")
             }
+            if monitoringEnabled {
+                let usage = await onMeasureStorageUsage()
+                if monitoringEnabled { diagnostics.storageUsage = usage }
+            }
+            diagnostics.isClearing = false
+            cacheResultMessage = result
+            showingCacheResult = true
         }
     }
 

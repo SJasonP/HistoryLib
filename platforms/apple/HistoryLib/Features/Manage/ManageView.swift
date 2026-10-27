@@ -14,6 +14,9 @@ struct ManageView: View {
     @State var isVisible = false
     @State private var accountGeneration = 0
     @State var showingICloudGuide = false
+    @State var showingClearCacheConfirmation = false
+    @State var showingCacheResult = false
+    @State var cacheResultMessage = ""
 
     let isPreparingExport: Bool
     let enableDelete: Bool
@@ -138,6 +141,17 @@ struct ManageView: View {
             Button("OK", action: openSystemSettings)
         } message: {
             Text(iCloudSettingsGuide)
+        }
+        .alert("Clear Cache", isPresented: $showingClearCacheConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Clear Cache", role: .destructive, action: beginClearCache)
+        } message: {
+            Text(clearCacheConfirmationMessage)
+        }
+        .alert("Clear Cache Result", isPresented: $showingCacheResult) {
+            Button("OK") { }
+        } message: {
+            Text(cacheResultMessage)
         }
         .alert("Weak Password", isPresented: $isShowingWeakPasswordAlert) {
             Button("Cancel", role: .cancel) { }

@@ -11,7 +11,6 @@ final class ManageDiagnostics {
     var accountMessage = String(localized: "Checking…")
     var cloudMessage = String(localized: "Checking…")
     var isClearing = false
-    var cacheMessage: String?
 
     func monitorLocal(
         count: () throws -> Int,

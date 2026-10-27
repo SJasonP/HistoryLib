@@ -3781,11 +3781,12 @@
       }
     },
     "Loading...": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在加载……"
+            "value": "تحميل…"
           }
         },
         "en-US": {
@@ -3794,10 +3795,10 @@
             "value": "Loading..."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "تحميل…"
+            "value": "Cargando…"
           }
         },
         "fr": {
@@ -3812,10 +3813,10 @@
             "value": "Загрузка…"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cargando…"
+            "value": "正在加载……"
           }
         }
       }
@@ -6545,11 +6546,12 @@
       }
     },
     "Bring browser history into HistoryLib.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "将浏览器历史记录导入 HistoryLib。"
+            "value": "قم بإحضار سجل المتصفح إلى HistoryLib."
           }
         },
         "en-US": {
@@ -6558,10 +6560,10 @@
             "value": "Bring browser history into HistoryLib."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "قم بإحضار سجل المتصفح إلى HistoryLib."
+            "value": "Traiga el historial del navegador a HistoryLib."
           }
         },
         "fr": {
@@ -6576,10 +6578,10 @@
             "value": "Перенесите историю браузера в HistoryLib."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Traiga el historial del navegador a HistoryLib."
+            "value": "将浏览器历史记录导入 HistoryLib。"
           }
         }
       }
@@ -6785,11 +6787,12 @@
       }
     },
     "HistoryLib Helper": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "HistoryLib Helper"
+            "value": "مساعد HistoryLib"
           }
         },
         "en-US": {
@@ -6798,10 +6801,10 @@
             "value": "HistoryLib Helper"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "مساعد HistoryLib"
+            "value": "Ayudante de HistoryLib"
           }
         },
         "fr": {
@@ -6816,10 +6819,10 @@
             "value": "Помощник HistoryLib"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ayudante de HistoryLib"
+            "value": "HistoryLib Helper"
           }
         }
       }
@@ -7105,11 +7108,12 @@
       }
     },
     "HistoryLib can directly import only Safari history, Google Takeout exports, and .hlz archives.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "HistoryLib 本体仅支持直接导入 Safari 历史记录、Google Takeout 导出文件和 .hlz 归档。"
+            "value": "يمكن لـ HistoryLib استيراد سجل Safari وصادرات Google Takeout وأرشيفات ‎.hlz مباشرةً فقط."
           }
         },
         "en-US": {
@@ -7118,10 +7122,10 @@
             "value": "HistoryLib can directly import only Safari history, Google Takeout exports, and .hlz archives."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "يمكن لـ HistoryLib استيراد سجل Safari وصادرات Google Takeout وأرشيفات ‎.hlz مباشرةً فقط."
+            "value": "HistoryLib puede importar directamente sólo el historial de Safari, las exportaciones de Google Takeout y los archivos .hlz."
           }
         },
         "fr": {
@@ -7136,20 +7140,21 @@
             "value": "HistoryLib может напрямую импортировать только историю Safari, экспорт Google Takeout и архивы .hlz."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "HistoryLib puede importar directamente sólo el historial de Safari, las exportaciones de Google Takeout y los archivos .hlz."
+            "value": "HistoryLib 本体仅支持直接导入 Safari 历史记录、Google Takeout 导出文件和 .hlz 归档。"
           }
         }
       }
     },
     "Import Options": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "导入方式"
+            "value": "خيارات الاستيراد"
           }
         },
         "en-US": {
@@ -7158,10 +7163,10 @@
             "value": "Import Options"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "خيارات الاستيراد"
+            "value": "Opciones de importación"
           }
         },
         "fr": {
@@ -7176,20 +7181,21 @@
             "value": "Параметры импорта"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Opciones de importación"
+            "value": "导入方式"
           }
         }
       }
     },
     "To import history from a computer or from more browsers, use HistoryLib Helper to create a .hlz archive, then import that archive into HistoryLib.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "如果要导入电脑上的历史记录或支持更多浏览器，请使用 HistoryLib Helper 创建 .hlz 归档，然后将其导入 HistoryLib。"
+            "value": "لاستيراد السجل من جهاز كمبيوتر أو من المزيد من المتصفحات، استخدم HistoryLib Helper لإنشاء أرشيف .hlz، ثم قم باستيراد هذا الأرشيف إلى HistoryLib."
           }
         },
         "en-US": {
@@ -7198,10 +7204,10 @@
             "value": "To import history from a computer or from more browsers, use HistoryLib Helper to create a .hlz archive, then import that archive into HistoryLib."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "لاستيراد السجل من جهاز كمبيوتر أو من المزيد من المتصفحات، استخدم HistoryLib Helper لإنشاء أرشيف .hlz، ثم قم باستيراد هذا الأرشيف إلى HistoryLib."
+            "value": "Para importar el historial desde una computadora o desde más navegadores, use HistoryLib Helper para crear un archivo .hlz y luego importe ese archivo a HistoryLib."
           }
         },
         "fr": {
@@ -7216,10 +7222,10 @@
             "value": "Чтобы импортировать историю с компьютера или из других браузеров, используйте HistoryLib Helper для создания архива .hlz, а затем импортируйте этот архив в HistoryLib."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Para importar el historial desde una computadora o desde más navegadores, use HistoryLib Helper para crear un archivo .hlz y luego importe ese archivo a HistoryLib."
+            "value": "如果要导入电脑上的历史记录或支持更多浏览器，请使用 HistoryLib Helper 创建 .hlz 归档，然后将其导入 HistoryLib。"
           }
         }
       }
@@ -11371,6 +11377,166 @@
           "stringUnit": {
             "state": "translated",
             "value": "使用 Touch ID、Apple Watch 或 Mac 密码继续。"
+          }
+        }
+      }
+    },
+    "Clear Cache Result": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نتيجة مسح ذاكرة التخزين المؤقت"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear Cache Result"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resultado del borrado de caché"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résultat du vidage du cache"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Результат очистки кэша"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理缓存结果"
+          }
+        }
+      }
+    },
+    "iCloud Service": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خدمة iCloud"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud Service"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servicio de iCloud"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service iCloud"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сервис iCloud"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud 服务"
+          }
+        }
+      }
+    },
+    "Cache cleared successfully.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم مسح ذاكرة التخزين المؤقت بنجاح."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cache cleared successfully."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La caché se ha borrado correctamente."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le cache a été vidé."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Кэш успешно очищен."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "缓存已成功清理。"
+          }
+        }
+      }
+    },
+    "the disposable cache": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ذاكرة التخزين المؤقت القابلة للتخلص منها"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the disposable cache"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "la caché desechable"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "le cache temporaire"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "временный кэш"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可清理缓存"
           }
         }
       }
