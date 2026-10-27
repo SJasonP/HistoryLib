@@ -81,6 +81,8 @@ struct ContentView: View {
     @State var isImporting = false
     @State var importProgressFraction: Double?
     @State var importProgressMessage = String(localized: "Preparing import...")
+    @State var importProgressImportedRecordCount = 0
+    @State var importProgressSkippedRecordCount = 0
     @State var isCancellingImport = false
     @State var importTask: Task<Void, Never>?
     @State var pendingEncryptedImportURL: URL?

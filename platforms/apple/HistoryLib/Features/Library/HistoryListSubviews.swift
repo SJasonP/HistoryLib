@@ -104,6 +104,10 @@ private struct HistoryDayNavigationList: View {
                         Spacer()
                         Text(dayCountProvider(dayGroup.dayStart).map(String.init) ?? "...")
                             .foregroundStyle(.secondary)
+                            .accessibilityLabel(
+                                dayCountProvider(dayGroup.dayStart).map(String.init)
+                                    ?? String(localized: "Record count unavailable")
+                            )
                     }
                 }
                 .onAppear {
@@ -166,14 +170,12 @@ private struct HistoryRecordList: View {
                     onLoadMoreDayItems(dayStart)
                 } label: {
                     if isLoading {
-                        HStack {
-                            ProgressView()
-                            Text("Loading...")
-                        }
+                        Label("Loading more records", systemImage: "arrow.triangle.2.circlepath")
                     } else {
                         Text("Load More")
                     }
                 }
+                .accessibilityLabel(isLoading ? "Loading more records" : "Load More")
             }
         }
         .navigationTitle(dayTitle)

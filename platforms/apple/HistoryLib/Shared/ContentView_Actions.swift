@@ -125,6 +125,8 @@ extension ContentView {
         isCancellingImport = false
         importProgressFraction = nil
         importProgressMessage = String(localized: "Preparing import...")
+        importProgressImportedRecordCount = 0
+        importProgressSkippedRecordCount = 0
 
         importTask = Task { @MainActor in
             var stagedURL: URL?
@@ -165,13 +167,19 @@ extension ContentView {
                     progress: { progress in
                         importProgressFraction = progress.fraction
                         importProgressMessage = progress.message
+                        importProgressImportedRecordCount = progress.importedRecordCount
+                        importProgressSkippedRecordCount = progress.skippedRecordCount
                     }
                 )
 
                 applyImportReport(report)
             } catch is CancellationError {
-                // User cancelled. Any records imported before cancellation remain;
-                // re-importing is safe because import deduplicates.
+                importFeedbackMessage = [
+                    String(localized: "Import cancelled. Already imported records remain."),
+                    String(localized: "Imported records: \(importProgressImportedRecordCount)"),
+                    String(localized: "Skipped records: \(importProgressSkippedRecordCount)")
+                ].joined(separator: "\n")
+                showingImportFeedback = true
                 scheduleDerivedDataRefresh()
             } catch {
                 importFeedbackMessage = error.localizedDescription
@@ -192,6 +200,8 @@ extension ContentView {
         isCancellingImport = false
         importProgressFraction = nil
         importProgressMessage = String(localized: "Decrypting archive...")
+        importProgressImportedRecordCount = 0
+        importProgressSkippedRecordCount = 0
 
         importTask = Task { @MainActor in
             var retainStagedItem = false
@@ -212,10 +222,18 @@ extension ContentView {
                     progress: { progress in
                         importProgressFraction = progress.fraction
                         importProgressMessage = progress.message
+                        importProgressImportedRecordCount = progress.importedRecordCount
+                        importProgressSkippedRecordCount = progress.skippedRecordCount
                     }
                 )
                 applyImportReport(report)
             } catch is CancellationError {
+                importFeedbackMessage = [
+                    String(localized: "Import cancelled. Already imported records remain."),
+                    String(localized: "Imported records: \(importProgressImportedRecordCount)"),
+                    String(localized: "Skipped records: \(importProgressSkippedRecordCount)")
+                ].joined(separator: "\n")
+                showingImportFeedback = true
                 scheduleDerivedDataRefresh()
             } catch HistoryLibEncryptedArchiveError.authenticationFailed {
                 retainStagedItem = true

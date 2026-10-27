@@ -262,6 +262,8 @@ struct HistoryListView: View {
         }
         .buttonStyle(.plain)
         .padding(.leading, CGFloat(level) * 16)
+        .accessibilityLabel(title)
+        .accessibilityValue(String(localized: isExpanded ? "Expanded" : "Collapsed"))
     }
 
     @ViewBuilder
@@ -304,16 +306,14 @@ struct HistoryListView: View {
                 onLoadMoreDayItems(dayStart)
             } label: {
                 if isLoading {
-                    HStack {
-                        ProgressView()
-                        Text("Loading...")
-                    }
+                    Label("Loading more records", systemImage: "arrow.triangle.2.circlepath")
                 } else {
                     Text("Load More")
                 }
             }
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
+            .accessibilityLabel(isLoading ? "Loading more records" : "Load More")
         }
     }
 
@@ -337,11 +337,8 @@ struct HistoryListView: View {
                     }
 
                     if canLoadMoreSearchResults || isLoadingSearchResults {
-                        HStack {
-                            Spacer()
-                            ProgressView()
-                            Spacer()
-                        }
+                        Label("Loading more records", systemImage: "arrow.triangle.2.circlepath")
+                            .frame(maxWidth: .infinity)
                         .task {
                             onLoadMoreSearchResults()
                         }
@@ -367,11 +364,8 @@ struct HistoryListView: View {
             }
 
             if isSearching && (canLoadMoreSearchResults || isLoadingSearchResults) {
-                HStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                }
+                Label("Loading more records", systemImage: "arrow.triangle.2.circlepath")
+                    .frame(maxWidth: .infinity)
                 .task {
                     onLoadMoreSearchResults()
                 }
