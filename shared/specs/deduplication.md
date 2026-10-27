@@ -41,6 +41,10 @@ normalizedURL|visitedSecond|normalizedBrowser
 - A duplicate does not create another stored record.
 - Its `visitCount`, clamped to at least one before merge, is added to the
   existing record's count.
+- If the sum exceeds the platform's count storage range, it saturates at that
+  range's maximum; it must never wrap or terminate the process. The same rule
+  applies to imported, already-persisted, and synced records, including every
+  intermediate accumulator in post-sync cleanup. An empty accumulator is zero.
 - The operation is reported as skipped or merged rather than imported.
 - Rich optional metadata must not be replaced by poorer empty metadata. Exact
   precedence rules must be covered by shared fixtures before implementations

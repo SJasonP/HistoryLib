@@ -22,11 +22,12 @@
       "shouldTranslate": false
     },
     "A connection is required. Changes are saved on this device until you are back online.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "需要网络连接。更改已保存在此设备，联网后将自动同步。"
+            "value": "مطلوب اتصال. يتم حفظ التغييرات على هذا الجهاز حتى تتصل بالإنترنت مرة أخرى."
           }
         },
         "en-US": {
@@ -35,10 +36,10 @@
             "value": "A connection is required. Changes are saved on this device until you are back online."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "مطلوب اتصال. يتم حفظ التغييرات على هذا الجهاز حتى تتصل بالإنترنت مرة أخرى."
+            "value": "Se requiere una conexión. Los cambios se guardan en este dispositivo hasta que vuelva a estar en línea."
           }
         },
         "fr": {
@@ -53,10 +54,10 @@
             "value": "Требуется соединение. Изменения сохраняются на этом устройстве, пока вы не вернетесь в Интернет."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Se requiere una conexión. Los cambios se guardan en este dispositivo hasta que vuelva a estar en línea."
+            "value": "需要网络连接。更改已保存在此设备，联网后将自动同步。"
           }
         }
       }
@@ -542,11 +543,12 @@
       }
     },
     "check iCloud sync": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "检查 iCloud 同步"
+            "value": "تحقق من مزامنة iCloud"
           }
         },
         "en-US": {
@@ -555,10 +557,10 @@
             "value": "check iCloud sync"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "تحقق من مزامنة iCloud"
+            "value": "comprobar la sincronización de iCloud"
           }
         },
         "fr": {
@@ -573,20 +575,21 @@
             "value": "проверить синхронизацию с iCloud"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "comprobar la sincronización de iCloud"
+            "value": "检查 iCloud 同步"
           }
         }
       }
     },
     "Check iCloud Sync": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "检查iCloud云同步"
+            "value": "تحقق من مزامنة iCloud"
           }
         },
         "en-US": {
@@ -595,10 +598,10 @@
             "value": "Check iCloud Sync"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "تحقق من مزامنة iCloud"
+            "value": "Verifique la sincronización de iCloud"
           }
         },
         "fr": {
@@ -613,10 +616,10 @@
             "value": "Проверьте синхронизацию iCloud"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verifique la sincronización de iCloud"
+            "value": "检查iCloud云同步"
           }
         }
       }
@@ -702,11 +705,12 @@
       }
     },
     "Clearable cache: %@": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "可清理缓存：%@"
+            "value": "ذاكرة التخزين المؤقت القابلة للمسح: %@"
           }
         },
         "en-US": {
@@ -715,10 +719,10 @@
             "value": "Clearable cache: %@"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "ذاكرة التخزين المؤقت القابلة للمسح: %@"
+            "value": "Caché borrable: %@"
           }
         },
         "fr": {
@@ -733,10 +737,10 @@
             "value": "Очищаемый кэш: %@"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Caché borrable: %@"
+            "value": "可清理缓存：%@"
           }
         }
       }
@@ -862,11 +866,12 @@
       }
     },
     "Continuing will only clear %@ of cache data and turn off Show Site Icons.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "如果继续，只会清理 %@ 的缓存数据并关闭“显示网站图标”。"
+            "value": "ستؤدي المتابعة إلى مسح %@ فقط من بيانات ذاكرة التخزين المؤقت وإيقاف تشغيل \"إظهار أيقونات الموقع\"."
           }
         },
         "en-US": {
@@ -875,10 +880,10 @@
             "value": "Continuing will only clear %@ of cache data and turn off Show Site Icons."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "ستؤدي المتابعة إلى مسح %@ فقط من بيانات ذاكرة التخزين المؤقت وإيقاف تشغيل \"إظهار أيقونات الموقع\"."
+            "value": "Si continúa, solo se borrarán los datos de la caché de %@ y se desactivará Mostrar iconos del sitio."
           }
         },
         "fr": {
@@ -893,20 +898,21 @@
             "value": "При продолжении будут удалены только данные кэша %@ и отключено отображение значков сайтов."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Si continúa, solo se borrarán los datos de la caché de %@ y se desactivará Mostrar iconos del sitio."
+            "value": "如果继续，只会清理 %@ 的缓存数据并关闭“显示网站图标”。"
           }
         }
       }
     },
     "Continuing will only clear %@ of cache data.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "如果继续，只会清理 %@ 的缓存数据。"
+            "value": "ستؤدي المتابعة إلى مسح %@ فقط من بيانات ذاكرة التخزين المؤقت."
           }
         },
         "en-US": {
@@ -915,10 +921,10 @@
             "value": "Continuing will only clear %@ of cache data."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "ستؤدي المتابعة إلى مسح %@ فقط من بيانات ذاكرة التخزين المؤقت."
+            "value": "Continuar solo borrará %@ de los datos de la caché."
           }
         },
         "fr": {
@@ -933,10 +939,10 @@
             "value": "Продолжение очистит только %@ данных кэша."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Continuar solo borrará %@ de los datos de la caché."
+            "value": "如果继续，只会清理 %@ 的缓存数据。"
           }
         }
       }
@@ -1328,11 +1334,12 @@
       }
     },
     "delete records": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除记录"
+            "value": "حذف السجلات"
           }
         },
         "en-US": {
@@ -1341,10 +1348,10 @@
             "value": "delete records"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "حذف السجلات"
+            "value": "eliminar registros"
           }
         },
         "fr": {
@@ -1359,10 +1366,10 @@
             "value": "удалить записи"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "eliminar registros"
+            "value": "删除记录"
           }
         }
       }
@@ -2635,11 +2642,12 @@
       }
     },
     "iCloud Sync Information": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "iCloud 同步信息"
+            "value": "معلومات مزامنة iCloud"
           }
         },
         "en-US": {
@@ -2648,10 +2656,10 @@
             "value": "iCloud Sync Information"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "معلومات مزامنة iCloud"
+            "value": "Información de sincronización de iCloud"
           }
         },
         "fr": {
@@ -2666,20 +2674,21 @@
             "value": "Информация о синхронизации iCloud"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Información de sincronización de iCloud"
+            "value": "iCloud 同步信息"
           }
         }
       }
     },
     "iCloud sync is disabled in Settings.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "已在设置中关闭 iCloud 同步。"
+            "value": "تم تعطيل مزامنة iCloud في الإعدادات."
           }
         },
         "en-US": {
@@ -2688,10 +2697,10 @@
             "value": "iCloud sync is disabled in Settings."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "تم تعطيل مزامنة iCloud في الإعدادات."
+            "value": "La sincronización de iCloud está deshabilitada en Configuración."
           }
         },
         "fr": {
@@ -2706,20 +2715,21 @@
             "value": "Синхронизация с iCloud отключена в настройках."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "La sincronización de iCloud está deshabilitada en Configuración."
+            "value": "已在设置中关闭 iCloud 同步。"
           }
         }
       }
     },
     "iCloud sync is disabled in Settings. History changes are stored locally on this device.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "已在设置中关闭 iCloud 同步。历史更改将存储在此设备本地。"
+            "value": "تم تعطيل مزامنة iCloud في الإعدادات. يتم تخزين تغييرات السجل محليًا على هذا الجهاز."
           }
         },
         "en-US": {
@@ -2728,10 +2738,10 @@
             "value": "iCloud sync is disabled in Settings. History changes are stored locally on this device."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "تم تعطيل مزامنة iCloud في الإعدادات. يتم تخزين تغييرات السجل محليًا على هذا الجهاز."
+            "value": "La sincronización de iCloud está deshabilitada en Configuración. Los cambios del historial se almacenan localmente en este dispositivo."
           }
         },
         "fr": {
@@ -2746,20 +2756,21 @@
             "value": "Синхронизация с iCloud отключена в настройках. Изменения истории хранятся локально на этом устройстве."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "La sincronización de iCloud está deshabilitada en Configuración. Los cambios del historial se almacenan localmente en este dispositivo."
+            "value": "已在设置中关闭 iCloud 同步。历史更改将存储在此设备本地。"
           }
         }
       }
     },
     "iCloud sync is on.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "iCloud 同步已开启。"
+            "value": "مزامنة iCloud قيد التشغيل."
           }
         },
         "en-US": {
@@ -2768,10 +2779,10 @@
             "value": "iCloud sync is on."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "مزامنة iCloud قيد التشغيل."
+            "value": "La sincronización de iCloud está activada."
           }
         },
         "fr": {
@@ -2786,98 +2797,21 @@
             "value": "Синхронизация с iCloud включена."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "La sincronización de iCloud está activada."
+            "value": "iCloud 同步已开启。"
           }
         }
       }
     },
     "iCloud sync is on.\nRecords on this device: %lld\n%@": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud 同步已开启。\n此设备上的记录数：%1$lld\n%2$@"
-          }
-        },
-        "en-US": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "iCloud sync is on.\nRecord on this device: %lld\n%@"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "iCloud sync is on.\nRecords on this device: %lld\n%@"
-                }
-              }
-            }
-          }
-        },
         "ar": {
           "stringUnit": {
             "state": "translated",
             "value": "مزامنة iCloud قيد التشغيل.\nعدد السجلات على هذا الجهاز: %lld\n%@"
-          }
-        },
-        "fr": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "La synchronisation iCloud est activée.\nEnregistrement sur cet appareil : %lld\n%@"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "La synchronisation iCloud est activée.\nEnregistrements sur cet appareil : %lld\n%@"
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "La synchronisation iCloud est activée.\nEnregistrements sur cet appareil : %lld\n%@"
-                }
-              }
-            }
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Синхронизация iCloud включена.\nЗаписей на этом устройстве: %lld\n%@"
-          }
-        },
-        "es": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "La sincronización de iCloud está activada.\nRegistro en este dispositivo: %lld\n%@"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "La sincronización de iCloud está activada.\nRegistros en este dispositivo: %lld\n%@"
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "La sincronización de iCloud está activada.\nRegistros en este dispositivo: %lld\n%@"
-                }
-              }
-            }
           }
         },
         "en": {
@@ -2897,15 +2831,94 @@
               }
             }
           }
+        },
+        "en-US": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "iCloud sync is on.\nRecord on this device: %lld\n%@"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "iCloud sync is on.\nRecords on this device: %lld\n%@"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La sincronización de iCloud está activada.\nRegistros en este dispositivo: %lld\n%@"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La sincronización de iCloud está activada.\nRegistro en este dispositivo: %lld\n%@"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La sincronización de iCloud está activada.\nRegistros en este dispositivo: %lld\n%@"
+                }
+              }
+            }
+          }
+        },
+        "fr": {
+          "variations": {
+            "plural": {
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La synchronisation iCloud est activée.\nEnregistrements sur cet appareil : %lld\n%@"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La synchronisation iCloud est activée.\nEnregistrement sur cet appareil : %lld\n%@"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "La synchronisation iCloud est activée.\nEnregistrements sur cet appareil : %lld\n%@"
+                }
+              }
+            }
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Синхронизация iCloud включена.\nЗаписей на этом устройстве: %lld\n%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud 同步已开启。\n此设备上的记录数：%1$lld\n%2$@"
+          }
         }
       }
     },
     "iCloud syncing is handled entirely by Apple. HistoryLib cannot see the current sync progress, force a sync, or control which records sync and when.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "iCloud 同步完全由 Apple 系统控制。HistoryLib 无法获知当前同步进度、强制开始同步，也无法精细控制哪些记录在何时同步。"
+            "value": "تتم معالجة مزامنة iCloud بالكامل بواسطة Apple. لا يمكن لـ HistoryLib رؤية تقدم المزامنة الحالية، أو فرض المزامنة، أو التحكم في السجلات التي تتم مزامنتها ومتى."
           }
         },
         "en-US": {
@@ -2914,10 +2927,10 @@
             "value": "iCloud syncing is handled entirely by Apple. HistoryLib cannot see the current sync progress, force a sync, or control which records sync and when."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "تتم معالجة مزامنة iCloud بالكامل بواسطة Apple. لا يمكن لـ HistoryLib رؤية تقدم المزامنة الحالية، أو فرض المزامنة، أو التحكم في السجلات التي تتم مزامنتها ومتى."
+            "value": "La sincronización de iCloud está a cargo exclusivamente de Apple. HistoryLib no puede ver el progreso de la sincronización actual, forzar una sincronización ni controlar qué registros se sincronizan y cuándo."
           }
         },
         "fr": {
@@ -2932,20 +2945,21 @@
             "value": "Синхронизация iCloud полностью осуществляется Apple. HistoryLib не может видеть текущий ход синхронизации, принудительно выполнять синхронизацию или контролировать, какие записи синхронизации и когда."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "La sincronización de iCloud está a cargo exclusivamente de Apple. HistoryLib no puede ver el progreso de la sincronización actual, forzar una sincronización ni controlar qué registros se sincronizan y cuándo."
+            "value": "iCloud 同步完全由 Apple 系统控制。HistoryLib 无法获知当前同步进度、强制开始同步，也无法精细控制哪些记录在何时同步。"
           }
         }
       }
     },
     "import": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "导入"
+            "value": "يستورد"
           }
         },
         "en-US": {
@@ -2954,10 +2968,10 @@
             "value": "import"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "يستورد"
+            "value": "importar"
           }
         },
         "fr": {
@@ -2972,10 +2986,10 @@
             "value": "импортировать"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "importar"
+            "value": "导入"
           }
         }
       }
@@ -4247,11 +4261,12 @@
       }
     },
     "Non-clearable data (not cache): %@": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "不可清理的非缓存数据：%@"
+            "value": "بيانات غير قابلة للمسح (ليست ذاكرة تخزين مؤقت): %@"
           }
         },
         "en-US": {
@@ -4260,10 +4275,10 @@
             "value": "Non-clearable data (not cache): %@"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "بيانات غير قابلة للمسح (ليست ذاكرة تخزين مؤقت): %@"
+            "value": "Datos no borrables (no caché): %@"
           }
         },
         "fr": {
@@ -4278,20 +4293,21 @@
             "value": "Неочищаемые данные (не кэш): %@"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Datos no borrables (no caché): %@"
+            "value": "不可清理的非缓存数据：%@"
           }
         }
       }
     },
     "Non-clearable data mainly consists of your history records and related files, and its size is determined by the number of records you import and Apple's storage management. HistoryLib cannot control, reduce, or clear it.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "不可清除的数据主要由您的历史记录及相关文件组成，其大小取决于您导入的记录数量以及Apple的存储管理策略。HistoryLib 无法控制、减少或清除这些数据。"
+            "value": "تتكون البيانات غير القابلة للمسح بشكل أساسي من سجلات السجل والملفات ذات الصلة، ويتم تحديد حجمها بناءً على عدد السجلات التي تستوردها وإدارة تخزين Apple. لا يمكن لـ HistoryLib التحكم فيه أو تقليله أو مسحه."
           }
         },
         "en-US": {
@@ -4300,10 +4316,10 @@
             "value": "Non-clearable data mainly consists of your history records and related files, and its size is determined by the number of records you import and Apple's storage management. HistoryLib cannot control, reduce, or clear it."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "تتكون البيانات غير القابلة للمسح بشكل أساسي من سجلات السجل والملفات ذات الصلة، ويتم تحديد حجمها بناءً على عدد السجلات التي تستوردها وإدارة تخزين Apple. لا يمكن لـ HistoryLib التحكم فيه أو تقليله أو مسحه."
+            "value": "Los datos que no se pueden borrar consisten principalmente en sus registros históricos y archivos relacionados, y su tamaño está determinado por la cantidad de registros que importa y la administración de almacenamiento de Apple. HistoryLib no puede controlarlo, reducirlo ni borrarlo."
           }
         },
         "fr": {
@@ -4318,20 +4334,21 @@
             "value": "Неочищаемые данные в основном состоят из записей вашей истории и связанных файлов, а их размер определяется количеством импортируемых записей и управлением хранилищем Apple. HistoryLib не может контролировать, уменьшать или очищать его."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los datos que no se pueden borrar consisten principalmente en sus registros históricos y archivos relacionados, y su tamaño está determinado por la cantidad de registros que importa y la administración de almacenamiento de Apple. HistoryLib no puede controlarlo, reducirlo ni borrarlo."
+            "value": "不可清除的数据主要由您的历史记录及相关文件组成，其大小取决于您导入的记录数量以及Apple的存储管理策略。HistoryLib 无法控制、减少或清除这些数据。"
           }
         }
       }
     },
     "Offline. Changes are saved on this device and will sync when you are back online.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "已离线。更改已保存在此设备，联网后将自动同步。"
+            "value": "غير متصل. يتم حفظ التغييرات على هذا الجهاز وستتم مزامنتها عند معاودة الاتصال بالإنترنت."
           }
         },
         "en-US": {
@@ -4340,10 +4357,10 @@
             "value": "Offline. Changes are saved on this device and will sync when you are back online."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "غير متصل. يتم حفظ التغييرات على هذا الجهاز وستتم مزامنتها عند معاودة الاتصال بالإنترنت."
+            "value": "Desconectado. Los cambios se guardan en este dispositivo y se sincronizarán cuando vuelva a estar en línea."
           }
         },
         "fr": {
@@ -4358,10 +4375,10 @@
             "value": "Оффлайн. Изменения сохраняются на этом устройстве и синхронизируются, когда вы снова подключитесь к сети."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desconectado. Los cambios se guardan en este dispositivo y se sincronizarán cuando vuelva a estar en línea."
+            "value": "已离线。更改已保存在此设备，联网后将自动同步。"
           }
         }
       }
@@ -4527,11 +4544,12 @@
       }
     },
     "Online. iCloud sync should proceed automatically.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "已联网。iCloud 同步应会自动进行。"
+            "value": "متصل. يجب أن تستمر مزامنة iCloud تلقائيًا."
           }
         },
         "en-US": {
@@ -4540,10 +4558,10 @@
             "value": "Online. iCloud sync should proceed automatically."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "متصل. يجب أن تستمر مزامنة iCloud تلقائيًا."
+            "value": "En línea. La sincronización de iCloud debería realizarse automáticamente."
           }
         },
         "fr": {
@@ -4558,10 +4576,10 @@
             "value": "Онлайн. Синхронизация iCloud должна произойти автоматически."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "En línea. La sincronización de iCloud debería realizarse automáticamente."
+            "value": "已联网。iCloud 同步应会自动进行。"
           }
         }
       }
@@ -5539,11 +5557,12 @@
       }
     },
     "Sync failed: %@": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "同步失败：%@"
+            "value": "فشلت المزامنة: %@"
           }
         },
         "en-US": {
@@ -5552,10 +5571,10 @@
             "value": "Sync failed: %@"
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "فشلت المزامنة: %@"
+            "value": "Error de sincronización: %@"
           }
         },
         "fr": {
@@ -5570,20 +5589,21 @@
             "value": "Синхронизация не удалась: %@"
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Error de sincronización: %@"
+            "value": "同步失败：%@"
           }
         }
       }
     },
     "Sync status is unknown. iCloud sync is managed by the system.": {
+      "extractionState": "stale",
       "localizations": {
-        "zh-Hans": {
+        "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "同步状态未知。iCloud 同步由系统管理。"
+            "value": "حالة المزامنة غير معروفة. تتم إدارة مزامنة iCloud بواسطة النظام."
           }
         },
         "en-US": {
@@ -5592,10 +5612,10 @@
             "value": "Sync status is unknown. iCloud sync is managed by the system."
           }
         },
-        "ar": {
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "حالة المزامنة غير معروفة. تتم إدارة مزامنة iCloud بواسطة النظام."
+            "value": "Se desconoce el estado de sincronización. La sincronización de iCloud la gestiona el sistema."
           }
         },
         "fr": {
@@ -5610,10 +5630,10 @@
             "value": "Статус синхронизации неизвестен. Синхронизация iCloud управляется системой."
           }
         },
-        "es": {
+        "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Se desconoce el estado de sincronización. La sincronización de iCloud la gestiona el sistema."
+            "value": "同步状态未知。iCloud 同步由系统管理。"
           }
         }
       }
@@ -9988,6 +10008,339 @@
           "stringUnit": {
             "state": "translated",
             "value": "Apple controla la programación de la sincronización de iCloud. HistoryLib puede observar la actividad, pero no puede forzar la sincronización, elegir qué registros se sincronizan ni confirmar que todos los dispositivos estén actualizados."
+          }
+        }
+      }
+    },
+    "The history JSON file is incomplete or damaged.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ملف JSON لسجل التصفح غير مكتمل أو تالف."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The history JSON file is incomplete or damaged."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El archivo JSON del historial está incompleto o dañado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le fichier JSON de l’historique est incomplet ou endommagé."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Файл JSON истории неполон или повреждён."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "历史记录 JSON 文件不完整或已损坏。"
+          }
+        }
+      }
+    },
+    "Expanded": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "موسّع"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expanded"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expandido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Développé"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Развернуто"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已展开"
+          }
+        }
+      }
+    },
+    "A stored timestamp cannot be exported safely.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتعذر تصدير أحد الطوابع الزمنية المخزنة بأمان."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A stored timestamp cannot be exported safely."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se puede exportar de forma segura una marca de tiempo almacenada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un horodatage stocké ne peut pas être exporté en toute sécurité."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Невозможно безопасно экспортировать сохранённую метку времени."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法安全导出一个已存储的时间戳。"
+          }
+        }
+      }
+    },
+    "Loading more records": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ تحميل المزيد من السجلات"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading more records"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando más registros"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargement de plus d’enregistrements"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загрузка дополнительных записей"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在加载更多记录"
+          }
+        }
+      }
+    },
+    "Import cancelled. Already imported records remain.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم إلغاء الاستيراد. تظل السجلات المستوردة محفوظة."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import cancelled. Already imported records remain."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importación cancelada. Los registros ya importados se conservan."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importation annulée. Les enregistrements déjà importés sont conservés."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Импорт отменен. Уже импортированные записи сохранены."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入已取消。已导入的记录仍会保留。"
+          }
+        }
+      }
+    },
+    "A history record exceeds the safe processing limit.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتجاوز أحد سجلات التصفح حد المعالجة الآمن."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A history record exceeds the safe processing limit."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un registro del historial supera el límite de procesamiento seguro."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un enregistrement de l’historique dépasse la limite de traitement sûre."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запись истории превышает безопасный предел обработки."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一条历史记录超出了安全处理限制。"
+          }
+        }
+      }
+    },
+    "iCloud": {
+      "localizations": {
+        "ar": { "stringUnit": { "state": "translated", "value": "iCloud" } },
+        "en-US": { "stringUnit": { "state": "translated", "value": "iCloud" } },
+        "es": { "stringUnit": { "state": "translated", "value": "iCloud" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "iCloud" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "iCloud" } },
+        "zh-Hans": { "stringUnit": { "state": "translated", "value": "iCloud" } }
+      }
+    },
+    "Collapsed": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مطوي"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collapsed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contraído"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réduit"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Свернуто"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已收起"
+          }
+        }
+      }
+    },
+    "Record count unavailable": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عدد السجلات غير متاح"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record count unavailable"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recuento de registros no disponible"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre d’enregistrements indisponible"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Количество записей недоступно"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "记录数量不可用"
           }
         }
       }

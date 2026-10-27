@@ -109,6 +109,13 @@ struct PendingImportRecord {
     let destinationTimeUsec: Int64?
     let latestVisitWasHTTPGet: Bool?
     let importedAt: Date
+    var rawImportedAtUsec: Int64? = nil
+
+    var retainedBytes: Int {
+        [uniqueKey, dedup.signature, dedup.normalizedURL, dedup.normalizedBrowser,
+         url, title, browserName, sourceFileName, sourceURL ?? "", destinationURL ?? ""]
+            .reduce(256) { $0 + $1.utf8.count }
+    }
 }
 
 struct ImportFlushResult {
@@ -155,7 +162,7 @@ enum ImportDeduplicator {
                 accepted: acceptedItemsByKey,
                 existing: existingItemsByKey
             ) {
-                match.visitCount = max(1, match.visitCount + pending.visitCount)
+                match.visitCount = HistoryVisitCount.adding(max(1, match.visitCount), max(1, pending.visitCount))
                 skipped += 1
                 didMutate = true
                 continue
@@ -175,7 +182,8 @@ enum ImportDeduplicator {
                 destinationURL: pending.destinationURL,
                 destinationTimeUsec: pending.destinationTimeUsec,
                 latestVisitWasHTTPGet: pending.latestVisitWasHTTPGet,
-                importedAt: pending.importedAt
+                importedAt: pending.importedAt,
+                rawImportedAtUsec: pending.rawImportedAtUsec
             )
             modelContext.insert(item)
             acceptedItemsByKey[pending.uniqueKey] = item

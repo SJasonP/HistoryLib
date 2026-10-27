@@ -61,6 +61,20 @@ struct HistoryImportReport {
 struct HistoryImportProgress {
     let fraction: Double?
     let message: String
+    let importedRecordCount: Int
+    let skippedRecordCount: Int
+
+    init(
+        fraction: Double?,
+        message: String,
+        importedRecordCount: Int = 0,
+        skippedRecordCount: Int = 0
+    ) {
+        self.fraction = fraction
+        self.message = message
+        self.importedRecordCount = importedRecordCount
+        self.skippedRecordCount = skippedRecordCount
+    }
 }
 
 typealias HistoryImportProgressHandler = (HistoryImportProgress) -> Void

@@ -21,7 +21,7 @@ final class JSONHistoryFileWriter {
             try write(Data(",".utf8))
         }
 
-        let record = SafariExportRecord(from: item)
+        let record = try SafariExportRecord(from: item)
         try write(try encoder.encode(record))
         hasWrittenRecord = true
     }
@@ -73,9 +73,9 @@ private struct SafariExportRecord: Encodable {
     let destinationTimeUsec: Int64?
     let latestVisitWasHTTPGet: Bool?
 
-    init(from item: Item) {
+    init(from item: Item) throws {
         url = item.url
-        timeUsec = recordTimeUsec(from: item)
+        timeUsec = try recordTimeUsec(from: item)
         visitCount = max(item.visitCount, 1)
         title = item.title
         sourceURL = item.sourceURL

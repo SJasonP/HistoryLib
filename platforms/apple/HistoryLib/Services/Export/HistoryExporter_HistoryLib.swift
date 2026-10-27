@@ -37,8 +37,8 @@ extension HistoryExporter {
 
         var processedRecords = 0
         try await enumerateAllItems(modelContext: modelContext) { item in
-            let tsUsec = recordTimeUsec(from: item)
-            let record = HLRecord(from: item, tsUsec: tsUsec)
+            let tsUsec = try recordTimeUsec(from: item)
+            let record = try HLRecord(from: item, tsUsec: tsUsec)
 
             totalRecordCount += 1
             if let minTs = globalMinTs {
@@ -228,6 +228,9 @@ extension HistoryExporter {
         var hasher = SHA256()
         for record in records {
             var line = try encoder.encode(record)
+            guard line.count <= HistoryTransferLimits.nativeRecordBytes else {
+                throw HistoryTransferError.resourceLimitExceeded
+            }
             line.append(0x0A)
 
             if #available(iOS 13.4, macOS 10.15.4, *) {

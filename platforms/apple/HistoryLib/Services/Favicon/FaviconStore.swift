@@ -48,7 +48,9 @@ actor FaviconStore {
         missingHostRetryAt.removeValue(forKey: host)
 
         let diskURL = cacheFileURL(for: host)
-        if let diskData = try? Data(contentsOf: diskURL), isValidImageData(diskData) {
+        if let size = try? diskURL.resourceValues(forKeys: [.fileSizeKey]).fileSize,
+           size <= 5 * 1024 * 1024,
+           let diskData = try? Data(contentsOf: diskURL), isValidImageData(diskData) {
             cacheInMemory(host: host, data: diskData)
             return diskData
         }
@@ -153,11 +155,9 @@ actor FaviconStore {
         request.setValue("en-US,en;q=0.9", forHTTPHeaderField: "Accept-Language")
         request.timeoutInterval = 8
 
-        guard let (data, response) = try? await session.data(for: request),
-              let http = response as? HTTPURLResponse,
-              (200..<400).contains(http.statusCode),
-              !data.isEmpty,
-              data.count <= 300_000 else {
+        guard let data = await BoundedFaviconResponse.data(
+            for: request, session: session, maximumBytes: 300_000
+        ) else {
             return nil
         }
 
@@ -178,11 +178,9 @@ actor FaviconStore {
         )
         request.timeoutInterval = 8
 
-        guard let (data, response) = try? await session.data(for: request),
-              let http = response as? HTTPURLResponse,
-              (200..<400).contains(http.statusCode),
-              !data.isEmpty,
-              data.count <= 5 * 1024 * 1024 else {
+        guard let data = await BoundedFaviconResponse.data(
+            for: request, session: session, maximumBytes: 5 * 1024 * 1024
+        ) else {
             return nil
         }
 

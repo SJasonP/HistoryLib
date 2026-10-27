@@ -68,7 +68,9 @@ actor HistoryDuplicateCleaner {
                     // Duplicate: merge its visit count into the kept record instead
                     // of discarding it, then mark it for removal.
                     duplicateIDs.append(item.persistentModelID)
-                    mergeVisitsByKeptID[kept.id, default: 0] += max(1, item.visitCount)
+                    mergeVisitsByKeptID[kept.id] = HistoryVisitCount.adding(
+                        mergeVisitsByKeptID[kept.id, default: 0], max(1, item.visitCount)
+                    )
                 } else {
                     keptByKey[dedupKey] = KeptRecord(visitedSecond: visitedSecond, id: item.persistentModelID)
                 }
@@ -93,7 +95,7 @@ actor HistoryDuplicateCleaner {
         // Merge the accumulated visit counts into the kept records.
         for (keptID, addedVisits) in mergeVisitsByKeptID {
             if let kept = modelContext.model(for: keptID) as? Item {
-                kept.visitCount = max(1, kept.visitCount + addedVisits)
+                kept.visitCount = HistoryVisitCount.adding(max(1, kept.visitCount), addedVisits)
             }
         }
 

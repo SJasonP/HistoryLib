@@ -22,6 +22,8 @@ final class Item {
     var destinationTimeUsec: Int64?
     var latestVisitWasHTTPGet: Bool?
     var importedAt: Date = Date()
+    // Optional for automatic migration of existing stores; Date is the UI value.
+    var rawImportedAtUsec: Int64?
 
     init(
         uniqueKey: String,
@@ -37,7 +39,8 @@ final class Item {
         destinationURL: String? = nil,
         destinationTimeUsec: Int64? = nil,
         latestVisitWasHTTPGet: Bool? = nil,
-        importedAt: Date = Date()
+        importedAt: Date = Date(),
+        rawImportedAtUsec: Int64? = nil
     ) {
         self.uniqueKey = uniqueKey
         self.url = url
@@ -53,5 +56,6 @@ final class Item {
         self.destinationTimeUsec = destinationTimeUsec
         self.latestVisitWasHTTPGet = latestVisitWasHTTPGet
         self.importedAt = importedAt
+        self.rawImportedAtUsec = rawImportedAtUsec
     }
 }

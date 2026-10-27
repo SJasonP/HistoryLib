@@ -62,6 +62,13 @@ decryption, and database work must not block the UI thread.
 ## Resource and privacy rules
 
 - Large Chrome Takeout arrays and HistoryLib JSONL chunks are streamed.
+- Importers must bound retained record bytes and pending database batches;
+  fixed file-read blocks alone are not a memory limit. Platform-specific
+  processing limits and controlled rejection behavior are documented by each
+  platform. These limits must not impose a total history-record count limit.
+- Format inspection uses the same bounded decompression boundary as extraction
+  or independently enforces actual decompressed-byte limits before retaining
+  output. Metadata ordering must not require buffering the history array.
 - Temporary files stay inside platform-private storage.
 - ZIP paths are validated before extraction.
 - Success, failure, and cancellation all clean temporary plaintext.

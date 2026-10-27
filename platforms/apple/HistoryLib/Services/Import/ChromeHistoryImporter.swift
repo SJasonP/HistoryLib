@@ -131,7 +131,7 @@ final class ChromeHistoryImporter {
         progress?(HistoryImportProgress(fraction: nil, message: String(localized: "Extracting archive...")))
         await Task.yield()
         do {
-            try ImportZipArchive.extractZip(at: zipURL, to: tempDir)
+            try await ImportZipArchive.extractInBackground(at: zipURL, to: tempDir)
         } catch {
             throw ChromeImportError.unzipFailed(message: error.localizedDescription)
         }
@@ -151,6 +151,7 @@ final class ChromeHistoryImporter {
         var skippedRecordCount = 0
         var failures: [ImportFileFailure] = []
         var pendingRecords: [PendingImportRecord] = []
+        var pendingBytes = 0
 
         let totalFiles = max(files.count, 1)
         for (fileIndex, file) in files.enumerated() {
@@ -201,7 +202,8 @@ final class ChromeHistoryImporter {
                         )
                     )
 
-                    if pendingRecords.count >= insertBatchSize {
+                    pendingBytes += pendingRecords.last!.retainedBytes
+                    if pendingRecords.count >= insertBatchSize || pendingBytes >= HistoryTransferLimits.batchBytes {
                         let flushResult = try ImportDeduplicator.flush(
                             &pendingRecords,
                             modelContext: modelContext,
@@ -209,9 +211,12 @@ final class ChromeHistoryImporter {
                         )
                         importedRecordCount += flushResult.imported
                         skippedRecordCount += flushResult.skipped
+                        pendingBytes = 0
                         progress?(HistoryImportProgress(
                             fraction: Double(fileIndex) / Double(totalFiles),
-                            message: String(localized: "Importing records (\(importedRecordCount))...")
+                            message: String(localized: "Importing records (\(importedRecordCount))..."),
+                            importedRecordCount: importedRecordCount,
+                            skippedRecordCount: skippedRecordCount
                         ))
                         try Task.checkCancellation()
                     }

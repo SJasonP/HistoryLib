@@ -27,20 +27,21 @@ enum SafariImportError: LocalizedError {
 final class SafariHistoryImporter {
     private let insertBatchSize = 1_000
 
-    func looksLikeSafariHistorySource(_ url: URL) -> Bool {
+    func looksLikeSafariHistorySource(_ url: URL) async -> Bool {
         let fileManager = FileManager.default
         var isDirectory = ObjCBool(false)
         _ = fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory)
 
         if isDirectory.boolValue {
-            return collectJSONFiles(in: url).contains(where: isSafariHistoryFile)
+            for file in collectJSONFiles(in: url) where await isSafariHistoryFile(file) { return true }
+            return false
         }
 
         switch url.pathExtension.lowercased() {
         case "json":
-            return isSafariHistoryFile(url)
+            return await isSafariHistoryFile(url)
         case "zip":
-            return zipContainsSafariHistory(url)
+            return await zipContainsSafariHistory(url)
         default:
             return false
         }
@@ -101,35 +102,39 @@ final class SafariHistoryImporter {
         return files
     }
 
-    private func isSafariHistoryFile(_ fileURL: URL) -> Bool {
-        guard let data = try? Data(contentsOf: fileURL) else { return false }
-        return isSafariHistoryData(data)
+    private func isSafariHistoryFile(_ fileURL: URL) async -> Bool {
+        let task = Task.detached { try Self.safariMetadata(at: fileURL) }
+        return (try? await withTaskCancellationHandler { try await task.value } onCancel: { task.cancel() }) != nil
     }
 
-    private func isSafariHistoryData(_ data: Data) -> Bool {
-        guard let envelope = try? JSONDecoder().decode(SafariHistoryMetadataEnvelope.self, from: data) else {
-            return false
-        }
-        return envelope.metadata.browserName.lowercased() == "safari"
-            && envelope.metadata.dataType.lowercased() == "history"
-    }
-
-    private func zipContainsSafariHistory(_ zipURL: URL) -> Bool {
-        guard let archive = try? Archive(url: zipURL, accessMode: .read, pathEncoding: nil) else {
-            return false
-        }
-
-        for entry in archive where entry.type == .file && entry.path.lowercased().hasSuffix(".json") {
-            var data = Data()
-            do {
-                _ = try archive.extract(entry) { data.append($0) }
-                if isSafariHistoryData(data) {
-                    return true
-                }
-            } catch {
-                continue
+    private nonisolated static func safariMetadata(at url: URL) throws -> SafariHistoryExport.Metadata {
+        let reader = try HistoryJSONReader(url: url)
+        try reader.beginObject()
+        var metadata: SafariHistoryExport.Metadata?
+        while let key = try reader.nextKey() {
+            if key == "metadata" {
+                guard metadata == nil else { throw HistoryTransferError.invalidJSON }
+                metadata = try JSONDecoder().decode(SafariHistoryExport.Metadata.self, from: reader.value())
+            } else {
+                try reader.skipValue()
             }
         }
+        try reader.finish()
+        guard let metadata, metadata.browserName.lowercased() == "safari",
+              metadata.dataType.lowercased() == "history" else { throw HistoryImportError.unrecognizedFormat }
+        return metadata
+    }
+
+    private func zipContainsSafariHistory(_ zipURL: URL) async -> Bool {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("Import", isDirectory: true)
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        do {
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            HistoryLibSensitiveFiles.applyAttributes(to: directory)
+            try await ImportZipArchive.extractInBackground(at: zipURL, to: directory)
+            for file in collectJSONFiles(in: directory) where await isSafariHistoryFile(file) { return true }
+        } catch { return false }
         return false
     }
 
@@ -144,6 +149,7 @@ final class SafariHistoryImporter {
         var skippedRecordCount = 0
         var failures: [ImportFileFailure] = []
         var pendingRecords: [PendingImportRecord] = []
+        var pendingBytes = 0
 
         let totalFiles = max(files.count, 1)
         for (fileIndex, file) in files.enumerated() {
@@ -154,19 +160,17 @@ final class SafariHistoryImporter {
             ))
             await Task.yield()
             do {
-                let data = try Data(contentsOf: file)
-                let export = try JSONDecoder().decode(SafariHistoryExport.self, from: data)
-
-                guard export.metadata.browserName.lowercased() == "safari",
-                      export.metadata.dataType.lowercased() == "history" else {
-                    failures.append(ImportFileFailure(fileName: file.lastPathComponent, reason: "Not a Safari history export file"))
-                    continue
-                }
-
-                validFileCount += 1
-
-                let browserName = export.metadata.browserName
-                for record in export.history {
+                // Probe metadata in a bounded-memory pass, including history-first
+                // documents. No writes happen before the envelope is recognized.
+                let metadataTask = Task.detached { try Self.safariMetadata(at: file) }
+                let metadata = try await withTaskCancellationHandler { try await metadataTask.value } onCancel: { metadataTask.cancel() }
+                let browserName = metadata.browserName
+                let reader = try HistoryJSONArrayReader(url: file, arrayKey: "history")
+                while let recordData = try await reader.nextValue() {
+                    guard let record = try? JSONDecoder().decode(SafariHistoryExport.Record.self, from: recordData) else {
+                        skippedRecordCount += 1
+                        continue
+                    }
                     guard let rawURL = record.url?.trimmingCharacters(in: .whitespacesAndNewlines),
                           !rawURL.isEmpty,
                           let timeUsec = record.timeUsec else {
@@ -201,7 +205,8 @@ final class SafariHistoryImporter {
                         )
                     )
 
-                    if pendingRecords.count >= insertBatchSize {
+                    pendingBytes += pendingRecords.last!.retainedBytes
+                    if pendingRecords.count >= insertBatchSize || pendingBytes >= HistoryTransferLimits.batchBytes {
                         let flushResult = try ImportDeduplicator.flush(
                             &pendingRecords,
                             modelContext: modelContext,
@@ -209,14 +214,18 @@ final class SafariHistoryImporter {
                         )
                         importedRecordCount += flushResult.imported
                         skippedRecordCount += flushResult.skipped
+                        pendingBytes = 0
                         progress?(HistoryImportProgress(
                             fraction: Double(fileIndex) / Double(totalFiles),
-                            message: String(localized: "Importing records (\(importedRecordCount))...")
+                            message: String(localized: "Importing records (\(importedRecordCount))..."),
+                            importedRecordCount: importedRecordCount,
+                            skippedRecordCount: skippedRecordCount
                         ))
                         try Task.checkCancellation()
                         await Task.yield()
                     }
                 }
+                validFileCount += 1
             } catch is CancellationError {
                 throw CancellationError()
             } catch {
@@ -261,7 +270,7 @@ final class SafariHistoryImporter {
         progress?(HistoryImportProgress(fraction: nil, message: String(localized: "Extracting archive...")))
         await Task.yield()
         do {
-            try ImportZipArchive.extractZip(at: zipURL, to: tempDir)
+            try await ImportZipArchive.extractInBackground(at: zipURL, to: tempDir)
         } catch {
             throw SafariImportError.unzipFailed(message: error.localizedDescription)
         }
@@ -270,15 +279,9 @@ final class SafariHistoryImporter {
     }
 }
 
-private struct SafariHistoryMetadataEnvelope: Decodable {
-    let metadata: SafariHistoryExport.Metadata
-}
+private nonisolated enum SafariHistoryExport {
 
-private struct SafariHistoryExport: Decodable {
-    let metadata: Metadata
-    let history: [Record]
-
-    struct Metadata: Decodable {
+    struct Metadata: Decodable, Sendable {
         let browserName: String
         let browserVersion: String?
         let dataType: String

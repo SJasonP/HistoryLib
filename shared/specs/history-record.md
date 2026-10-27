@@ -28,6 +28,9 @@ lossless.
 - Unix microseconds are the cross-platform source of truth.
 - A platform may expose a native date/time object in memory but must preserve
   the microsecond value for import/export round trips.
+- Keep original integer timestamps when the native date representation loses
+  precision. Serializing an older native-only date must check finiteness and
+  integer representability and return a controlled error for unsafe values.
 - UI grouping and display use the user's current calendar, locale, and time
   zone. Persisted timestamps remain UTC.
 - Deduplication floors visit time to a Unix second without discarding the

@@ -160,7 +160,7 @@ final class HistoryLibArchiveImporter {
 
         progress?(HistoryImportProgress(fraction: nil, message: String(localized: "Extracting archive...")))
         await Task.yield()
-        try ImportZipArchive.extractZip(at: zipURL, to: tempDir)
+        try await ImportZipArchive.extractInBackground(at: zipURL, to: tempDir)
         return try await importFromDirectory(tempDir, modelContext: modelContext, dedupOptions: dedupOptions, progress: progress)
     }
 
@@ -184,7 +184,7 @@ final class HistoryLibArchiveImporter {
 
         // Validate the whole archive (structure, checksums, counts) before
         // trusting any chunk, so a corrupt archive imports nothing. This pass
-        // does not decode records — it only hashes bytes and counts lines.
+        // also validates bounded record syntax before any batch is committed.
         let chunkEntries = try await validatedChunkEntries(manifest: manifest, archiveRoot: archiveRoot, progress: progress)
 
         let totalRecords = max(chunkEntries.reduce(0) { $0 + $1.recordCount }, 1)
@@ -192,31 +192,37 @@ final class HistoryLibArchiveImporter {
         var skippedRecordCount = 0
         var processedRecords = 0
         var pendingRecords: [PendingImportRecord] = []
+        var pendingBytes = 0
 
-        // Import pass: each chunk is read once and each record decoded once.
+        // Flush inside a chunk, bounded by both count and retained string bytes.
         for entry in chunkEntries {
             try Task.checkCancellation()
             let chunkURL = try safeArchiveURL(forRelativePath: entry.path, archiveRoot: archiveRoot)
-            try appendChunkRecords(
+            try await appendChunkRecords(
                 from: chunkURL,
-                chunkPath: entry.path,
-                pendingRecords: &pendingRecords
-            )
-            processedRecords += entry.recordCount
-
-            if pendingRecords.count >= insertBatchSize {
-                let flushResult = try ImportDeduplicator.flush(
-                    &pendingRecords,
-                    modelContext: modelContext,
-                    dedupOptions: dedupOptions
-                )
-                importedRecordCount += flushResult.imported
-                skippedRecordCount += flushResult.skipped
+                chunkPath: entry.path
+            ) { record in
+                pendingRecords.append(record)
+                pendingBytes += record.retainedBytes
+                if pendingRecords.count >= self.insertBatchSize || pendingBytes >= HistoryTransferLimits.batchBytes {
+                    let flushResult = try ImportDeduplicator.flush(
+                        &pendingRecords,
+                        modelContext: modelContext,
+                        dedupOptions: dedupOptions
+                    )
+                    importedRecordCount += flushResult.imported
+                    skippedRecordCount += flushResult.skipped
+                    pendingBytes = 0
+                    await Task.yield()
+                }
             }
+            processedRecords += entry.recordCount
 
             progress?(HistoryImportProgress(
                 fraction: 0.2 + 0.8 * (Double(processedRecords) / Double(totalRecords)),
-                message: String(localized: "Importing records (\(processedRecords)/\(totalRecords))...")
+                message: String(localized: "Importing records (\(processedRecords)/\(totalRecords))..."),
+                importedRecordCount: importedRecordCount,
+                skippedRecordCount: skippedRecordCount
             ))
             await Task.yield()
         }
@@ -244,24 +250,12 @@ final class HistoryLibArchiveImporter {
     private func appendChunkRecords(
         from chunkURL: URL,
         chunkPath: String,
-        pendingRecords: inout [PendingImportRecord]
-    ) throws {
-        let handle = try FileHandle(forReadingFrom: chunkURL)
-        defer { try? handle.close() }
-        var pendingLine = Data()
-        var lineIndex = 0
-
-        func process(_ rawLine: Data) throws {
-            var lineData = rawLine
-            if lineData.last == UInt8(ascii: "\r") { lineData.removeLast() }
-            if lineData.isEmpty { return }
-
-            guard let record = try? decoder.decode(HLChunkRecord.self, from: lineData),
-                  let rawURLValue = record.u?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
-                  !rawURLValue.isEmpty,
-                  let timeUsec = record.ts else {
-                throw HistoryLibImportError.invalidChunkRecord(chunkPath: chunkPath, line: lineIndex + 1)
-            }
+        onRecord: (PendingImportRecord) async throws -> Void
+    ) async throws {
+        _ = try await readChunkLines(at: chunkURL) { lineData, line in
+            let record = try self.decodedRecord(lineData, chunkPath: chunkPath, line: line)
+            let rawURLValue = record.u!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let timeUsec = record.ts!
 
             let visitedAt = Date(timeIntervalSince1970: TimeInterval(timeUsec) / 1_000_000)
             let browserName: String
@@ -280,13 +274,13 @@ final class HistoryLibArchiveImporter {
             let uniqueKey = (importedUniqueKey?.isEmpty == false) ? importedUniqueKey! : dedupEntry.signature
 
             let importedAt: Date
-            if let importedAtUsec = record.ia, importedAtUsec > 0 {
+            if let importedAtUsec = record.ia {
                 importedAt = Date(timeIntervalSince1970: TimeInterval(importedAtUsec) / 1_000_000)
             } else {
                 importedAt = Date()
             }
 
-            pendingRecords.append(
+            try await onRecord(
                 PendingImportRecord(
                     uniqueKey: uniqueKey,
                     dedup: dedupEntry,
@@ -302,23 +296,11 @@ final class HistoryLibArchiveImporter {
                     destinationURL: record.du,
                     destinationTimeUsec: record.dt,
                     latestVisitWasHTTPGet: record.hg,
-                    importedAt: importedAt
+                    importedAt: importedAt,
+                    rawImportedAtUsec: record.ia
                 )
             )
         }
-
-        while let data = try handle.read(upToCount: 1024 * 1024), !data.isEmpty {
-            for byte in data {
-                if byte == UInt8(ascii: "\n") {
-                    try process(pendingLine)
-                    pendingLine.removeAll(keepingCapacity: true)
-                    lineIndex += 1
-                } else {
-                    pendingLine.append(byte)
-                }
-            }
-        }
-        if !pendingLine.isEmpty { try process(pendingLine) }
     }
 
     private func validatedChunkEntries(
@@ -378,7 +360,7 @@ final class HistoryLibArchiveImporter {
                 throw HistoryLibImportError.invalidPath(entry.path)
             }
 
-            let validation = try validateChunkFile(at: chunkURL)
+            let validation = try await validateChunkFile(at: chunkURL, chunkPath: entry.path)
             let sha256 = validation.sha256
             guard sha256.lowercased() == entry.sha256.lowercased() else {
                 throw HistoryLibImportError.checksumMismatch(chunkPath: entry.path)
@@ -414,28 +396,61 @@ final class HistoryLibArchiveImporter {
         return sortedEntries
     }
 
-    private func validateChunkFile(at url: URL) throws -> (sha256: String, recordCount: Int) {
-        let handle = try FileHandle(forReadingFrom: url)
-        defer { try? handle.close() }
-        var hasher = SHA256()
-        let newline = UInt8(ascii: "\n")
-        let carriage = UInt8(ascii: "\r")
-        var count = 0
-        var lineHasContent = false
-        while let data = try handle.read(upToCount: 1024 * 1024), !data.isEmpty {
-            hasher.update(data: data)
-            for byte in data {
-                if byte == newline {
-                    if lineHasContent { count += 1 }
-                    lineHasContent = false
-                } else if byte != carriage {
-                    lineHasContent = true
-                }
-            }
+    private func decodedRecord(_ data: Data, chunkPath: String, line: Int) throws -> HLChunkRecord {
+        guard let record = try? decoder.decode(HLChunkRecord.self, from: data),
+              let url = record.u?.trimmingCharacters(in: .whitespacesAndNewlines), !url.isEmpty,
+              record.ts != nil else {
+            throw HistoryLibImportError.invalidChunkRecord(chunkPath: chunkPath, line: line)
         }
-        if lineHasContent { count += 1 }
+        return record
+    }
+
+    private func validateChunkFile(at url: URL, chunkPath: String) async throws -> (sha256: String, recordCount: Int) {
+        var hasher = SHA256()
+        let count = try await readChunkLines(at: url, onBlock: { hasher.update(data: $0) }) { data, line in
+            _ = try self.decodedRecord(data, chunkPath: chunkPath, line: line)
+        }
         let digest = hasher.finalize().map { String(format: "%02x", $0) }.joined()
         return (digest, count)
+    }
+
+    private func readChunkLines(
+        at url: URL,
+        onBlock: (Data) -> Void = { _ in },
+        onLine: (Data, Int) async throws -> Void
+    ) async throws -> Int {
+        let handle = try FileHandle(forReadingFrom: url)
+        defer { try? handle.close() }
+        var pendingLine = Data()
+        var physicalLine = 1
+        var count = 0
+
+        func process() async throws {
+            if pendingLine.last == 13 { pendingLine.removeLast() }
+            if !pendingLine.isEmpty {
+                try await onLine(pendingLine, physicalLine)
+                count += 1
+            }
+            pendingLine.removeAll(keepingCapacity: true)
+            physicalLine += 1
+        }
+        while let data = try handle.read(upToCount: 64 * 1024), !data.isEmpty {
+            try Task.checkCancellation()
+            onBlock(data)
+            for byte in data {
+                if byte == 10 {
+                    try await process()
+                } else {
+                    guard pendingLine.count < HistoryTransferLimits.nativeRecordBytes else {
+                        throw HistoryTransferError.resourceLimitExceeded
+                    }
+                    pendingLine.append(byte)
+                }
+            }
+            await Task.yield()
+        }
+        if !pendingLine.isEmpty { try await process() }
+        return count
     }
 
     private func boundedData(contentsOf url: URL, maximumBytes: Int) throws -> Data {

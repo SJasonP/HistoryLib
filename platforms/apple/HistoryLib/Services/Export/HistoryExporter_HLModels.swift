@@ -16,14 +16,14 @@ struct HLRecord: Encodable {
     let dt: Int64?
     let hg: Bool?
 
-    init(from item: Item, tsUsec: Int64) {
+    init(from item: Item, tsUsec: Int64) throws {
         u = item.url
         ts = tsUsec
         t = item.title.isEmpty ? nil : item.title
         vc = item.visitCount > 0 ? item.visitCount : nil
         uk = item.uniqueKey.isEmpty ? nil : item.uniqueKey
         sb = item.sourceBrowser.isEmpty ? nil : item.sourceBrowser
-        ia = Int64((item.importedAt.timeIntervalSince1970 * 1_000_000).rounded())
+        ia = try item.rawImportedAtUsec ?? HistoryTimestamp.microseconds(from: item.importedAt)
         rt = item.rawTimeUsec > 0 ? item.rawTimeUsec : nil
         sf = item.sourceFileName.isEmpty ? nil : item.sourceFileName
         su = item.sourceURL
@@ -183,9 +183,9 @@ struct TimeBucketStats {
     }
 }
 
-func recordTimeUsec(from item: Item) -> Int64 {
-    if item.rawTimeUsec > 0 {
+func recordTimeUsec(from item: Item) throws -> Int64 {
+    if item.rawTimeUsec != 0 {
         return item.rawTimeUsec
     }
-    return Int64((item.visitedAt.timeIntervalSince1970 * 1_000_000).rounded())
+    return try HistoryTimestamp.microseconds(from: item.visitedAt)
 }

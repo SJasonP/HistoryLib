@@ -2,11 +2,16 @@ import Foundation
 import ZIPFoundation
 
 enum ImportZipArchive {
-    private static let maxEntryCount = 100_000
-    private static let maxEntryBytes: UInt64 = 4 * 1024 * 1024 * 1024
-    private static let minimumFreeSpaceReserve: Int64 = 512 * 1024 * 1024
+    private nonisolated static let maxEntryCount = 100_000
+    private nonisolated static let maxEntryBytes: UInt64 = 4 * 1024 * 1024 * 1024
+    private nonisolated static let minimumFreeSpaceReserve: Int64 = 512 * 1024 * 1024
 
-    static func extractZip(at zipURL: URL, to destinationDirectoryURL: URL) throws {
+    static func extractInBackground(at zipURL: URL, to destination: URL) async throws {
+        let task = Task.detached { try extractZip(at: zipURL, to: destination) }
+        try await withTaskCancellationHandler { try await task.value } onCancel: { task.cancel() }
+    }
+
+    nonisolated static func extractZip(at zipURL: URL, to destinationDirectoryURL: URL) throws {
         let archive: Archive
         do {
             archive = try Archive(url: zipURL, accessMode: .read, pathEncoding: nil)
@@ -28,6 +33,7 @@ enum ImportZipArchive {
         var entryCount = 0
         var extractedBytes: UInt64 = 0
         for entry in archive {
+            try Task.checkCancellation()
             entryCount += 1
             guard entryCount <= maxEntryCount else {
                 throw NSError(domain: "HistoryImport", code: 64, userInfo: [NSLocalizedDescriptionKey: String(localized: "ZIP archive contains too many entries.")])
@@ -73,15 +79,32 @@ enum ImportZipArchive {
 
             let parentURL = destinationURL.deletingLastPathComponent()
             try fileManager.createDirectory(at: parentURL, withIntermediateDirectories: true)
-            _ = try archive.extract(entry, to: destinationURL)
-            extractedBytes += entryBytes
+            guard fileManager.createFile(atPath: destinationURL.path, contents: nil) else {
+                throw CocoaError(.fileWriteUnknown)
+            }
+            let handle = try FileHandle(forWritingTo: destinationURL)
+            defer { try? handle.close() }
+            var actualBytes: UInt64 = 0
+            let checksum = try archive.extract(entry) { data in
+                try Task.checkCancellation()
+                let count = UInt64(data.count)
+                guard actualBytes <= entryBytes, count <= entryBytes - actualBytes,
+                      actualBytes <= maxEntryBytes, count <= maxEntryBytes - actualBytes,
+                      extractionBudget.map({ extractedBytes <= $0 && count <= $0 - extractedBytes }) ?? true else {
+                    throw HistoryTransferError.resourceLimitExceeded
+                }
+                try handle.write(contentsOf: data)
+                actualBytes += count
+                extractedBytes += count
+            }
+            guard actualBytes == entryBytes, checksum == entry.checksum else { throw HistoryTransferError.invalidJSON }
         }
     }
 
     /// Normalizes a ZIP entry path to a safe relative path inside the destination.
     /// Returns `nil` if the path is absolute or escapes the root via `..`, or an
     /// empty string for a root/empty entry that has nothing to write.
-    static func safeRelativePath(_ rawPath: String) -> String? {
+    nonisolated static func safeRelativePath(_ rawPath: String) -> String? {
         let normalized = rawPath.replacingOccurrences(of: "\\", with: "/")
         if normalized.hasPrefix("/") {
             return nil
