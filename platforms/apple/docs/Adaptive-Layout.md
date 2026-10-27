@@ -52,23 +52,6 @@ python3 shared/localization/validate_localizations.py
 Run that command from the repository root. UI tests do not establish physical
 hinge behavior or replace interactive acceptance.
 
-## Validation Record (October 18, 2026)
-
-- Xcode 27.1 / iOS 27.1 SDK; deployment target remains iOS 26.
-- Unsigned iOS device Release build passed. The Release executable contains
-  neither the UI-test launch flag nor the synthetic fixture strings.
-- macOS Debug build passed.
-- All 38 data-path tests passed. An initial run also passed three UI rotation
-  regressions (41 tests total). Test runs emitted background-thread publication
-  warnings; this layout change does not establish their cause.
-- Six-language localization validation passed.
-- After improving password assertions and making UI-test launches independent
-  of sidebar selectors, the latest UI rerun could not finish: the simulator
-  launcher reported `NSMachErrorDomain -308 (server died)`, and its destination
-  subsequently became unavailable. Do not treat that rerun as a pass.
-- Interactive acceptance, including partial folds, Split View, RTL, large text,
-  and long-running transfer continuity, remains with the human maintainers.
-
 ## Human Acceptance
 
 Interactive simulator and physical-device acceptance are owned by the human

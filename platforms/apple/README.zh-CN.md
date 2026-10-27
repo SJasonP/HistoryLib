@@ -5,13 +5,12 @@
 HistoryLib 是一个 SwiftUI app，用于收集、浏览、搜索、去重并重新导出浏览器历史记录。目前它主要面向 Safari 历史记录导出文件、
 通过 Google Takeout 导出的 Chrome 历史记录，以及 HistoryLib 自己的 `.hlz` 归档格式。
 
-导入的记录使用 SwiftData 存储。app 可以通过 CloudKit 使用 iCloud 同步，也可以将大数据集导出为基于 ZIP 的 `.hlz` 归档，内部包含
+导入的记录使用 SwiftData 存储。app 通过系统 iCloud 设置控制 CloudKit 同步，也可以将大数据集导出为基于 ZIP 的 `.hlz` 归档，内部包含
 JSONL 分块和校验索引。
 
 ## 状态
 
-此项目仍处于早期阶段，并且偏向个人使用。app 已经足够用于导入、浏览、汇总、导出和去重历史记录数据，但公开 API、归档格式细节和 UI
-仍可能变化。
+Apple 客户端是 1.4 的发布目标。公共归档格式在 `shared/specs` 中按版本维护；平台 UI 和实现细节可能继续演进。
 
 浏览器历史记录是敏感的个人数据。除非你已经检查过其中内容，否则不要发布导出的 `.hlz`、`.zip` 或 `.json` 历史记录文件。
 
@@ -28,7 +27,7 @@ JSONL 分块和校验索引。
 - 导出 Safari 兼容的 ZIP 归档。
 - 导出优化后的 HistoryLib `.hlz` 归档。
 - 对导入或同步的记录去重。
-- 启用 iCloud 时同步记录和 app 设置。
+- 在系统设置允许时同步记录和 app 设置。
 
 ## 平台
 

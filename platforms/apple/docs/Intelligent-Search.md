@@ -90,24 +90,6 @@ unit-test target's generated `.xctestrun`, and runs only `HistoryLibTests`.
 argument, the script selects an iPhone Duo by name; use an ID when names are
 ambiguous. Run the shared localization validator from the repository root too.
 
-## Validation record (October 18, 2026)
-
-- iOS 27.1 simulator test build passed for arm64 and x86_64.
-- 46 hosted unit/integration tests passed, with no failures, skips, or runtime
-  warnings. The suite includes all 38 existing data-path tests and eight new
-  filter, model-output validation, paging, cancellation, routing, and intent tests.
-- Unsigned iOS device Release and macOS Debug builds passed.
-- Release App Intents metadata contains all three foreground actions with local
-  authentication required, including the system search schema gated to 27.
-- Release shortcut language models were generated for all six locales. String
-  catalog coverage and shortcut application-name placeholders passed validation.
-- Release binary inspection found no unit/UI-test environment keys or synthetic
-  fixture strings. The isolated test script completed successfully;
-  `git diff --check` and shell syntax validation passed.
-- No interactive simulator/physical-device acceptance, actual on-device model
-  inference, or end-to-end Siri invocation was performed. Those remain human
-  acceptance tasks below.
-
 ## Human acceptance
 
 Humans own simulator interaction, visual checks, model behavior, and real Siri

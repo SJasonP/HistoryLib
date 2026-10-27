@@ -46,6 +46,12 @@ Windows releases are deferred; their source is not a shipping claim.
 - Limit favicon discovery to the site origin, removing recorded URL paths,
   queries, fragments, and credentials from discovery requests.
 
+### Security
+
+- Bound JSON and ZIP import memory, decompression, and response-body handling;
+  preserve timestamp precision and saturate visit-count merges instead of
+  allowing unsafe overflow or unbounded retention.
+
 ## [1.3] - 2026-08-13
 
 ### Added

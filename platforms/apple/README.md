@@ -7,15 +7,14 @@ and re-exporting browser history records. It currently focuses on Safari
 history export files, Chrome history exported through Google Takeout, and
 HistoryLib's own `.hlz` archive format.
 
-Imported records are stored with SwiftData. The app can use CloudKit for iCloud
-sync, and can export large datasets as a ZIP-based `.hlz` archive with JSONL
-chunks and validation indexes.
+Imported records are stored with SwiftData. The app uses the system iCloud
+settings to control CloudKit synchronization and can export large datasets as
+a ZIP-based `.hlz` archive with JSONL chunks and validation indexes.
 
 ## Status
 
-This project is early and personal-use oriented. The app is usable enough to
-import, browse, summarize, export, and deduplicate history data, but the public
-API, archive format details, and UI may still change.
+The Apple client is the v1.4 release target. The public archive format is
+versioned in `shared/specs`; platform UI and implementation details may evolve.
 
 Browser history is sensitive personal data. Do not publish exported `.hlz`,
 `.zip`, or `.json` history files unless you have reviewed their contents.
@@ -33,7 +32,7 @@ Browser history is sensitive personal data. Do not publish exported `.hlz`,
 - Export Safari-compatible ZIP archives.
 - Export optimized HistoryLib `.hlz` archives.
 - Deduplicate imported or synced records.
-- Sync records and app settings with iCloud when enabled.
+- Sync records and app settings with iCloud when permitted by system settings.
 
 ## Platforms
 
