@@ -41,8 +41,12 @@ struct HistoryMonthNavigationList: View {
                         Text(monthGroup.title)
                             .font(.headline)
                         Spacer()
-                        Text(groupCountLabel(for: monthGroup.dayGroups.map(\.dayStart)))
+                        let count = groupCountLabel(for: monthGroup.dayGroups.map(\.dayStart))
+                        Text(count)
                             .foregroundStyle(.secondary)
+                            .accessibilityLabel(
+                                count == "..." ? String(localized: "Record count unavailable") : count
+                            )
                     }
                 }
             }

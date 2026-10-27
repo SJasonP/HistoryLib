@@ -357,8 +357,12 @@ struct HistoryListView: View {
                         Text(yearGroup.title)
                             .font(.headline)
                         Spacer()
-                        Text(groupCountLabel(for: yearGroup.monthGroups.flatMap(\.dayGroups).map(\.dayStart)))
+                        let count = groupCountLabel(for: yearGroup.monthGroups.flatMap(\.dayGroups).map(\.dayStart))
+                        Text(count)
                             .foregroundStyle(.secondary)
+                            .accessibilityLabel(
+                                count == "..." ? String(localized: "Record count unavailable") : count
+                            )
                     }
                 }
             }
