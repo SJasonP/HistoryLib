@@ -23,3 +23,5 @@ differ when the behavior remains equivalent.
 - [`privacy-and-data.md`](privacy-and-data.md): sensitive-data, export, cache, and logging rules.
 - [`localization.md`](localization.md): common language completeness requirements.
 - [`versioning-and-release.md`](versioning-and-release.md): unified product version and release gates.
+- [`future-features.md`](future-features.md): post-1.4 candidate features and
+  their settled semantics.
