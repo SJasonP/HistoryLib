@@ -57,7 +57,21 @@ struct AppSettingsView: View {
                     isOn: $privacyLockEnabled
                 )
                 .onChange(of: privacyLockEnabled) { _, enabled in
-                    MacPrivacyLock.shared.isEnabled = enabled
+                    guard !enabled, !MacPrivacyLock.shared.isUnlocked else {
+                        MacPrivacyLock.shared.isEnabled = enabled
+                        return
+                    }
+
+                    // The macOS Settings scene can be opened independently of
+                    // the main window. Do not let it disable the lock without
+                    // first authenticating the current user.
+                    privacyLockEnabled = true
+                    Task {
+                        await MacPrivacyLock.shared.authenticateIfNeeded()
+                        guard MacPrivacyLock.shared.isUnlocked else { return }
+                        privacyLockEnabled = false
+                        MacPrivacyLock.shared.isEnabled = false
+                    }
                 }
             }
 #endif
