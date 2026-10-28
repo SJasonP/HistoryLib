@@ -188,12 +188,12 @@ extension ContentView {
             .navigationTitle("Library")
             .toolbar {
                 topToolbar
-                ToolbarItem {
+                ToolbarItem(placement: .secondaryAction) {
                     Button {
                         naturalSearchRequest = ""
                         showingSearchFilters = true
                     } label: {
-                        Label("Search Filters", systemImage: "line.3.horizontal.decrease.circle")
+                        Label("Search", systemImage: "magnifyingglass")
                     }
                     .disabled(isImporting || isPreparingExport)
                 }

@@ -81,6 +81,7 @@ struct HistorySearchSheet: View {
                 }
             }
             .navigationTitle("Search Filters")
+            .formStyle(.grouped)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -94,7 +95,11 @@ struct HistorySearchSheet: View {
                 }
             }
         }
+#if os(macOS)
+        .frame(width: 620, height: 650)
+#else
         .frame(idealWidth: 520, idealHeight: 650)
+#endif
         .interactiveDismissDisabled(isInterpreting)
         .onAppear {
             isAvailable = interpreter.isAvailable
