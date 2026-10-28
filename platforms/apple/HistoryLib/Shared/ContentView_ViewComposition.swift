@@ -188,7 +188,7 @@ extension ContentView {
             .navigationTitle("Library")
             .toolbar {
                 topToolbar
-                ToolbarItem(placement: .secondaryAction) {
+                ToolbarItem(placement: .primaryAction) {
                     Button {
                         naturalSearchRequest = ""
                         showingSearchFilters = true
@@ -326,16 +326,14 @@ extension ContentView {
 
     @ToolbarContentBuilder
     var topToolbar: some ToolbarContent {
-        ToolbarItem {
+        ToolbarItemGroup(placement: .primaryAction) {
             Button {
                 startImport()
             } label: {
                 Label("Import", systemImage: "square.and.arrow.down")
             }
             .disabled(!canMutateHistoryData)
-        }
 
-        ToolbarItem {
 #if os(macOS)
             Button {
                 openSettings()

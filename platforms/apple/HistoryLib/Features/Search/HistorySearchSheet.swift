@@ -25,14 +25,14 @@ struct HistorySearchSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Describe What You Want to Find") {
-                    TextField("Describe your search", text: $request, axis: .vertical)
-                        .lineLimit(2...5)
-                        .disabled(isInterpreting)
-                    Text("Only your request is processed on this device. History records are not sent to the model.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                    if isAvailable {
+                if isAvailable {
+                    Section("Describe What You Want to Find") {
+                        TextField("Describe your search", text: $request, axis: .vertical)
+                            .lineLimit(2...5)
+                            .disabled(isInterpreting)
+                        Text("Only your request is processed on this device. History records are not sent to the model.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
                         Button(action: interpret) {
                             if isInterpreting {
                                 Label("Interpreting...", systemImage: "hourglass")
@@ -41,7 +41,9 @@ struct HistorySearchSheet: View {
                             }
                         }
                         .disabled(isInterpreting || request.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || request.count > 2_000)
-                    } else {
+                    }
+                } else {
+                    Section {
                         Text("On-device interpretation is unavailable. You can edit the filters manually.")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
