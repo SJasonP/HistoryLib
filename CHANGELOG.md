@@ -8,6 +8,10 @@ All notable changes to HistoryLib are documented here. This project adheres to
 This release ships only for Apple platforms (iOS and macOS). Android and
 Windows releases are deferred; their source is not a shipping claim.
 
+Siri integration and AI-related features, including on-device natural-language
+interpretation, are experimental. Availability and successful operation are not
+guaranteed; manual search filters remain available.
+
 ### Added
 
 - Editable search filters for literal terms, domain, browser, and local dates.

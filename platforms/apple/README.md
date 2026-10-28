@@ -2,6 +2,9 @@
 
 English | [简体中文](README.zh-CN.md)
 
+> All project code was written by AI. If this concerns you, do not use
+> HistoryLib. No guarantee of security is provided. Use it at your own risk.
+
 HistoryLib is a SwiftUI app for collecting, browsing, searching, deduplicating,
 and re-exporting browser history records. It currently focuses on Safari
 history export files, Chrome history exported through Google Takeout, and

@@ -2,6 +2,9 @@
 
 [简体中文](README.zh-CN.md)
 
+> All project code was written by AI. If this concerns you, do not use
+> HistoryLib. No guarantee of security is provided. Use it at your own risk.
+
 HistoryLib is a native, multi-platform application for importing, browsing,
 searching, deduplicating, syncing, and exporting browser history.
 

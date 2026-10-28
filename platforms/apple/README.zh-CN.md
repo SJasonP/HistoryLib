@@ -2,6 +2,8 @@
 
 [English](README.md) | 简体中文
 
+> 本项目所有代码均由 AI 编写，介意者请勿使用。项目安全性亦不做任何保证，请自行承担使用风险。
+
 HistoryLib 是一个 SwiftUI app，用于收集、浏览、搜索、去重并重新导出浏览器历史记录。目前它主要面向 Safari 历史记录导出文件、
 通过 Google Takeout 导出的 Chrome 历史记录，以及 HistoryLib 自己的 `.hlz` 归档格式。
 
