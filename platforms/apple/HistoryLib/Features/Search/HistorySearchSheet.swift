@@ -92,13 +92,13 @@ struct HistorySearchSheet: View {
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Apply Filters", action: apply)
+                    Button("Search", action: apply)
                         .disabled(isInterpreting)
                 }
             }
         }
 #if os(macOS)
-        .frame(width: 620, height: 650)
+        .frame(width: 620, height: 430)
 #else
         .frame(idealWidth: 520, idealHeight: 650)
 #endif
