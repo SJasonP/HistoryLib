@@ -22,8 +22,10 @@ extension ManageView {
             Text("Sync time is the latest successful upload or download observed during this app session. It does not confirm that all devices are up to date.")
                 .font(.footnote).foregroundStyle(.secondary)
             LabeledContent("Local Records", value: countText(diagnostics.localCount))
-            LabeledContent("Cloud Records", value: countText(diagnostics.cloudCount))
-            Text(diagnostics.cloudMessage).font(.footnote).foregroundStyle(.secondary)
+            LabeledContent("Cloud Records", value: cloudRecordsText)
+            if case .available = diagnostics.cloudRecordsState {
+                Text(diagnostics.cloudMessage).font(.footnote).foregroundStyle(.secondary)
+            }
             Button("Change iCloud Settings") { showingICloudGuide = true }
         }
     }
@@ -91,6 +93,17 @@ extension ManageView {
 
     func countText(_ count: Int?) -> String {
         count.map { $0.formatted() } ?? String(localized: "Unavailable")
+    }
+
+    var cloudRecordsText: String {
+        switch diagnostics.cloudRecordsState {
+        case .checking:
+            return String(localized: "Checking…")
+        case .unavailable:
+            return String(localized: "Unavailable")
+        case .available(let count):
+            return count.formatted()
+        }
     }
 
     func byteCount(_ bytes: Int64) -> String {

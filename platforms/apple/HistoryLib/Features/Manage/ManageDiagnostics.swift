@@ -5,8 +5,15 @@ import Observation
 @MainActor
 @Observable
 final class ManageDiagnostics {
+    enum CloudRecordsState: Equatable {
+        case checking
+        case unavailable
+        case available(Int)
+    }
+
     var localCount: Int?
     var cloudCount: Int?
+    var cloudRecordsState: CloudRecordsState = .checking
     var storageUsage: ClearCacheStorageUsage?
     var accountMessage = String(localized: "Checking…")
     var cloudMessage = String(localized: "Checking…")
@@ -29,6 +36,7 @@ final class ManageDiagnostics {
         let container = CKContainer(identifier: "iCloud.com.SJasonP.HistoryLib")
         let counter = CloudHistoryCounter(database: container.privateCloudDatabase)
         cloudCount = nil
+        cloudRecordsState = .checking
         accountMessage = String(localized: "Checking…")
         cloudMessage = String(localized: "Checking…")
         while !Task.isCancelled {
@@ -40,9 +48,11 @@ final class ManageDiagnostics {
                     let count = try await counter.count()
                     try Task.checkCancellation()
                     cloudCount = count
+                    cloudRecordsState = .available(count)
                     cloudMessage = String(localized: "Cloud count is a server snapshot, not sync progress.")
                 } else {
                     cloudCount = nil
+                    cloudRecordsState = .unavailable
                     cloudMessage = String(localized: "Cloud records are unavailable.")
                 }
             } catch is CancellationError {
@@ -50,6 +60,7 @@ final class ManageDiagnostics {
             } catch {
                 guard !Task.isCancelled else { return }
                 cloudCount = nil
+                cloudRecordsState = .unavailable
                 cloudMessage = String(localized: "Cloud records are unavailable.")
             }
             do { try await Task.sleep(for: .seconds(15)) } catch { return }
