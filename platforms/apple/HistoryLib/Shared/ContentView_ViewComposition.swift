@@ -187,7 +187,7 @@ extension ContentView {
             }
             .navigationTitle("Library")
             .toolbar {
-                ToolbarItemGroup(placement: .automatic) {
+                ToolbarItemGroup(placement: .primaryAction) {
                     Button {
                         naturalSearchRequest = ""
                         showingSearchFilters = true
@@ -196,6 +196,9 @@ extension ContentView {
                     }
                     .disabled(isImporting || isPreparingExport)
                 }
+#if os(macOS)
+                ToolbarSpacer(.fixed, placement: .primaryAction)
+#endif
                 topToolbar
             }
         }
