@@ -187,8 +187,7 @@ extension ContentView {
             }
             .navigationTitle("Library")
             .toolbar {
-                topToolbar
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItemGroup(placement: .automatic) {
                     Button {
                         naturalSearchRequest = ""
                         showingSearchFilters = true
@@ -197,6 +196,7 @@ extension ContentView {
                     }
                     .disabled(isImporting || isPreparingExport)
                 }
+                topToolbar
             }
         }
         .searchable(text: $searchText, prompt: "Search keywords")
