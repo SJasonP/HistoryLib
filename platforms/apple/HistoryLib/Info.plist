@@ -12,8 +12,8 @@
 		<string>ru</string>
 		<string>es</string>
 	</array>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2026 SJasonP</string>
+	<key>NSIsTouchNative</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

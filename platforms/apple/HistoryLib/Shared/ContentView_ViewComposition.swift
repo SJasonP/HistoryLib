@@ -354,11 +354,7 @@ extension ContentView {
     }
 
     var openTapCount: Int {
-#if os(macOS)
-        return 2
-#else
         return 1
-#endif
     }
 
     var isIPhone: Bool {
