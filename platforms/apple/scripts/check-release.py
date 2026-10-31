@@ -23,6 +23,8 @@ minimum_os = info.get('LSMinimumSystemVersion') if is_mac else info.get('Minimum
 assert minimum_os == '26.0', f'Unexpected deployment baseline: {minimum_os}'
 locales = {'en-US', 'zh-Hans', 'ar', 'fr', 'ru', 'es'}
 assert locales <= set(info['CFBundleLocalizations']), 'Missing product locales'
+if is_mac:
+    assert info.get('NSIsTouchNative') is True, 'Touch on Mac support is not declared'
 
 privacy = plistlib.loads((resources / 'PrivacyInfo.xcprivacy').read_bytes())
 assert privacy['NSPrivacyTracking'] is False

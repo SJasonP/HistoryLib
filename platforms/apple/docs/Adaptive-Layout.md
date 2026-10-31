@@ -3,6 +3,13 @@
 HistoryLib builds with the iOS 27.1 SDK while retaining its iOS 26 deployment
 target. No device-model checks or full-screen restrictions are needed.
 
+The macOS client declares touch-native support for Touch on Mac. Native SwiftUI
+buttons, toggles, pickers, lists, and scrolling remain the primary interaction
+surface, while history rows open on a single tap/click so a direct touch does
+not require a mouse-style double-click. The row hit area already covers the
+full row width; future custom controls must keep at least a 36-point touch
+target and must not depend on hover-only affordances.
+
 ## Implementation
 
 - iOS uses one stable `TabView` with system navigation stacks and toolbars.
