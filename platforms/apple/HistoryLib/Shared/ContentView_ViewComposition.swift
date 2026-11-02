@@ -147,12 +147,12 @@ extension ContentView {
                 summaryContainer
             }
 
-            Tab("Manage", systemImage: "slider.horizontal.3", value: AppTab.manage) {
-                manageContainer
+            Tab("Library", systemImage: "clock.arrow.circlepath", value: AppTab.library) {
+                libraryContainer
             }
 
-            Tab("Search", systemImage: "magnifyingglass", value: AppTab.library, role: .search) {
-                libraryContainer
+            Tab("Manage", systemImage: "slider.horizontal.3", value: AppTab.manage) {
+                manageContainer
             }
         }
         .tabViewStyle(.sidebarAdaptable)
@@ -192,7 +192,11 @@ extension ContentView {
                         naturalSearchRequest = ""
                         showingSearchFilters = true
                     } label: {
-                        Label("Search", systemImage: "magnifyingglass")
+#if os(iOS)
+                        Label("Filters", systemImage: "line.3.horizontal.decrease.circle")
+#else
+                        Label("Search", systemImage: "line.3.horizontal.decrease.circle")
+#endif
                     }
                     .disabled(isImporting || isPreparingExport)
                 }
