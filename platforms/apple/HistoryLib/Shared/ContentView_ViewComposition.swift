@@ -169,8 +169,39 @@ extension ContentView {
     }
 
     var libraryContainer: some View {
+        Group {
+            if advancedSearchEnabled {
+                libraryNavigationStack
+                    .searchable(text: $searchText, prompt: "Search keywords")
+                    .onSubmit(of: .search) {
+                        submitSearch()
+                    }
+#if os(iOS)
+                    .searchToolbarBehavior(.minimize)
+#endif
+            } else {
+                libraryNavigationStack
+            }
+        }
+    }
+
+    var libraryNavigationStack: some View {
         NavigationStack(path: $libraryNavigationPath) {
             VStack(spacing: 0) {
+                if !advancedSearchEnabled {
+                    HStack(spacing: 8) {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundStyle(.secondary)
+                        TextField("Search keywords", text: $searchText)
+                            .textFieldStyle(.roundedBorder)
+                            .onSubmit {
+                                submitSearch()
+                            }
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+                    .padding(.bottom, 4)
+                }
                 if advancedSearchEnabled, searchFilter.isActive {
                     HStack {
                         Button("Review Filters") {
@@ -193,11 +224,7 @@ extension ContentView {
                         naturalSearchRequest = ""
                         showingSearchFilters = true
                     } label: {
-#if os(iOS)
-                        Label("Filters", systemImage: "line.3.horizontal.decrease.circle")
-#else
-                        Label("Search", systemImage: "line.3.horizontal.decrease.circle")
-#endif
+                        Label("Search", systemImage: "magnifyingglass")
                     }
                     .disabled(isImporting || isPreparingExport)
                     }
@@ -208,13 +235,6 @@ extension ContentView {
                 topToolbar
             }
         }
-        .searchable(text: $searchText, prompt: "Search keywords")
-        .onSubmit(of: .search) {
-            submitSearch()
-        }
-#if os(iOS)
-        .searchToolbarBehavior(.minimize)
-#endif
     }
 
     var libraryContent: some View {
