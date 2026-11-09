@@ -52,6 +52,16 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
+			<string>Advanced Search</string>
+			<key>Key</key>
+			<string>advanced_search_enabled</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
 			<string>Open Link On Tap/Click</string>
 			<key>Key</key>
 			<string>open_record_in_browser_on_click</string>

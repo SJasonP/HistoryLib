@@ -104,11 +104,15 @@ struct HistorySearchSheet: View {
 #endif
         .interactiveDismissDisabled(isInterpreting)
         .onAppear {
-            isAvailable = interpreter.isAvailable
+            let available = interpreter.isAvailable
+            isAvailable = available
             guard !didInitialize else { return }
             didInitialize = true
             request = initialRequest
             load(initialFilter)
+            if !request.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, available {
+                interpret()
+            }
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { isAvailable = interpreter.isAvailable }

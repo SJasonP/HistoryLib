@@ -5131,6 +5131,86 @@
         }
       }
     },
+    "Advanced Search": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "高级搜索"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Advanced Search"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "البحث المتقدم"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recherche avancée"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Расширенный поиск"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Búsqueda avanzada"
+          }
+        }
+      }
+    },
+    "Enables the full search page, filters, and Apple Intelligence search when available.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启用完整搜索页面、筛选条件，以及可用时的 Apple Intelligence 搜索。"
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enables the full search page, filters, and Apple Intelligence search when available."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتيح صفحة البحث الكاملة وعوامل التصفية والبحث باستخدام Apple Intelligence عند توفره."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active la page de recherche complète, les filtres et la recherche Apple Intelligence lorsqu'elle est disponible."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Включает полную страницу поиска, фильтры и поиск Apple Intelligence, если он доступен."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activa la página de búsqueda completa, los filtros y la búsqueda con Apple Intelligence cuando esté disponible."
+          }
+        }
+      }
+    },
     "Search keywords": {
       "localizations": {
         "zh-Hans": {

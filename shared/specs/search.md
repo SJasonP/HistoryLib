@@ -3,6 +3,20 @@
 Status: Apple enhancement; other clients retain their existing keyword search.
 This is an optional Apple capability. Android and Windows are deferred from v1.4.
 
+## Advanced search preference
+
+Apple clients expose an `Advanced Search` setting that is disabled by default.
+When it is disabled, tapping the search field opens the ordinary keyword search
+experience and typing searches the URL and title directly. Advanced filters and
+the standalone filter page remain hidden.
+
+When it is enabled, the standalone search page exposes structured filters and a
+submitted search request may be interpreted by the on-device Apple Intelligence
+model when that model is available. If the model is unavailable, the same input
+continues as an ordinary keyword search. Enabling the setting may use a fuller
+grouped search presentation on iPhone, while the default presentation remains
+the existing direct-results experience.
+
 ## Structured search
 
 A filter can contain literal terms, a domain, a source browser, and visit-time

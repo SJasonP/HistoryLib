@@ -45,6 +45,7 @@ struct ContentView: View {
     @AppStorage("enable_delete") var enableDelete = false
     @AppStorage("open_record_in_browser_on_click") var openRecordInBrowserOnDoubleClick = true
     @AppStorage("default_expand_level") var defaultExpandLevelRaw = HistoryDefaultExpandLevel.day.rawValue
+    @AppStorage("advanced_search_enabled") var advancedSearchEnabled = false
     @AppStorage("show_direct_search_results_on_iphone") var showDirectSearchResultsOnIPhone = true
     @AppStorage("last_selected_tab") var lastSelectedTabRaw = AppTab.summary.rawValue
     @AppStorage("persistence_backend") var persistenceBackend = "unknown"
@@ -232,6 +233,14 @@ struct ContentView: View {
             }
             .onChange(of: defaultExpandLevelRaw) { _, _ in
                 applyDefaultExpansion(reset: true)
+            }
+            .onChange(of: advancedSearchEnabled) { _, enabled in
+                if !enabled {
+                    searchFilter = HistorySearchFilter()
+                    naturalSearchRequest = ""
+                    showingSearchFilters = false
+                }
+                resetSearchPaginationAndMaybeReload()
             }
             .onChange(of: selectedTab) { _, tab in
                 lastSelectedTabRaw = tab.rawValue

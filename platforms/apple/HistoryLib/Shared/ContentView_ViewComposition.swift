@@ -55,7 +55,7 @@ extension ContentView {
     var shouldShowDirectSearchResults: Bool {
         // This is an existing phone-specific user preference, not a layout
         // decision. Keep the result presentation unchanged while folding.
-        isIPhone && isSearching && showDirectSearchResultsOnIPhone
+        !advancedSearchEnabled && isIPhone && isSearching && showDirectSearchResultsOnIPhone
     }
 
     var groupedSearchDayItems: [Date: [Item]] {
@@ -171,7 +171,7 @@ extension ContentView {
     var libraryContainer: some View {
         NavigationStack(path: $libraryNavigationPath) {
             VStack(spacing: 0) {
-                if searchFilter.isActive {
+                if advancedSearchEnabled, searchFilter.isActive {
                     HStack {
                         Button("Review Filters") {
                             naturalSearchRequest = ""
@@ -188,6 +188,7 @@ extension ContentView {
             .navigationTitle("Library")
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
+                    if advancedSearchEnabled {
                     Button {
                         naturalSearchRequest = ""
                         showingSearchFilters = true
@@ -199,6 +200,7 @@ extension ContentView {
 #endif
                     }
                     .disabled(isImporting || isPreparingExport)
+                    }
                 }
 #if os(macOS)
                 ToolbarSpacer(.fixed, placement: .primaryAction)
@@ -207,6 +209,9 @@ extension ContentView {
             }
         }
         .searchable(text: $searchText, prompt: "Search keywords")
+        .onSubmit(of: .search) {
+            submitSearch()
+        }
 #if os(iOS)
         .searchToolbarBehavior(.minimize)
 #endif

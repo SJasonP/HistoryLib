@@ -72,13 +72,22 @@ extension ContentView {
         selectedTab = .library
     }
 
+    func submitSearch() {
+        guard advancedSearchEnabled else { return }
+        let request = normalizedSearchText
+        guard !request.isEmpty else { return }
+        guard NaturalLanguageHistorySearch().isAvailable else { return }
+        naturalSearchRequest = request
+        showingSearchFilters = true
+    }
+
     func consumeSearchRequest() {
         guard !isFileImporterPresented, !isFileExporterPresented, !showingImportPasswordPrompt,
               !showingSearchFilters,
               let request = searchRequests.consume(isBusy: isImporting || isPreparingExport) else { return }
         selectedTab = .library
         libraryNavigationPath.removeAll()
-        if request.mode == .naturalLanguage {
+        if request.mode == .naturalLanguage, advancedSearchEnabled {
             naturalSearchRequest = request.query
             showingSearchFilters = true
         } else {

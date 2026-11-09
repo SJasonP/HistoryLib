@@ -6,6 +6,7 @@ struct AppSettingsView: View {
     @AppStorage("enable_delete") private var enableDelete = false
     @AppStorage("open_record_in_browser_on_click") private var openRecordInBrowserOnDoubleClick = true
     @AppStorage("default_expand_level") private var defaultExpandLevelRaw = HistoryDefaultExpandLevel.day.rawValue
+    @AppStorage("advanced_search_enabled") private var advancedSearchEnabled = false
 #if os(macOS)
     @AppStorage("privacy_lock_enabled") private var privacyLockEnabled = true
 #endif
@@ -46,6 +47,14 @@ struct AppSettingsView: View {
                     title: "Open Link On Tap/Click",
                     description: "Opens the selected URL in your default browser.",
                     isOn: $openRecordInBrowserOnDoubleClick
+                )
+            }
+
+            Section("Search") {
+                SettingsToggleRow(
+                    title: "Advanced Search",
+                    description: "Enables the full search page, filters, and Apple Intelligence search when available.",
+                    isOn: $advancedSearchEnabled
                 )
             }
 
