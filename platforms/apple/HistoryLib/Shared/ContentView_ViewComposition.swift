@@ -169,20 +169,7 @@ extension ContentView {
     }
 
     var libraryContainer: some View {
-        Group {
-            if advancedSearchEnabled {
-                libraryNavigationStack
-                    .searchable(text: $searchText, prompt: "Search keywords")
-                    .onSubmit(of: .search) {
-                        submitSearch()
-                    }
-#if os(iOS)
-                    .searchToolbarBehavior(.minimize)
-#endif
-            } else {
-                libraryNavigationStack
-            }
-        }
+        libraryNavigationStack
     }
 
     var libraryNavigationStack: some View {
@@ -193,11 +180,14 @@ extension ContentView {
                         Image(systemName: "magnifyingglass")
                             .foregroundStyle(.secondary)
                         TextField("Search keywords", text: $searchText)
-                            .textFieldStyle(.roundedBorder)
+                            .textFieldStyle(.plain)
                             .onSubmit {
                                 submitSearch()
                             }
                     }
+                    .padding(.horizontal, 12)
+                    .frame(minHeight: 44)
+                    .searchFieldSurface()
                     .padding(.horizontal)
                     .padding(.top, 8)
                     .padding(.bottom, 4)
@@ -218,17 +208,22 @@ extension ContentView {
             }
             .navigationTitle("Library")
             .toolbar {
-                ToolbarItemGroup(placement: .primaryAction) {
+                ToolbarItem(placement: .primaryAction) {
                     if advancedSearchEnabled {
-                    Button {
-                        naturalSearchRequest = ""
-                        showingSearchFilters = true
-                    } label: {
-                        Label("Search", systemImage: "magnifyingglass")
-                    }
-                    .disabled(isImporting || isPreparingExport)
+                        Button {
+                            naturalSearchRequest = ""
+                            showingSearchFilters = true
+                        } label: {
+                            Label("Search", systemImage: "magnifyingglass")
+                        }
+                        .disabled(isImporting || isPreparingExport)
                     }
                 }
+#if os(iOS)
+                if advancedSearchEnabled {
+                    ToolbarSpacer(.fixed, placement: .primaryAction)
+                }
+#endif
 #if os(macOS)
                 ToolbarSpacer(.fixed, placement: .primaryAction)
 #endif
