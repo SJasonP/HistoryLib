@@ -12,11 +12,11 @@ final class TipStore {
     }
 
     static let options = [
-        Option(productID: "com.SJasonP.HistoryLib.tip.099"),
-        Option(productID: "com.SJasonP.HistoryLib.tip.299"),
-        Option(productID: "com.SJasonP.HistoryLib.tip.599"),
-        Option(productID: "com.SJasonP.HistoryLib.tip.999"),
-        Option(productID: "com.SJasonP.HistoryLib.tip.1999")
+        Option(productID: "com.SJasonP.HistoryLib.Tips.Level1"),
+        Option(productID: "com.SJasonP.HistoryLib.Tips.Level2"),
+        Option(productID: "com.SJasonP.HistoryLib.Tips.Level3"),
+        Option(productID: "com.SJasonP.HistoryLib.Tips.Level4"),
+        Option(productID: "com.SJasonP.HistoryLib.Tips.Level5")
     ]
 
     private(set) var products: [Product] = []

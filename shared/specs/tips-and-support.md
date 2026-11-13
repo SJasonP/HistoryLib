@@ -10,11 +10,11 @@ United States base prices are:
 
 | Product ID | Base price | Display label |
 | --- | ---: | --- |
-| `com.SJasonP.HistoryLib.tip.099` | $0.99 | Small tip |
-| `com.SJasonP.HistoryLib.tip.299` | $2.99 | Standard tip |
-| `com.SJasonP.HistoryLib.tip.599` | $5.99 | Generous tip |
-| `com.SJasonP.HistoryLib.tip.999` | $9.99 | Big tip |
-| `com.SJasonP.HistoryLib.tip.1999` | $19.99 | Extra generous tip |
+| `com.SJasonP.HistoryLib.Tips.Level1` | $0.99 | Small tip |
+| `com.SJasonP.HistoryLib.Tips.Level2` | $2.99 | Standard tip |
+| `com.SJasonP.HistoryLib.Tips.Level3` | $5.99 | Generous tip |
+| `com.SJasonP.HistoryLib.Tips.Level4` | $9.99 | Big tip |
+| `com.SJasonP.HistoryLib.Tips.Level5` | $19.99 | Extra generous tip |
 
 These are App Store Connect base prices. StoreKit must display the localized
 `Product.displayPrice` for the current storefront. The values are common Apple
