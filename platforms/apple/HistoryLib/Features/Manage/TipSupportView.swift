@@ -10,6 +10,15 @@ struct TipSupportView: View {
     @State private var showingStatus = false
     @State private var showingThankYou = false
 
+    private var confirmationMessage: String {
+        [
+            String(localized: "This tip is completely voluntary and only supports the developer."),
+            String(localized: "It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib."),
+            String(localized: "Payment is processed by Apple. For payment-related questions, contact Apple."),
+            String(localized: "Have you read, understood, and agreed to this information and still want to give a tip?")
+        ].joined(separator: "\n\n")
+    }
+
     var body: some View {
         List {
             Section {
@@ -66,20 +75,23 @@ struct TipSupportView: View {
                 Task { await store.purchase(product) }
             }
         } message: { _ in
-            Text("This tip is completely voluntary and only supports the developer.")
-                + Text("\n\n")
-                + Text("It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib.")
-                + Text("\n\n")
-                + Text("Payment is processed by Apple. For payment-related questions, contact Apple.")
-                + Text("\n\n")
-                + Text("Have you read, understood, and agreed to this information and still want to give a tip?")
+            Text(confirmationMessage)
         }
+#if os(macOS)
+        .sheet(isPresented: $showingThankYou) {
+            TipThankYouView {
+                showingThankYou = false
+                dismiss()
+            }
+        }
+#else
         .fullScreenCover(isPresented: $showingThankYou) {
             TipThankYouView {
                 showingThankYou = false
                 dismiss()
             }
         }
+#endif
         .alert("Tip Status", isPresented: $showingStatus) {
             Button("OK", role: .cancel) { }
         } message: {
