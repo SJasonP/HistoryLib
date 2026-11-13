@@ -2,11 +2,13 @@ import SwiftUI
 import StoreKit
 
 struct TipSupportView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @State private var store = TipStore()
     @State private var selectedProduct: Product?
     @State private var showingConfirmation = false
     @State private var showingStatus = false
+    @State private var showingThankYou = false
 
     var body: some View {
         List {
@@ -43,11 +45,11 @@ struct TipSupportView: View {
             }
 
             Section {
-                Text("Payment is processed by Apple. If you need a refund, contact Apple through its refund support. HistoryLib cannot directly issue or guarantee a refund.")
+                Text("Payment is processed by Apple. For payment-related questions, contact Apple. HistoryLib cannot process App Store payments.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-                Button("Request a Refund from Apple") {
-                    guard let url = URL(string: "https://reportaproblem.apple.com") else { return }
+                Button("Contact Apple About Payment") {
+                    guard let url = URL(string: "https://support.apple.com/billing") else { return }
                     openURL(url)
                 }
             }
@@ -61,8 +63,18 @@ struct TipSupportView: View {
             Button("Yes") {
                 Task { await store.purchase(product) }
             }
-        } message: { _ in
-            Text("This tip is completely voluntary and only supports the developer. It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib. Apple processes the payment and decides refunds. HistoryLib cannot directly issue or guarantee a refund. Have you read, understood, and agreed to this information and still want to give a tip?")
+        } message: { product in
+            Text(product.displayName)
+                + Text("\n")
+                + Text(product.displayPrice)
+                + Text("\n\n")
+                + Text("This tip is completely voluntary and only supports the developer. It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib. Payment is processed by Apple. For payment-related questions, contact Apple. Have you read, understood, and agreed to this information and still want to give a tip?")
+        }
+        .fullScreenCover(isPresented: $showingThankYou) {
+            TipThankYouView {
+                showingThankYou = false
+                dismiss()
+            }
         }
         .alert("Tip Status", isPresented: $showingStatus) {
             Button("OK", role: .cancel) { }
@@ -72,5 +84,42 @@ struct TipSupportView: View {
         .onChange(of: store.statusMessage) { _, message in
             showingStatus = message != nil && selectedProduct != nil
         }
+        .onChange(of: store.successfulPurchase) { _, success in
+            if success { showingThankYou = true }
+        }
+    }
+}
+
+private struct TipThankYouView: View {
+    let onDone: () -> Void
+
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                colors: [.pink.opacity(0.18), .accentColor.opacity(0.12), .clear],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+
+            VStack(spacing: 24) {
+                Image(systemName: "heart.fill")
+                    .font(.system(size: 72))
+                    .foregroundStyle(.pink)
+                    .symbolEffect(.bounce, value: true)
+                Text("Thank You")
+                    .font(.largeTitle.bold())
+                Text("Your support helps keep HistoryLib open source, ad-free, and free for everyone.")
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 24)
+                Button("Done", action: onDone)
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+            }
+            .padding(24)
+        }
+        .interactiveDismissDisabled()
     }
 }

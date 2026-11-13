@@ -11,8 +11,9 @@ The UI uses StoreKit's localized product display price instead of hard-coding a
 dollar amount.
 
 The confirmation step appears before StoreKit and asks the user to confirm that
-the tip is voluntary and understood. Apple processes the payment and controls
-refund decisions. HistoryLib cannot directly issue or guarantee a refund.
+the tip is voluntary and understood. Apple processes the payment. Payment
+questions should be directed to Apple because HistoryLib cannot process App
+Store payments.
 
 All five consumable products must exist in App Store Connect before release.
 Product loading failures, cancellation, pending transactions, and verification

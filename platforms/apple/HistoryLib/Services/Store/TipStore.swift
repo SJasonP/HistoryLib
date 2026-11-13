@@ -58,9 +58,9 @@ final class TipStore {
                 let transaction = try checkVerified(verification)
                 await transaction.finish()
                 successfulPurchase = true
-                statusMessage = String(localized: "Your tip was processed by Apple. Thank you for supporting HistoryLib.")
+                statusMessage = nil
             case .userCancelled:
-                statusMessage = String(localized: "The tip was cancelled.")
+                statusMessage = nil
             case .pending:
                 statusMessage = String(localized: "Payment is pending. Apple will finish processing it later.")
             @unknown default:

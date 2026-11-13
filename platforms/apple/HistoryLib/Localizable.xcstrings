@@ -5862,6 +5862,247 @@
           }
         }
       },
+
+      "Payment is processed by Apple. For payment-related questions, contact Apple. HistoryLib cannot process App Store payments.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "付款由 Apple 处理。如有支付相关问题，请联系 Apple。HistoryLib 无法处理 App Store 付款。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Payment is processed by Apple. For payment-related questions, contact Apple. HistoryLib cannot process App Store payments."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "تعالج Apple الدفع. للأسئلة المتعلقة بالدفع، تواصل مع Apple. لا تستطيع HistoryLib معالجة مدفوعات App Store."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Le paiement est traité par Apple. Pour toute question de paiement, contactez Apple. HistoryLib ne peut pas traiter les paiements App Store."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Платёж обрабатывает Apple. По вопросам оплаты обратитесь в Apple. HistoryLib не обрабатывает платежи App Store."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Apple procesa el pago. Para preguntas sobre pagos, contacta con Apple. HistoryLib no puede procesar pagos del App Store."
+            }
+          }
+        }
+      },
+      "Contact Apple About Payment": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "联系 Apple 处理支付问题"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Contact Apple About Payment"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "تواصل مع Apple بشأن الدفع"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Contacter Apple au sujet du paiement"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Связаться с Apple по поводу оплаты"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Contactar con Apple sobre el pago"
+            }
+          }
+        }
+      },
+      "This tip is completely voluntary and only supports the developer. It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib. Payment is processed by Apple. For payment-related questions, contact Apple. Have you read, understood, and agreed to this information and still want to give a tip?": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "这笔小费完全自愿，只用于支持开发者。它不会解锁任何内容，不支付小费也不会限制你使用 HistoryLib。付款由 Apple 处理。如有支付相关问题，请联系 Apple。你是否已经阅读、理解并同意以上内容，并仍然确认给小费？"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "This tip is completely voluntary and only supports the developer. It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib. Payment is processed by Apple. For payment-related questions, contact Apple. Have you read, understood, and agreed to this information and still want to give a tip?"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "هذه الإكرامية اختيارية وتدعم المطوّر فقط. لا تفتح شيئًا ولا تقيّد عدمُ تقديمها استخدامك. تعالج Apple الدفع. للأسئلة المتعلقة بالدفع تواصل مع Apple. لا تستطيع HistoryLib ضمانه. هل قرأت وفهمت ووافقت وما زلت تريد تقديمها؟"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Ce pourboire est facultatif et soutient uniquement le développeur. Il ne débloque rien et ne limite pas l’utilisation. Apple traite le paiement. HistoryLib ne peut pas le garantir. Pour toute question, contactez Apple. Avez-vous compris et souhaitez-vous continuer ?"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Эти чаевые добровольны и ничего не открывают. Apple обрабатывает платёж. HistoryLib не может гарантировать его. По вопросам оплаты обратитесь в Apple. Вы всё поняли и хотите продолжить?"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Esta propina es voluntaria y no desbloquea nada. Apple procesa el pago. HistoryLib no puede garantizarlo. Para preguntas sobre pagos, contacta con Apple. ¿Has entendido y quieres continuar?"
+            }
+          }
+        }
+      },
+      "Thank You": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "谢谢你"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Thank You"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "شكرًا لك"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Merci"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Спасибо"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Gracias"
+            }
+          }
+        }
+      },
+      "Your support helps keep HistoryLib open source, ad-free, and free for everyone.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "你的支持帮助 HistoryLib 保持开源、无广告，并继续免费提供给所有人。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Your support helps keep HistoryLib open source, ad-free, and free for everyone."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "يساعد دعمك HistoryLib على البقاء مفتوح المصدر وخاليًا من الإعلانات ومجانيًا للجميع."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Votre soutien aide HistoryLib à rester open source, sans publicité et gratuit pour tous."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Ваша поддержка помогает HistoryLib оставаться открытым, без рекламы и бесплатным для всех."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Tu apoyo ayuda a que HistoryLib siga siendo de código abierto, sin anuncios y gratuito para todos."
+            }
+          }
+        }
+      },
+      "Done": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "完成"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Done"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "تم"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Terminé"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Готово"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Listo"
+            }
+          }
+        }
+      },
     "Search keywords": {
       "localizations": {
         "zh-Hans": {
