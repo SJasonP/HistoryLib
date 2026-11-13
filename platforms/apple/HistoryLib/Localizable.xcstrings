@@ -5221,6 +5221,647 @@
         "es": { "stringUnit": { "state": "translated", "value": "Activa la página de búsqueda completa y los filtros." } }
       }
     },
+
+      "Support Us": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "支持我们"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Support Us"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "ادعمنا"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Nous soutenir"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Поддержать нас"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Apoyarnos"
+            }
+          }
+        }
+      },
+      "HistoryLib is completely open source, ad-free, and free to use.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "HistoryLib 完全开源、无广告，并且可以免费使用。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "HistoryLib is completely open source, ad-free, and free to use."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "HistoryLib مفتوح المصدر بالكامل وخالٍ من الإعلانات ومجاني الاستخدام."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "HistoryLib est entièrement open source, sans publicité et gratuit."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "HistoryLib полностью имеет открытый исходный код, не содержит рекламы и бесплатен."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "HistoryLib es completamente de código abierto, sin anuncios y de uso gratuito."
+            }
+          }
+        }
+      },
+      "Tips are completely voluntary and only support the developer. A tip does not unlock features, change access, or limit anything if you do not give one.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "小费完全自愿，只用于支持开发者。小费不会解锁功能、改变访问权限，也不会因为不支付而限制任何内容。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Tips are completely voluntary and only support the developer. A tip does not unlock features, change access, or limit anything if you do not give one."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "الإكرامية اختيارية تمامًا وتدعم المطوّر فقط. لا تفتح أي ميزات ولا تفرض قيودًا."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Les pourboires sont facultatifs et servent uniquement à soutenir le développeur."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Чаевые добровольны и служат только для поддержки разработчика."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Las propinas son voluntarias y solo apoyan al desarrollador."
+            }
+          }
+        }
+      },
+      "Choose a Tip": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "选择小费档位"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Choose a Tip"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "اختر إكرامية"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Choisissez un pourboire"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Выберите чаевые"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Elige una propina"
+            }
+          }
+        }
+      },
+      "Purchases are currently unavailable. Try again later.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "购买目前不可用，请稍后再试。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Purchases are currently unavailable. Try again later."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "المشتريات غير متاحة حاليًا. حاول لاحقًا."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Les achats sont indisponibles. Réessayez plus tard."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Покупки сейчас недоступны. Повторите позже."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Las compras no están disponibles. Inténtalo más tarde."
+            }
+          }
+        }
+      },
+      "Payment is processed by Apple. If you need a refund, contact Apple through its refund support. HistoryLib cannot directly issue or guarantee a refund.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "付款由 Apple 处理。如需退款，请通过 Apple 申请。HistoryLib 无法直接发放或保证退款。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Payment is processed by Apple. If you need a refund, contact Apple through its refund support. HistoryLib cannot directly issue or guarantee a refund."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "تعالج Apple الدفع. تواصل مع Apple للاسترداد. لا تستطيع HistoryLib إصدار استرداد أو ضمانه."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Le paiement est traité par Apple. Contactez Apple pour un remboursement. HistoryLib ne peut pas le garantir."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Платёж обрабатывает Apple. Для возврата обратитесь в Apple. HistoryLib не может гарантировать возврат."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Apple procesa el pago. Contacta con Apple para solicitar un reembolso. HistoryLib no puede garantizarlo."
+            }
+          }
+        }
+      },
+      "Request a Refund from Apple": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "向 Apple 申请退款"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Request a Refund from Apple"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "طلب استرداد من Apple"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Demander un remboursement à Apple"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Запросить возврат у Apple"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Solicitar un reembolso a Apple"
+            }
+          }
+        }
+      },
+      "Confirm Tip": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "确认小费"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Confirm Tip"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "تأكيد الإكرامية"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Confirmer le pourboire"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Подтвердите чаевые"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Confirmar propina"
+            }
+          }
+        }
+      },
+      "Yes": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "是"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Yes"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "نعم"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Oui"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Да"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Sí"
+            }
+          }
+        }
+      },
+      "No": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "否"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "No"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "لا"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Non"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Нет"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "No"
+            }
+          }
+        }
+      },
+      "This tip is completely voluntary and only supports the developer. It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib. Apple processes the payment and decides refunds. HistoryLib cannot directly issue or guarantee a refund. Have you read, understood, and agreed to this information and still want to give a tip?": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "这笔小费完全自愿，只用于支持开发者。它不会解锁任何内容，不支付小费也不会限制你使用 HistoryLib。付款由 Apple 处理，退款由 Apple 决定。HistoryLib 无法直接发放或保证退款。你是否已经阅读、理解并同意以上内容，并仍然确认给小费？"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "This tip is completely voluntary and only supports the developer. It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib. Apple processes the payment and decides refunds. HistoryLib cannot directly issue or guarantee a refund. Have you read, understood, and agreed to this information and still want to give a tip?"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "هذه الإكرامية اختيارية وتدعم المطوّر فقط. لا تفتح شيئًا ولا تقيّد عدمُ تقديمها استخدامك. تعالج Apple الدفع وتقرر الاسترداد. لا تستطيع HistoryLib ضمانه. هل قرأت وفهمت ووافقت وما زلت تريد تقديمها؟"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Ce pourboire est facultatif et soutient uniquement le développeur. Il ne débloque rien. Apple traite le paiement et décide des remboursements. HistoryLib ne peut pas les garantir. Avez-vous compris et souhaitez-vous continuer ?"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Эти чаевые добровольны и ничего не открывают. Apple обрабатывает платёж и решает вопросы возврата. HistoryLib не может гарантировать возврат. Вы всё поняли и хотите продолжить?"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Esta propina es voluntaria y no desbloquea nada. Apple procesa el pago y decide los reembolsos. HistoryLib no puede garantizarlos. ¿Has entendido y quieres continuar?"
+            }
+          }
+        }
+      },
+      "Tip Status": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "小费状态"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Tip Status"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "حالة الإكرامية"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "État du pourboire"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Статус чаевых"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Estado de la propina"
+            }
+          }
+        }
+      },
+      "Your tip was processed by Apple. Thank you for supporting HistoryLib.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "你的付款已由 Apple 处理。感谢你支持 HistoryLib。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Your tip was processed by Apple. Thank you for supporting HistoryLib."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "تمت معالجة إكراميتك بواسطة Apple. شكرًا لدعم HistoryLib."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Votre pourboire a été traité par Apple. Merci de soutenir HistoryLib."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Ваши чаевые обработаны Apple. Спасибо за поддержку HistoryLib."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Apple procesó tu propina. Gracias por apoyar HistoryLib."
+            }
+          }
+        }
+      },
+      "The tip was cancelled.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "小费已取消。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "The tip was cancelled."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "تم إلغاء الإكرامية."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Le pourboire a été annulé."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Чаевые отменены."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "La propina se canceló."
+            }
+          }
+        }
+      },
+      "Payment is pending. Apple will finish processing it later.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "付款正在等待处理，Apple 稍后会完成处理。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Payment is pending. Apple will finish processing it later."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "الدفع قيد الانتظار. ستكمل Apple معالجته لاحقًا."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Le paiement est en attente. Apple terminera plus tard."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Платёж ожидает обработки. Apple завершит её позже."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "El pago está pendiente. Apple lo procesará más tarde."
+            }
+          }
+        }
+      },
+      "The tip could not be completed. Please try again.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "小费未能完成，请重试。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "The tip could not be completed. Please try again."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "تعذر إكمال الإكرامية. حاول مرة أخرى."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Le pourboire a échoué. Réessayez."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Не удалось завершить чаевые. Повторите попытку."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "No se pudo completar la propina. Inténtalo de nuevo."
+            }
+          }
+        }
+      },
     "Search keywords": {
       "localizations": {
         "zh-Hans": {

@@ -53,3 +53,4 @@ file that is handed to the system file exporter.
 - <doc:Privacy-and-Data>
 - <doc:Localization>
 - <doc:Development>
+- <doc:Support-Tips>

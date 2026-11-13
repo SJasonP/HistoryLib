@@ -132,6 +132,12 @@ struct ManageView: View {
                 } label: {
                     Label("Help", systemImage: "questionmark.circle")
                 }
+
+                NavigationLink {
+                    TipSupportView()
+                } label: {
+                    Label("Support Us", systemImage: "heart.circle")
+                }
             }
         }
         .sheet(isPresented: $isShowingBatchDeleteSheet) {
