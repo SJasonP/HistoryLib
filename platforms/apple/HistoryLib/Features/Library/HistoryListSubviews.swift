@@ -1,5 +1,11 @@
 import SwiftUI
 
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
 struct HistoryMonthNavigationList: View {
     let yearGroup: HistoryYearGroup
     let showTime: Bool
@@ -198,6 +204,7 @@ struct HistoryRecordRow: View {
     let enableDelete: Bool
     let onOpenItem: (Item) -> Void
     let onDeleteItem: (Item) -> Void
+    @Environment(\.openURL) private var openURL
 
     @ViewBuilder
     var body: some View {
@@ -209,6 +216,29 @@ struct HistoryRecordRow: View {
         )
             .onTapGesture(count: openTapCount) {
                 onOpenItem(item)
+            }
+            .contextMenu {
+                Button {
+                    guard let url = URL(string: item.url) else { return }
+                    openURL(url)
+                } label: {
+                    Label("Open in Browser", systemImage: "safari")
+                }
+
+                Button {
+                    copyFullURL()
+                } label: {
+                    Label("Copy Full URL", systemImage: "doc.on.doc")
+                }
+
+                if enableDelete {
+                    Divider()
+                    Button(role: .destructive) {
+                        onDeleteItem(item)
+                    } label: {
+                        Label("Delete This Entry", systemImage: "trash")
+                    }
+                }
             }
 
 #if os(iOS)
@@ -225,6 +255,15 @@ struct HistoryRecordRow: View {
         }
 #else
         baseRow
+#endif
+    }
+
+    private func copyFullURL() {
+#if os(macOS)
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(item.url, forType: .string)
+#else
+        UIPasteboard.general.string = item.url
 #endif
     }
 }

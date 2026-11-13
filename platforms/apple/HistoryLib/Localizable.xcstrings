@@ -6305,6 +6305,127 @@
           }
         }
       },
+
+      "Open in Browser": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "在浏览器中打开"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Open in Browser"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "فتح في المتصفح"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Ouvrir dans le navigateur"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Открыть в браузере"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Abrir en el navegador"
+            }
+          }
+        }
+      },
+      "Copy Full URL": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "复制完整 URL"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Copy Full URL"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "نسخ عنوان URL الكامل"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Copier l’URL complète"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Скопировать полный URL"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Copiar URL completa"
+            }
+          }
+        }
+      },
+      "Delete This Entry": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "删除此条目"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Delete This Entry"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "حذف هذا الإدخال"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Supprimer cette entrée"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Удалить эту запись"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Eliminar esta entrada"
+            }
+          }
+        }
+      },
     "Search keywords": {
       "localizations": {
         "zh-Hans": {
