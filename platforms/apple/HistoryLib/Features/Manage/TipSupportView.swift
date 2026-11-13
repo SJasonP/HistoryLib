@@ -38,6 +38,8 @@ struct TipSupportView: View {
                                 Text(product.displayPrice)
                                     .font(.headline)
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                     }
@@ -63,12 +65,14 @@ struct TipSupportView: View {
             Button("Yes") {
                 Task { await store.purchase(product) }
             }
-        } message: { product in
-            Text(product.displayName)
-                + Text("\n")
-                + Text(product.displayPrice)
+        } message: { _ in
+            Text("This tip is completely voluntary and only supports the developer.")
                 + Text("\n\n")
-                + Text("This tip is completely voluntary and only supports the developer. It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib. Payment is processed by Apple. For payment-related questions, contact Apple. Have you read, understood, and agreed to this information and still want to give a tip?")
+                + Text("It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib.")
+                + Text("\n\n")
+                + Text("Payment is processed by Apple. For payment-related questions, contact Apple.")
+                + Text("\n\n")
+                + Text("Have you read, understood, and agreed to this information and still want to give a tip?")
         }
         .fullScreenCover(isPresented: $showingThankYou) {
             TipThankYouView {

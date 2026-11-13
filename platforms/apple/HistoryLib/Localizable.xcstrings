@@ -6103,6 +6103,208 @@
           }
         }
       },
+
+      "This tip is completely voluntary and only supports the developer. It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib. Payment is processed by Apple. For payment-related questions, contact Apple.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "这笔小费完全自愿，只用于支持开发者。它不会解锁任何内容，不支付小费也不会限制你使用 HistoryLib。付款由 Apple 处理。如有支付相关问题，请联系 Apple。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "This tip is completely voluntary and only supports the developer. It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib. Payment is processed by Apple. For payment-related questions, contact Apple."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "هذه الإكرامية اختيارية وتدعم المطوّر فقط. لا تفتح شيئًا ولا تقيّد عدمُ تقديمها استخدامك لـ HistoryLib. تعالج Apple الدفع. للأسئلة المتعلقة بالدفع تواصل مع Apple."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Ce pourboire est facultatif et soutient uniquement le développeur. Il ne débloque rien et ne limite pas l’utilisation de HistoryLib. Apple traite le paiement. Pour toute question, contactez Apple."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Эти чаевые добровольны и ничего не открывают. Они не ограничивают использование HistoryLib. Apple обрабатывает платёж. По вопросам оплаты обратитесь в Apple."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Esta propina es voluntaria y no desbloquea nada ni limita el uso de HistoryLib. Apple procesa el pago. Para preguntas sobre pagos, contacta con Apple."
+            }
+          }
+        }
+      },
+      "Have you read, understood, and agreed to this information and still want to give a tip?": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "你是否已经阅读、理解并同意以上内容，并仍然确认给小费？"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Have you read, understood, and agreed to this information and still want to give a tip?"
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "هل قرأت هذه المعلومات وفهمتها ووافقت عليها وما زلت تريد تقديم إكرامية؟"
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Avez-vous lu, compris et accepté ces informations et souhaitez-vous toujours donner un pourboire ?"
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Вы прочитали, поняли и приняли эту информацию и всё ещё хотите оставить чаевые?"
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "¿Has leído, entendido y aceptado esta información y aún quieres dar una propina?"
+            }
+          }
+        }
+      },
+
+      "This tip is completely voluntary and only supports the developer.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "这笔小费完全自愿，只用于支持开发者。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "This tip is completely voluntary and only supports the developer."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "هذه الإكرامية اختيارية تمامًا وتدعم المطوّر فقط."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Ce pourboire est entièrement facultatif et soutient uniquement le développeur."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Эти чаевые полностью добровольны и служат только для поддержки разработчика."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Esta propina es completamente voluntaria y solo apoya al desarrollador."
+            }
+          }
+        }
+      },
+      "It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "它不会解锁任何内容，不支付小费也不会限制你使用 HistoryLib。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "لن تفتح أي شيء، وعدم تقديمها لن يقيّد استخدامك لـ HistoryLib."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Il ne débloquera rien et ne pas en donner ne limitera pas votre utilisation de HistoryLib."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Они ничего не открывают, а отказ от чаевых не ограничит использование HistoryLib."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "No desbloquea nada y no darla no limitará tu uso de HistoryLib."
+            }
+          }
+        }
+      },
+      "Payment is processed by Apple. For payment-related questions, contact Apple.": {
+        "localizations": {
+          "zh-Hans": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "付款由 Apple 处理。如有支付相关问题，请联系 Apple。"
+            }
+          },
+          "en-US": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Payment is processed by Apple. For payment-related questions, contact Apple."
+            }
+          },
+          "ar": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "تعالج Apple الدفع. للأسئلة المتعلقة بالدفع، تواصل مع Apple."
+            }
+          },
+          "fr": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Le paiement est traité par Apple. Pour toute question, contactez Apple."
+            }
+          },
+          "ru": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Платёж обрабатывает Apple. По вопросам оплаты обратитесь в Apple."
+            }
+          },
+          "es": {
+            "stringUnit": {
+              "state": "translated",
+              "value": "Apple procesa el pago. Para preguntas sobre pagos, contacta con Apple."
+            }
+          }
+        }
+      },
     "Search keywords": {
       "localizations": {
         "zh-Hans": {
