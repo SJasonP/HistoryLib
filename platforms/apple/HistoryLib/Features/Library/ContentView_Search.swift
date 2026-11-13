@@ -73,7 +73,7 @@ extension ContentView {
     }
 
     func submitSearch() {
-        guard advancedSearchEnabled else { return }
+        guard isAdvancedSearchEnabled else { return }
         let request = normalizedSearchText
         guard !request.isEmpty else { return }
         guard NaturalLanguageHistorySearch().isAvailable else { return }
@@ -87,7 +87,9 @@ extension ContentView {
               let request = searchRequests.consume(isBusy: isImporting || isPreparingExport) else { return }
         selectedTab = .library
         libraryNavigationPath.removeAll()
-        if request.mode == .naturalLanguage, advancedSearchEnabled {
+        if request.mode == .naturalLanguage,
+           isAdvancedSearchEnabled,
+           HistorySearchFeatureFlags.appleIntelligenceAndSiriEnabled {
             naturalSearchRequest = request.query
             showingSearchFilters = true
         } else {

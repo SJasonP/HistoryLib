@@ -48,6 +48,14 @@ extension ContentView {
         effectiveSearchFilter.isActive
     }
 
+    var isAdvancedSearchEnabled: Bool {
+        advancedSearchEnabled
+    }
+
+    var showsKeywordSearchField: Bool {
+        !isAdvancedSearchEnabled || !HistorySearchFeatureFlags.appleIntelligenceAndSiriEnabled
+    }
+
     var normalizedSearchText: String {
         searchText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -55,7 +63,7 @@ extension ContentView {
     var shouldShowDirectSearchResults: Bool {
         // This is an existing phone-specific user preference, not a layout
         // decision. Keep the result presentation unchanged while folding.
-        !advancedSearchEnabled && isIPhone && isSearching && showDirectSearchResultsOnIPhone
+        !isAdvancedSearchEnabled && isIPhone && isSearching && showDirectSearchResultsOnIPhone
     }
 
     var groupedSearchDayItems: [Date: [Item]] {
@@ -175,7 +183,7 @@ extension ContentView {
     var libraryNavigationStack: some View {
         NavigationStack(path: $libraryNavigationPath) {
             VStack(spacing: 0) {
-                if !advancedSearchEnabled {
+                if showsKeywordSearchField {
                     HStack(spacing: 8) {
                         Image(systemName: "magnifyingglass")
                             .foregroundStyle(.secondary)
@@ -192,7 +200,7 @@ extension ContentView {
                     .padding(.top, 8)
                     .padding(.bottom, 4)
                 }
-                if advancedSearchEnabled, searchFilter.isActive {
+                if isAdvancedSearchEnabled, searchFilter.isActive {
                     HStack {
                         Button("Review Filters") {
                             naturalSearchRequest = ""
@@ -209,7 +217,7 @@ extension ContentView {
             .navigationTitle("Library")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    if advancedSearchEnabled {
+                    if isAdvancedSearchEnabled {
                         Button {
                             naturalSearchRequest = ""
                             showingSearchFilters = true
@@ -220,7 +228,7 @@ extension ContentView {
                     }
                 }
 #if os(iOS)
-                if advancedSearchEnabled {
+                if isAdvancedSearchEnabled {
                     ToolbarSpacer(.fixed, placement: .primaryAction)
                 }
 #endif

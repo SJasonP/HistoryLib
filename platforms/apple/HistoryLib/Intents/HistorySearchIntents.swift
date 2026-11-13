@@ -15,6 +15,9 @@ struct SearchHistoryIntent: AppIntent {
     }
 }
 
+#if DEBUG
+// These types remain available to unit tests while the production build keeps
+// the disabled natural-language and Siri integrations out of system surfaces.
 struct PrepareNaturalHistorySearchIntent: AppIntent {
     static var title: LocalizedStringResource = "Prepare Natural Language Search"
     static var description = IntentDescription("Open HistoryLib to interpret a request and review its search filters.")
@@ -42,6 +45,7 @@ struct SearchHistoryWithSiriIntent: ShowInAppSearchResultsIntent {
         return .result()
     }
 }
+#endif
 
 struct HistorySearchShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
@@ -49,11 +53,6 @@ struct HistorySearchShortcuts: AppShortcutsProvider {
             intent: SearchHistoryIntent(),
             phrases: ["Search history in \(.applicationName)"],
             shortTitle: "Search History", systemImageName: "magnifyingglass"
-        )
-        AppShortcut(
-            intent: PrepareNaturalHistorySearchIntent(),
-            phrases: ["Find a page with \(.applicationName)"],
-            shortTitle: "Natural Language Search", systemImageName: "sparkles"
         )
     }
 }

@@ -53,7 +53,7 @@ struct AppSettingsView: View {
             Section("Search") {
                 SettingsToggleRow(
                     title: "Advanced Search",
-                    description: "Enables the full search page, filters, and Apple Intelligence search when available.",
+                    description: "Enables the full search page and filters.",
                     isOn: $advancedSearchEnabled
                 )
             }

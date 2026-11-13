@@ -1,6 +1,11 @@
 import Foundation
 import FoundationModels
 
+enum HistorySearchFeatureFlags {
+    // Keep Apple Intelligence and Siri search disabled until their UX is ready.
+    static let appleIntelligenceAndSiriEnabled = false
+}
+
 @Generable
 struct GeneratedHistorySearch {
     @Guide(description: "False if the request cannot be represented by these search filters.")
@@ -18,7 +23,9 @@ struct GeneratedHistorySearch {
 }
 
 struct NaturalLanguageHistorySearch {
-    var isAvailable: Bool { SystemLanguageModel.default.isAvailable }
+    var isAvailable: Bool {
+        HistorySearchFeatureFlags.appleIntelligenceAndSiriEnabled && SystemLanguageModel.default.isAvailable
+    }
 
     func interpret(_ request: String, now: Date = Date(), timeZone: TimeZone = .current) async throws -> HistorySearchFilter {
         guard isAvailable else { throw HistorySearchError.unavailable }

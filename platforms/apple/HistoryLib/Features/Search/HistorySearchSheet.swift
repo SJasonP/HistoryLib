@@ -25,7 +25,7 @@ struct HistorySearchSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                if isAvailable {
+                if HistorySearchFeatureFlags.appleIntelligenceAndSiriEnabled, isAvailable {
                     Section("Describe What You Want to Find") {
                         TextField("Describe your search", text: $request, axis: .vertical)
                             .lineLimit(2...5)
@@ -41,12 +41,6 @@ struct HistorySearchSheet: View {
                             }
                         }
                         .disabled(isInterpreting || request.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || request.count > 2_000)
-                    }
-                } else {
-                    Section {
-                        Text("On-device interpretation is unavailable. You can edit the filters manually.")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
                     }
                 }
 
@@ -110,7 +104,9 @@ struct HistorySearchSheet: View {
             didInitialize = true
             request = initialRequest
             load(initialFilter)
-            if !request.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, available {
+            if HistorySearchFeatureFlags.appleIntelligenceAndSiriEnabled,
+               !request.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+               available {
                 interpret()
             }
         }

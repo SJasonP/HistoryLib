@@ -5211,6 +5211,16 @@
         }
       }
     },
+    "Enables the full search page and filters.": {
+      "localizations": {
+        "zh-Hans": { "stringUnit": { "state": "translated", "value": "启用完整搜索页面和筛选条件。" } },
+        "en-US": { "stringUnit": { "state": "translated", "value": "Enables the full search page and filters." } },
+        "ar": { "stringUnit": { "state": "translated", "value": "يتيح صفحة البحث الكاملة وعوامل التصفية." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Active la page de recherche complète et les filtres." } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Включает полную страницу поиска и фильтры." } },
+        "es": { "stringUnit": { "state": "translated", "value": "Activa la página de búsqueda completa y los filtros." } }
+      }
+    },
     "Search keywords": {
       "localizations": {
         "zh-Hans": {

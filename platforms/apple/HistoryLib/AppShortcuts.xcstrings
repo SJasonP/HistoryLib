@@ -41,47 +41,6 @@
           }
         }
       }
-    },
-    "Find a page with ${applicationName}": {
-      "extractionState": "manual",
-      "localizations": {
-        "en-US": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Find a page with ${applicationName}"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "用 ${applicationName} 查找网页"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "اعثر على صفحة باستخدام ${applicationName}"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trouver une page avec ${applicationName}"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Найти страницу с помощью ${applicationName}"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Encontrar una página con ${applicationName}"
-          }
-        }
-      }
     }
   },
   "version": "1.0"

@@ -3,6 +3,10 @@
 Status: Apple enhancement; other clients retain their existing keyword search.
 This is an optional Apple capability. Android and Windows are deferred from v1.4.
 
+The Apple Intelligence and Siri integration is currently disabled by the
+Apple client feature flag. Manual structured filters remain available whenever
+the Advanced Search preference is enabled.
+
 ## Advanced search preference
 
 Apple clients expose an `Advanced Search` setting that is disabled by default.
