@@ -3,14 +3,13 @@
 All notable changes to HistoryLib are documented here. This project adheres to
 [Keep a Changelog](https://keepachangelog.com/) and uses [Semantic Versioning](https://semver.org/).
 
-## [1.4] - Unreleased
+## [1.4] - 2026-11-14
 
 This release ships only for Apple platforms (iOS and macOS). Android and
 Windows releases are deferred; their source is not a shipping claim.
 
-Siri integration and AI-related features, including on-device natural-language
-interpretation, are experimental. Availability and successful operation are not
-guaranteed; manual search filters remain available.
+Apple Intelligence and Siri search integrations are disabled in this release.
+Manual keyword search and structured filters remain available.
 
 ### Added
 
@@ -25,6 +24,10 @@ guaranteed; manual search filters remain available.
 - Apple privacy manifest and isolated, synthetic-data automated test tooling.
 - Default-on macOS privacy lock using native local authentication, with an
   opt-out in app Settings. iOS uses Apple's system Lock App feature.
+- A voluntary developer-support page in Manage with five StoreKit 2 consumable
+  tip products, Apple payment handling, and a dedicated thank-you screen.
+- Context menus for history entries on iOS and macOS with browser opening, full
+  URL copying, and setting-controlled deletion.
 
 ### Changed
 
@@ -40,6 +43,10 @@ guaranteed; manual search filters remain available.
   attempts a SQLite-managed checkpoint of completed database journals.
 - Adaptable tab/sidebar navigation, compact/regular library layouts, retained
   navigation routes, and fold-aware scrollable transfer progress for iPhone Duo.
+- Library search uses a Liquid Glass keyword field in the default mode. Advanced
+  search keeps its dedicated entry and no longer exposes duplicate iOS search
+  controls.
+- Search and tip confirmation copy is complete for all six product languages.
 - Repository structure separates native clients from shared specifications and
   synthetic fixtures. Apple archive/model compatibility remains unchanged.
 
@@ -51,6 +58,8 @@ guaranteed; manual search filters remain available.
 - Complete translations for ZIP import entry-count and size-limit errors.
 - Limit favicon discovery to the site origin, removing recorded URL paths,
   queries, fragments, and credentials from discovery requests.
+- Remove unusable Apple Intelligence and Siri search UI and shortcuts while
+  preserving manual advanced search.
 
 ### Security
 
