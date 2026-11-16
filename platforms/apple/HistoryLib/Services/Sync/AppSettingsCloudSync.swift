@@ -18,7 +18,7 @@ final class AppSettingsCloudSync {
         .init(key: "show_history_time", kind: .bool),
         .init(key: "show_site_icons", kind: .bool),
         .init(key: "enable_delete", kind: .bool),
-        .init(key: "open_record_in_browser_on_click", kind: .bool),
+        .init(key: "record_tap_action", kind: .string),
         .init(key: "default_expand_level", kind: .string),
         .init(key: "advanced_search_enabled", kind: .bool),
         .init(key: "show_direct_search_results_on_iphone", kind: .bool)

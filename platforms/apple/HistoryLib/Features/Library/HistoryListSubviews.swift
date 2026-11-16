@@ -1,11 +1,5 @@
 import SwiftUI
 
-#if os(macOS)
-import AppKit
-#else
-import UIKit
-#endif
-
 struct HistoryMonthNavigationList: View {
     let yearGroup: HistoryYearGroup
     let showTime: Bool
@@ -18,6 +12,7 @@ struct HistoryMonthNavigationList: View {
     let dayIsLoadingProvider: (Date) -> Bool
     let onOpenItem: (Item) -> Void
     let onDeleteItem: (Item) -> Void
+    let onCopyURL: (String) -> Void
     let onEnsureDayCount: (Date) -> Void
     let onEnsureDayItems: (Date) -> Void
     let onLoadMoreDayItems: (Date) -> Void
@@ -38,6 +33,7 @@ struct HistoryMonthNavigationList: View {
                         dayIsLoadingProvider: dayIsLoadingProvider,
                         onOpenItem: onOpenItem,
                         onDeleteItem: onDeleteItem,
+                        onCopyURL: onCopyURL,
                         onEnsureDayCount: onEnsureDayCount,
                         onEnsureDayItems: onEnsureDayItems,
                         onLoadMoreDayItems: onLoadMoreDayItems
@@ -84,6 +80,7 @@ private struct HistoryDayNavigationList: View {
     let dayIsLoadingProvider: (Date) -> Bool
     let onOpenItem: (Item) -> Void
     let onDeleteItem: (Item) -> Void
+    let onCopyURL: (String) -> Void
     let onEnsureDayCount: (Date) -> Void
     let onEnsureDayItems: (Date) -> Void
     let onLoadMoreDayItems: (Date) -> Void
@@ -104,6 +101,7 @@ private struct HistoryDayNavigationList: View {
                         dayIsLoadingProvider: dayIsLoadingProvider,
                         onOpenItem: onOpenItem,
                         onDeleteItem: onDeleteItem,
+                        onCopyURL: onCopyURL,
                         onEnsureDayItems: onEnsureDayItems,
                         onLoadMoreDayItems: onLoadMoreDayItems
                     )
@@ -141,6 +139,7 @@ private struct HistoryRecordList: View {
     let dayIsLoadingProvider: (Date) -> Bool
     let onOpenItem: (Item) -> Void
     let onDeleteItem: (Item) -> Void
+    let onCopyURL: (String) -> Void
     let onEnsureDayItems: (Date) -> Void
     let onLoadMoreDayItems: (Date) -> Void
 
@@ -170,7 +169,8 @@ private struct HistoryRecordList: View {
                         openTapCount: openTapCount,
                         enableDelete: enableDelete,
                         onOpenItem: onOpenItem,
-                        onDeleteItem: onDeleteItem
+                        onDeleteItem: onDeleteItem,
+                        onCopyURL: onCopyURL
                     )
                 }
             }
@@ -204,6 +204,7 @@ struct HistoryRecordRow: View {
     let enableDelete: Bool
     let onOpenItem: (Item) -> Void
     let onDeleteItem: (Item) -> Void
+    let onCopyURL: (String) -> Void
     @Environment(\.openURL) private var openURL
 
     @ViewBuilder
@@ -226,7 +227,7 @@ struct HistoryRecordRow: View {
                 }
 
                 Button {
-                    copyFullURL()
+                    onCopyURL(item.url)
                 } label: {
                     Label("Copy Full URL", systemImage: "doc.on.doc")
                 }
@@ -258,12 +259,4 @@ struct HistoryRecordRow: View {
 #endif
     }
 
-    private func copyFullURL() {
-#if os(macOS)
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(item.url, forType: .string)
-#else
-        UIPasteboard.general.string = item.url
-#endif
-    }
 }

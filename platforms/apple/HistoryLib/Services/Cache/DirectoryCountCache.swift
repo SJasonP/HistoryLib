@@ -20,6 +20,7 @@ struct DayCountEntry: Codable {
 
 struct DirectoryCountSnapshot: Codable {
     var schemaVersion: Int
+    var buildVersion: String?
     /// The time zone the day boundaries were computed in. Day grouping shifts
     /// when the zone changes, so a mismatch invalidates the cache.
     var timeZoneIdentifier: String
@@ -33,6 +34,10 @@ struct DirectoryCountSnapshot: Codable {
 enum DirectoryCountCache {
     static let schemaVersion = 1
     private static let fileName = "directory-count-cache.json"
+
+    static var currentBuildVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
+    }
 
     private static func fileURL() -> URL? {
         let fileManager = FileManager.default

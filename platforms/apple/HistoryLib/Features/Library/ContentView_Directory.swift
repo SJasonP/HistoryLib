@@ -88,6 +88,7 @@ extension ContentView {
     func loadDirectoryFromCache() -> Bool {
         guard let snapshot = DirectoryCountCache.load(),
               snapshot.schemaVersion == DirectoryCountCache.schemaVersion,
+              snapshot.buildVersion == DirectoryCountCache.currentBuildVersion,
               snapshot.timeZoneIdentifier == TimeZone.current.identifier else {
             return false
         }
@@ -122,6 +123,7 @@ extension ContentView {
         DirectoryCountCache.save(
             DirectoryCountSnapshot(
                 schemaVersion: DirectoryCountCache.schemaVersion,
+                buildVersion: DirectoryCountCache.currentBuildVersion,
                 timeZoneIdentifier: TimeZone.current.identifier,
                 totalCount: total,
                 days: entries

@@ -1,6 +1,12 @@
 import SwiftUI
 import SwiftData
 
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
 extension ContentView {
     var canMutateHistoryData: Bool {
         HistoryStoragePolicy.canMutate(backend: persistenceBackend)
@@ -62,8 +68,17 @@ extension ContentView {
 
     var shouldShowDirectSearchResults: Bool {
         // This is an existing phone-specific user preference, not a layout
-        // decision. Keep the result presentation unchanged while folding.
-        !isAdvancedSearchEnabled && isIPhone && isSearching && showDirectSearchResultsOnIPhone
+        // decision. Keep the result presentation unchanged while folding,
+        // regardless of whether advanced filters are enabled.
+        isIPhone && isSearching && showDirectSearchResultsOnIPhone
+    }
+
+    var libraryBackgroundColor: Color {
+#if os(macOS)
+        Color(nsColor: .windowBackgroundColor)
+#else
+        Color(uiColor: .systemGroupedBackground)
+#endif
     }
 
     var groupedSearchDayItems: [Date: [Item]] {
@@ -192,6 +207,7 @@ extension ContentView {
                             .onSubmit {
                                 submitSearch()
                             }
+                            .clearableTextInput($searchText)
                     }
                     .padding(.horizontal, 12)
                     .frame(minHeight: 44)
@@ -214,6 +230,7 @@ extension ContentView {
                 }
                 libraryContent
             }
+            .background(libraryBackgroundColor.ignoresSafeArea())
             .navigationTitle("Library")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -237,6 +254,10 @@ extension ContentView {
 #endif
                 topToolbar
             }
+#if os(iOS)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(libraryBackgroundColor, for: .navigationBar)
+#endif
         }
     }
 
@@ -262,6 +283,7 @@ extension ContentView {
             dayIsLoadingProvider: isDayItemsLoading(for:),
             onOpenItem: openRecordInBrowserIfNeeded,
             onDeleteItem: deleteSingleRecord,
+            onCopyURL: copyFullURLWithFeedback,
             onEnsureDayCount: ensureDayCountLoaded,
             onEnsureDayItems: ensureDayItemsLoaded,
             onLoadMoreDayItems: loadMoreDayItems,

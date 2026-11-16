@@ -29,6 +29,7 @@ struct HistorySearchSheet: View {
                     Section("Describe What You Want to Find") {
                         TextField("Describe your search", text: $request, axis: .vertical)
                             .lineLimit(2...5)
+                            .clearableTextInput($request)
                             .disabled(isInterpreting)
                         Text("Only your request is processed on this device. History records are not sent to the model.")
                             .font(.footnote)
@@ -47,11 +48,13 @@ struct HistorySearchSheet: View {
                 Section("Review Search Filters") {
                     TextField("Search terms (one per line)", text: $keywords, axis: .vertical)
                         .lineLimit(1...5)
+                        .clearableTextInput($keywords)
                     Text("All terms must match the title or URL.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                     TextField("Domain (Optional)", text: $domain)
                         .autocorrectionDisabled()
+                        .clearableTextInput($domain)
                     Picker("Browser", selection: $browser) {
                         Text("Any Browser").tag("")
                         Text(verbatim: "Safari").tag("Safari")

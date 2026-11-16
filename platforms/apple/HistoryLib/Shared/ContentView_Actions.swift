@@ -5,6 +5,8 @@ import SwiftUI
 
 #if !os(macOS)
 import UIKit
+#else
+import AppKit
 #endif
 
 private final class NetworkStatusProbeResolution: @unchecked Sendable {
@@ -283,11 +285,36 @@ extension ContentView {
     }
 
     func openRecordInBrowserIfNeeded(_ item: Item) {
-        guard openRecordInBrowserOnDoubleClick,
-              let url = normalizedWebURL(from: item.url) else {
+        switch HistoryRecordTapAction(rawValue: recordTapActionRaw) ?? .openBrowser {
+        case .none:
             return
+        case .copyURL:
+            copyFullURLWithFeedback(item.url)
+        case .openBrowser:
+            guard let url = normalizedWebURL(from: item.url) else { return }
+            openURL(url)
         }
-        openURL(url)
+    }
+
+    func copyFullURLWithFeedback(_ value: String) {
+#if os(macOS)
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(value, forType: .string)
+#else
+        UIPasteboard.general.string = value
+#endif
+
+        copyFeedbackTask?.cancel()
+        withAnimation(.easeOut(duration: 0.15)) {
+            showingCopyFeedback = true
+        }
+        copyFeedbackTask = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 700_000_000)
+            guard !Task.isCancelled else { return }
+            withAnimation(.easeIn(duration: 0.15)) {
+                showingCopyFeedback = false
+            }
+        }
     }
 
     func normalizedWebURL(from rawURL: String) -> URL? {

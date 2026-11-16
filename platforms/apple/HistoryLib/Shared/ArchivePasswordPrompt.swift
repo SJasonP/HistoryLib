@@ -12,6 +12,7 @@ struct ArchivePasswordPrompt: View {
                 Section("Password") {
                     SecureField("Password", text: $password)
                         .textContentType(.password)
+                        .clearableTextInput($password)
 
                     if !errorMessage.isEmpty {
                         Text(errorMessage)

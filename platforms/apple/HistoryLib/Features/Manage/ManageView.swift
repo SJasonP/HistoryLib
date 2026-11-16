@@ -276,6 +276,7 @@ struct ManageView: View {
     private func passwordField(_ title: LocalizedStringKey, text: Binding<String>) -> some View {
         SecureField(title, text: text)
             .textContentType(.newPassword)
+            .clearableTextInput(text)
     }
 
     private func prepareExport() {

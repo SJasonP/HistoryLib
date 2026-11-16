@@ -29,6 +29,38 @@ enum HistoryDefaultExpandLevel: String, CaseIterable, Identifiable {
     }
 }
 
+enum HistoryRecordTapAction: String, CaseIterable, Identifiable {
+    case none
+    case copyURL
+    case openBrowser
+
+    var id: String { rawValue }
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .none:
+            "Do Nothing"
+        case .copyURL:
+            "Copy Full URL"
+        case .openBrowser:
+            "Open in Browser"
+        }
+    }
+}
+
+enum HistoryRecordTapActionMigration {
+    static func migrateIfNeeded(defaults: UserDefaults = .standard) {
+        guard defaults.object(forKey: "record_tap_action") == nil,
+              let legacyValue = defaults.object(forKey: "open_record_in_browser_on_click") as? Bool else {
+            return
+        }
+        defaults.set(
+            legacyValue ? HistoryRecordTapAction.openBrowser.rawValue : HistoryRecordTapAction.none.rawValue,
+            forKey: "record_tap_action"
+        )
+    }
+}
+
 struct ContentView: View {
     enum AppTab: String, Hashable {
         case summary
@@ -43,7 +75,7 @@ struct ContentView: View {
     @AppStorage("show_history_time") var showHistoryTime = true
     @AppStorage("show_site_icons") var showSiteIcons = true
     @AppStorage("enable_delete") var enableDelete = false
-    @AppStorage("open_record_in_browser_on_click") var openRecordInBrowserOnDoubleClick = true
+    @AppStorage("record_tap_action") var recordTapActionRaw = HistoryRecordTapAction.openBrowser.rawValue
     @AppStorage("default_expand_level") var defaultExpandLevelRaw = HistoryDefaultExpandLevel.day.rawValue
     @AppStorage("advanced_search_enabled") var advancedSearchEnabled = false
     @AppStorage("show_direct_search_results_on_iphone") var showDirectSearchResultsOnIPhone = true
@@ -128,6 +160,8 @@ struct ContentView: View {
     @State var summaryGenerationToken = 0
     @State var summaryGenerationTask: Task<Void, Never>?
     @State var showingStorageModeAlert = false
+    @State var showingCopyFeedback = false
+    @State var copyFeedbackTask: Task<Void, Never>?
     @State var isBackgroundDedupRunning = false
     @State var backgroundDedupTask: Task<Void, Never>?
     @State var lastBackgroundDedupRunAt: Date = .distantPast
@@ -149,6 +183,17 @@ struct ContentView: View {
                     exportProgressOverlay
                 } else if isImporting {
                     importProgressOverlay
+                }
+            }
+            .overlay(alignment: .bottom) {
+                if showingCopyFeedback {
+                    Text("Copied")
+                        .font(.subheadline.weight(.medium))
+                        .padding(.horizontal, 18)
+                        .padding(.vertical, 12)
+                        .floatingFeedbackSurface()
+                        .padding(.bottom, isIPhone ? 96 : 24)
+                        .transition(.opacity.combined(with: .scale(scale: 0.96)))
                 }
             }
             .fileImporter(
@@ -225,6 +270,7 @@ struct ContentView: View {
                     showingStorageModeAlert = true
                 }
                 AppSettingsCloudSync.shared.refreshActivationState()
+                HistoryRecordTapActionMigration.migrateIfNeeded()
                 scheduleBackgroundDedupIfNeeded(reason: "app launch")
                 consumeSearchRequest()
             }
@@ -282,6 +328,8 @@ struct ContentView: View {
                 scheduleBackgroundDedupIfNeeded(reason: "remote change")
             }
             .onDisappear {
+                summaryGenerationTask?.cancel()
+                directoryBuildTask?.cancel()
                 importTask?.cancel()
                 if !isImporting {
                     cleanupPendingEncryptedImport()

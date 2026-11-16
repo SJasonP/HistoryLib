@@ -4,7 +4,7 @@ struct AppSettingsView: View {
     @AppStorage("show_history_time") private var showHistoryTime = true
     @AppStorage("show_site_icons") private var showSiteIcons = true
     @AppStorage("enable_delete") private var enableDelete = false
-    @AppStorage("open_record_in_browser_on_click") private var openRecordInBrowserOnDoubleClick = true
+    @AppStorage("record_tap_action") private var recordTapActionRaw = HistoryRecordTapAction.openBrowser.rawValue
     @AppStorage("default_expand_level") private var defaultExpandLevelRaw = HistoryDefaultExpandLevel.day.rawValue
     @AppStorage("advanced_search_enabled") private var advancedSearchEnabled = false
 #if os(macOS)
@@ -43,11 +43,7 @@ struct AppSettingsView: View {
             }
 
             Section("Opening") {
-                SettingsToggleRow(
-                    title: "Open Link On Tap/Click",
-                    description: "Opens the selected URL in your default browser.",
-                    isOn: $openRecordInBrowserOnDoubleClick
-                )
+                RecordTapActionPickerRow(selection: $recordTapActionRaw)
             }
 
             Section("Search") {
@@ -88,6 +84,9 @@ struct AppSettingsView: View {
         .formStyle(.grouped)
         .navigationTitle("Settings")
         .frame(minWidth: 560, minHeight: 360, alignment: .topLeading)
+        .onAppear {
+            HistoryRecordTapActionMigration.migrateIfNeeded()
+        }
     }
 }
 
@@ -123,6 +122,26 @@ private struct SettingsPickerRow: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                 Text(description)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .pickerStyle(.menu)
+    }
+}
+
+private struct RecordTapActionPickerRow: View {
+    @Binding var selection: String
+
+    var body: some View {
+        Picker(selection: $selection) {
+            ForEach(HistoryRecordTapAction.allCases) { action in
+                Text(action.title).tag(action.rawValue)
+            }
+        } label: {
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Tap/Click Action")
+                Text("Choose what happens when you tap or click a history record.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

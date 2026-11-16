@@ -87,6 +87,7 @@ struct HistoryListView: View {
     let dayIsLoadingProvider: (Date) -> Bool
     let onOpenItem: (Item) -> Void
     let onDeleteItem: (Item) -> Void
+    let onCopyURL: (String) -> Void
     let onEnsureDayCount: (Date) -> Void
     let onEnsureDayItems: (Date) -> Void
     let onLoadMoreDayItems: (Date) -> Void
@@ -135,6 +136,7 @@ struct HistoryListView: View {
                     dayIsLoadingProvider: dayIsLoadingProvider,
                     onOpenItem: onOpenItem,
                     onDeleteItem: onDeleteItem,
+                    onCopyURL: onCopyURL,
                     onEnsureDayCount: onEnsureDayCount,
                     onEnsureDayItems: onEnsureDayItems,
                     onLoadMoreDayItems: onLoadMoreDayItems
@@ -296,7 +298,8 @@ struct HistoryListView: View {
                     openTapCount: openTapCount,
                     enableDelete: enableDelete,
                     onOpenItem: onOpenItem,
-                    onDeleteItem: onDeleteItem
+                    onDeleteItem: onDeleteItem,
+                    onCopyURL: onCopyURL
                 )
             }
         }
@@ -332,7 +335,8 @@ struct HistoryListView: View {
                             openTapCount: openTapCount,
                             enableDelete: enableDelete,
                             onOpenItem: onOpenItem,
-                            onDeleteItem: onDeleteItem
+                            onDeleteItem: onDeleteItem,
+                            onCopyURL: onCopyURL
                         )
                     }
 
