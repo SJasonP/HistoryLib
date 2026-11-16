@@ -8,7 +8,7 @@ Status: v1 (current)
 
 ## 1. Overview
 
-HistoryLib always exports one archive file (`.hlz`). With no password, the file
+The HistoryLib export format produces one archive file (`.hlz`). With no password, the file
 is the ZIP container described below. With a password, that ZIP is wrapped in
 the encrypted container described in the next section.
 

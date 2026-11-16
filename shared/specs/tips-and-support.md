@@ -1,11 +1,12 @@
 # Developer Support Tips
 
-Status: Apple implementation planned for v1.4. The feature is a voluntary
-developer-support flow and does not unlock content or functionality.
+Status: Implemented for the Apple v1.4 client; App Store Connect configuration
+and Sandbox acceptance remain release prerequisites. The feature is a
+voluntary developer-support flow and does not unlock content or functionality.
 
 ## Product model
 
-Apple clients may offer five consumable In-App Purchase products. The proposed
+The Apple client offers five consumable In-App Purchase products. The current
 United States base prices are:
 
 | Product ID | Base price | Display label |
@@ -49,3 +50,12 @@ verified transactions, failed verification, and repeated purchases.
 The UI must remain usable when App Store Connect products are unavailable. It
 must not invent a successful purchase or imply that a missing product was
 charged.
+
+While Support Us is visible, retry unavailable or missing products every five
+seconds until all tiers load. Leaving cancels further retries. A process-wide
+StoreKit listener verifies and finishes known consumable tip transactions from
+updates and unfinished transactions, including payments completed after a
+pending response or relaunch. No developer server is required. Each transaction
+is processed once per app session; only a visible support page presents thanks
+for a newly received completion. Invalid or revoked transactions do not trigger
+thanks.

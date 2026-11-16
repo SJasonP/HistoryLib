@@ -1,6 +1,6 @@
 # Shared Fixtures
 
-This directory will contain synthetic inputs used by every platform's import,
+This directory contains synthetic inputs for platform import,
 export, deduplication, encryption, corruption, and compatibility tests.
 
 Never place real browser history here. Every fixture must use fictional URLs,

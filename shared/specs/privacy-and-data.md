@@ -9,6 +9,9 @@ reveal private activity.
 - History remains in platform-private storage unless exported or synced through
   a documented platform service. From Apple 1.4, system iCloud settings control
   synchronization; the removed app-level switch is no longer an opt-out.
+  Explicit build-compatibility recovery is an exception: after confirmation
+  and restart, a separate local-only library disables history/settings sync and
+  cloud diagnostics. Its reset never submits cloud record deletions.
 - HistoryLib does not expose a product-level backup feature.
 - Export is explicit data portability, not automatic backup.
 - Sync is a separate feature and must not be described as backup.
@@ -89,10 +92,12 @@ Production logs must not include full URLs, titles, passwords, archive record
 payloads, decrypted content, or cloud credentials. Diagnostic events should use
 counts, phases, error categories, and non-sensitive identifiers.
 
-## Optional intelligent search
+## Optional intelligent search (currently disabled on Apple)
 
-Apple's explicit on-device interpretation processes only the user's request and
-reference date/time zone. It does not receive stored history or use a cloud
-fallback. Proposed filters require user review before execution. Siri and
-Shortcuts receive the query the user supplies, but the current app actions
-return no history contents and create no system history index. See `search.md`.
+The current Apple release does not run Apple Intelligence or expose the related
+Siri and Shortcuts search actions. Manual keyword search and user-edited
+structured filters remain available. If the optional Apple capability returns,
+its on-device interpretation must process only the user's request and reference
+date/time zone, must not receive stored history, and must not use a cloud
+fallback. Proposed filters would require user review before execution. See
+`search.md`.

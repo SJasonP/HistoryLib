@@ -3,9 +3,10 @@
 Status: Apple enhancement; other clients retain their existing keyword search.
 This is an optional Apple capability. Android and Windows are deferred from v1.4.
 
-The Apple Intelligence and Siri integration is currently disabled by the
-Apple client feature flag. Manual structured filters remain available whenever
-the Advanced Search preference is enabled.
+Apple Intelligence interpretation and AI-backed Siri search are disabled by the
+Apple client feature flag. A keyword App Shortcut remains available and opens
+the app without returning history records to the system. Manual structured
+filters remain available whenever Advanced Search is enabled.
 
 ## Advanced search preference
 
@@ -14,14 +15,18 @@ When it is disabled, tapping the search field opens the ordinary keyword search
 experience and typing searches the URL and title directly. Advanced filters and
 the standalone filter page remain hidden.
 
-When it is enabled, the standalone search page exposes structured filters and a
-submitted search request may be interpreted by the on-device Apple Intelligence
-model when that model is available. If the model is unavailable, the same input
-continues as an ordinary keyword search. Enabling the setting may use a fuller
-grouped search presentation on iPhone, while the default presentation remains
-the existing direct-results experience.
+When it is enabled, the standalone search page exposes structured filters that
+the user can edit and apply manually. The Apple Intelligence and Siri layer is
+disabled in the current Apple release, so enabling this preference does not
+enable AI, Siri, or Shortcuts integration. The default presentation remains the
+existing direct-results experience.
 
 ## Structured search
+
+Apple keyword search and advanced-search text inputs expose a clear button
+when nonempty. Clearing affects only that input, using the same search update
+behavior as deleting its text manually. Password inputs also offer clearing
+while keeping their contents masked.
 
 A filter can contain literal terms, a domain, a source browser, and visit-time
 bounds. All constraints are ANDed. Each literal term must occur in the URL or
@@ -42,40 +47,39 @@ queries, regular expressions, SQL, or model-generated predicates.
   filters or text change. Cancelled/stale pages must not replace newer results.
 - Queries never mutate history, counts, snapshots, or deduplication keys.
 
-## Natural language
+## Natural language (future Apple capability)
 
-The first Apple implementation explicitly uses the on-device Foundation Models
-system model. It receives only the user's request, the reference date/time zone,
-and fixed parsing instructions. No history entries, URLs, titles, passwords,
-archive content, database schema, or retrieval tools are supplied to the model.
-There is no automatic cloud fallback.
+The natural-language design is documented here for a future opt-in Apple
+capability. It is not active in the current release. If enabled in a future
+release, the implementation must use the on-device Foundation Models system
+model and receive only the user's request, reference date/time zone, and fixed
+parsing instructions. No history entries, URLs, titles, passwords, archive
+content, database schema, or retrieval tools may be supplied to the model.
 
-Generated output is a proposed structured filter. Reject unsupported requests,
-invalid dates/domains, unsupported browsers, and empty proposals. The user must
-review and apply the editable proposal before it queries the history store.
+Any future generated output must be a proposed structured filter. Unsupported
+requests, invalid dates/domains, unsupported browsers, and empty proposals must
+be rejected. The user must review and apply the editable proposal before it
+queries the history store.
 
-Model availability and language support vary. Manual filters and keyword
-search remain usable without Apple Intelligence. Interpretation failure must
-not silently substitute a keyword search or clear a previously edited filter.
+Manual filters and keyword search are the current supported behavior. If this
+capability returns in a future release, model availability and language support
+will vary, and interpretation failure must not silently substitute a keyword
+search or clear a previously edited filter.
 
 This feature does not infer webpage bodies, generate visit records, reconstruct
 actual navigation links, or guarantee semantic recall from missing content.
 
-## Siri and Shortcuts
+## AI-backed Siri and Shortcuts (disabled)
 
-Apple exposes foreground keyword search and a natural-language preparation
-action. The latter opens the editor; it does not infer or execute automatically.
-The system search schema routes to ordinary keyword search. Requests require
-local device authentication, are bounded, and stay only in memory. The latest
-pending request wins if multiple requests arrive before it can be handled.
+The current Apple release exposes no AI-backed Siri or Shortcuts search
+integration. The production natural-language preparation action and system
+application-search schema are disabled. Ordinary in-app keyword search and
+manually edited advanced filters remain available.
 
-Requests arriving before UI startup or during import/export/password/document
-presentations remain pending until the interface can handle them. A consumed
-request must not replay on a later appearance or tab switch.
+If Siri or Shortcuts integration is re-enabled in a future release, requests
+must remain bounded and in memory, require local device authentication, and be
+consumed once. The latest pending request must replace older requests.
 
-No records are returned in Siri dialogs, indexed in Spotlight, donated to
-personal context, or made transferable across apps by this implementation.
-The user explicitly submits the query to Siri/Shortcuts; only the foreground
-application reads its history database to display results. System capability
-availability is independent from app compilation and requires separate human
-end-to-end acceptance.
+The future integration must not return records in Siri dialogs, index them in
+Spotlight, donate them to personal context, or make them transferable across
+apps.

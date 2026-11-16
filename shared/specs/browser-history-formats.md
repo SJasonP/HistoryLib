@@ -1,4 +1,4 @@
-# Browser History Input and Safari Export Formats
+# Browser History Import and Export Formats
 
 Status: current cross-platform behavior
 
@@ -41,6 +41,11 @@ Safari-compatible export writes the same envelope and supports one JSON file or
 files split by year, month, or day, then packages the payload as a ZIP archive.
 Records are emitted in visit-time order and preserve supported redirect
 metadata.
+
+Apple v1.4 also exports a standalone Google Takeout-compatible JSON document
+with a top-level `Browser History` array. Each record contains `url`, `title`,
+and `time_usec`. This is a portable Takeout-shaped export; it is not a Chrome
+database restore format.
 
 ## Google Takeout Chrome history JSON
 

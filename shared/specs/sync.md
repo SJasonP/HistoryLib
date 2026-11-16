@@ -55,9 +55,16 @@ must not present a backup mechanism as sync.
 
 ### Apple 1.4 system control
 
-System iCloud settings are the sole sync control. The app-specific switch and
-its saved preference are removed; the existing store is retained. Release notes
-must explain that the old app-level opt-out no longer applies.
+Normal operation follows system iCloud settings. The old app-specific switch
+and its saved preference are removed; the existing store is retained. The
+changelog records that the former app-level opt-out no longer applies.
+
+Build-compatibility recovery is a separate, explicit local-only mode. After
+confirmation and restart, it uses an independent database with CloudKit disabled,
+stops settings sync, and disables cloud diagnostics. Reset removes local store
+files before opening persistence, without submitting cloud record deletions.
+Resuming cloud sync requires the recorded compatible build, confirmation, and
+restart; the separate local library is retained. See `versioning-and-release.md`.
 
 An opened primary store remains writable regardless of connectivity, account
 availability, cloud quota, or observed sync errors. CloudKit scheduling and
