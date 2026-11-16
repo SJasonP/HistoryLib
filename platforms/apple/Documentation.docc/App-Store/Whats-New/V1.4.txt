@@ -1,0 +1,11 @@
+HistoryLib 1.4 is here! This update makes finding that one elusive browsing history entry easier than ever, while bringing a more consistent experience across iPhone, iPad, and Mac.
+
+• Search made simpler: The familiar keyword search is now the default. Enable Advanced Search in Settings to combine filters for keywords, domains, browsers, and dates.
+• A more native experience: Search and layouts have been refined to feel right at home on iPhone, iPad, and Mac, with more flexible window sizing and support for iPhone Duo.
+• More control over your history: Long-press or right-click any history entry to open it in your browser or copy its full URL. You can also delete individual entries once deletion permissions are enabled.
+• Clearer management tools: The management screen now provides more detailed information about sync, cache, and database status, along with safer cache cleanup.
+• Better privacy protection: Privacy Lock is now enabled by default on macOS, protecting your browsing history with Touch ID, Apple Watch, or your Mac login password. On iPhone and iPad, you can simply use the built-in system app locking feature.
+• Improved reliability: Enhancements to iCloud sync, importing and exporting, searching large browsing histories, and error recovery help keep years of accumulated browsing data safe and accessible.
+A heartfelt thank-you to everyone who uses HistoryLib, shares feedback, or simply keeps it installed on their devices. I hope it helps you rediscover those pages that make you think, “I know I've seen this before, but where on earth was it?”
+
+For the complete release notes, check out the Changelog on GitHub: https://github.com/SJasonP/HistoryLib/blob/main/CHANGELOG.md

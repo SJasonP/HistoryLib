@@ -1,0 +1,31 @@
+A lightweight app for storing, browsing, and managing your browser history.
+
+===== Why I Built This App =====
+
+As a heavy Apple user, I've always used Safari as my one and only browser.
+But after years of continuous use, junk and unnecessary data started piling up. Eventually, I had no choice but to back up my entire browsing history, give Safari a thorough cleanup, and then import everything back afterward.
+Or so I thought...
+When I reopened Safari and tried to restore my browsing history, I was completely caught off guard.
+On macOS, Safari would randomly leave out bits and pieces of my history during import. And on iOS and iPadOS, things were even worse: no matter what I tried, only the most recent month's worth of history would get imported!
+For someone who relies heavily on browser history, this was simply unacceptable. I'm not the kind of person who likes taking notes. Instead, whenever I need to find something again, I just dig through my old browsing history.
+But it had become painfully clear that Safari—and the Apple ecosystem as a whole—simply wouldn't let me import my complete browsing history.
+Obviously, I couldn't change Apple. So I decided to take matters into my own hands and build this app.
+
+===== Features & Highlights =====
+
+• Easy Imports: Effortlessly import browsing history from Safari, Google Chrome, and other browsers, no matter how far back it goes.
+• Browse & Search: Freely explore your entire browsing history, with advanced search options whenever you need them.
+• Flexible Exports: Export your data in multiple formats, making it easy to transfer to other devices or browsers.
+• Automatic iCloud Sync: Keep your data in sync across all your Apple devices. Make a change once, and there's no need to manually import or export anything again.
+• Offline & Open Source: Works completely offline, with all source code publicly available on GitHub. Your private data stays private.
+• ...And More: There's plenty more waiting for you to discover!
+
+===== When Might You Need This App? =====
+
+• You want to browse, export, or manage your own browsing history.
+• You're planning to clean up your browser but don't want to lose years of browsing history along the way.
+• You already have exported browsing history stored locally, but can't find a good way to view it—and don't want to import it back into a browser.
+• ...Or whatever other reason you might have for giving it a try!
+
+[Fully Open Source Under the MIT License]
+https://github.com/SJasonP/HistoryLib

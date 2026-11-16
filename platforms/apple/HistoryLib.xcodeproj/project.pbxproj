@@ -318,7 +318,7 @@
 				CODE_SIGN_ENTITLEMENTS = HistoryLib/HistoryLib.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = HistoryLib/HistoryLib.macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 10;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BC2V2ASFWV;
 				ENABLE_APP_SANDBOX = YES;
@@ -372,7 +372,7 @@
 				CODE_SIGN_ENTITLEMENTS = HistoryLib/HistoryLib.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = HistoryLib/HistoryLib.macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 10;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BC2V2ASFWV;
 				ENABLE_APP_SANDBOX = YES;

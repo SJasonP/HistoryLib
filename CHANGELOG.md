@@ -3,23 +3,20 @@
 All notable changes to HistoryLib are documented here. This project adheres to
 [Keep a Changelog](https://keepachangelog.com/) and uses [Semantic Versioning](https://semver.org/).
 
-## [1.4] - 2026-11-14
+## [1.4] - 2026-11-16
 
 This release ships only for Apple platforms (iOS and macOS). Android and
 Windows releases are deferred; their source is not a shipping claim.
 
-Apple Intelligence and Siri search integrations are disabled in this release.
+Apple Intelligence interpretation and AI-backed Siri search are disabled in this release.
 Manual keyword search and structured filters remain available.
 
 ### Added
 
 - Editable search filters for literal terms, domain, browser, and local dates.
-- Optional on-device natural-language interpretation with manual fallback.
+- Google Takeout-compatible Chrome history JSON export.
 - Observed sync activity and the last successful upload/download time in Manage
   for the current app session.
-- Authenticated foreground Siri/Shortcuts search actions and the 27 system
-  application-search schema. Results remain in HistoryLib; no history index or
-  record content is donated to Siri by this implementation.
 - Full resources for the six United Nations official languages.
 - Apple privacy manifest and isolated, synthetic-data automated test tooling.
 - Default-on macOS privacy lock using native local authentication, with an
@@ -28,6 +25,13 @@ Manual keyword search and structured filters remain available.
   tip products, Apple payment handling, and a dedicated thank-you screen.
 - Context menus for history entries on iOS and macOS with browser opening, full
   URL copying, and setting-controlled deletion.
+- A configurable history-entry tap/click action: do nothing, copy the full URL,
+  or open it in the browser, with browser opening as the default.
+- Clear buttons for keyword search, advanced-search text inputs, and archive
+  password fields; passwords remain masked.
+- A Help topic for feedback, with GitHub Issues and private email contact.
+- Local and iCloud KVS build-version protection, with confirmed local-only
+  recovery and an explicit option to resume sync after upgrading.
 
 ### Changed
 
@@ -41,25 +45,55 @@ Manual keyword search and structured filters remain available.
 - Manage shows cache/data/database sizes directly and refreshes diagnostics only
   while visible and active. Clear Cache also releases loaded search results and
   attempts a SQLite-managed checkpoint of completed database journals.
+  App size is shown separately, and database journals are included in Database.
+- Summary distinguishes saved records from stored visit totals, adds active-day
+  metrics and date coverage, and shows browser/site visit breakdowns. Monthly
+  activity scrolls horizontally with year-month labels and automatic chart
+  scaling; selecting a top site opens its history search.
+- Rebuild derived summaries and directory counts when the app build changes.
+  Summary loading and replacement are scoped to the generating build.
 - Adaptable tab/sidebar navigation, compact/regular library layouts, retained
   navigation routes, and fold-aware scrollable transfer progress for iPhone Duo.
 - Library search uses a Liquid Glass keyword field in the default mode. Advanced
   search keeps its dedicated entry and no longer exposes duplicate iOS search
   controls.
 - Search and tip confirmation copy is complete for all six product languages.
+- Tip confirmation separates voluntary support, feature access, Apple payment
+  handling, and the final question. Connecting to Apple blocks navigation and
+  tab switching without hiding those controls. Cancelled payments stay silent;
+  successful payments open the dedicated thank-you screen.
+- Apple implementation, development, compatibility, layout, and dependency
+  documentation is centralized in `platforms/apple/Documentation.docc`.
 - Repository structure separates native clients from shared specifications and
-  synthetic fixtures. Apple archive/model compatibility remains unchanged.
+  synthetic fixtures. The native `.hlz` v1 archive format remains unchanged.
 
 ### Fixed
 
+- Check local and known iCloud build versions before opening the database and
+  observe later iCloud KVS updates. Confirmed recovery resets only this device
+  on restart and uses a separate local-only library, without cloud deletions.
+  Resuming sync requires an upgrade and explicit confirmation. KVS enforcement
+  is eventual and cannot retrofit protection into previously shipped clients.
+- Handle delayed and interrupted tips through StoreKit transaction updates and
+  unfinished transactions without a developer server. Retry missing tip
+  products every five seconds while Support Us remains visible, stopping when
+  the page is left.
+- Align Release intent validation with the disabled AI/Siri integrations.
+- Honor the iPhone direct-results preference with Advanced Search enabled.
+- Use a consistent Library background around the keyword search field.
+- Show brief floating Liquid Glass feedback when copying full URLs by tap,
+  long-press, or right-click, positioned above the iPhone tab bar.
+- Bound cloud record-count checks so failures transition from Checking to an
+  unavailable state instead of remaining there indefinitely; shorten the idle
+  sync activity label.
 - Prevent history mutations when persistent storage fails and only an in-memory
   recovery store is available.
 - Cancel old search pages and clear their cursors when search conditions change.
 - Complete translations for ZIP import entry-count and size-limit errors.
 - Limit favicon discovery to the site origin, removing recorded URL paths,
   queries, fragments, and credentials from discovery requests.
-- Remove unusable Apple Intelligence and Siri search UI and shortcuts while
-  preserving manual advanced search.
+- Remove unusable Apple Intelligence and AI-backed Siri controls and actions
+  while preserving manual advanced search and the keyword App Shortcut.
 
 ### Security
 

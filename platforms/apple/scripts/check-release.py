@@ -36,7 +36,7 @@ assert reasons['NSPrivacyAccessedAPICategoryFileTimestamp'] == {'C617.1', '3B52.
 assert reasons['NSPrivacyAccessedAPICategoryDiskSpace'] == {'E174.1'}
 
 metadata = json.loads((resources / 'Metadata.appintents/extract.actionsdata').read_text())
-expected_intents = {'SearchHistoryIntent', 'PrepareNaturalHistorySearchIntent', 'SearchHistoryWithSiriIntent'}
+expected_intents = {'SearchHistoryIntent'}
 assert set(metadata['actions']) == expected_intents, 'Unexpected exported action surface'
 for name, action in metadata['actions'].items():
     assert action['openAppWhenRun'] is True, f'{name} does not open the app'
