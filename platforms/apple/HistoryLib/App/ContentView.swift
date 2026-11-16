@@ -261,7 +261,11 @@ struct ContentView: View {
                 refreshSummaryStats()
                 loadLatestSummarySnapshot()
                 if totalRecordCount > 0,
-                   latestSummarySnapshot == nil || latestSummarySnapshot?.totalRecords != totalRecordCount {
+                   latestSummarySnapshot == nil
+                    || latestSummarySnapshot?.totalRecords != totalRecordCount
+                    || latestSummarySnapshot?.generatedBuildVersion != Self.currentBuildVersion
+                    || latestSummarySnapshot?.activeDays == 0
+                    || latestSummarySnapshot?.browserBreakdown.isEmpty == true {
                     generateAndPersistSummarySnapshot()
                 }
                 rebuildDirectorySkeleton(preferCache: true)

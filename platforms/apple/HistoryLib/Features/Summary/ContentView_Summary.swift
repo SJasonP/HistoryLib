@@ -27,7 +27,9 @@ extension ContentView {
 
     func loadLatestSummarySnapshot() {
         do {
+            let build = Self.currentBuildVersion
             var descriptor = FetchDescriptor<SummarySnapshot>(
+                predicate: #Predicate { $0.generatedBuildVersion == build },
                 sortBy: [SortDescriptor(\SummarySnapshot.generatedAt, order: .reverse)]
             )
             descriptor.fetchLimit = 1
@@ -73,18 +75,32 @@ extension ContentView {
 
                     let snapshot = SummarySnapshot(
                         generatedAt: Date(),
+                        generatedBuildVersion: Self.currentBuildVersion,
                         totalRecords: computed.totalRecords,
                         averagePerDay: computed.averagePerDay,
                         averagePerMonth: computed.averagePerMonth,
                         averagePerYear: computed.averagePerYear,
-                        topSites: computed.topSites
+                        averagePerActiveDay: computed.averagePerActiveDay,
+                        activeDays: computed.activeDays,
+                        totalVisits: computed.totalVisits,
+                        uniqueDomains: computed.uniqueDomains,
+                        oldestVisitedAt: computed.oldestVisitedAt,
+                        newestVisitedAt: computed.newestVisitedAt,
+                        topSites: computed.topSites,
+                        browserBreakdown: computed.browserBreakdown,
+                        monthlyTrend: computed.monthlyTrend
                     )
 
                     // Update UI immediately with the latest computed summary.
                     latestSummarySnapshot = snapshot
 
                     do {
-                        let existingSnapshots = try modelContext.fetch(FetchDescriptor<SummarySnapshot>())
+                        // Older devices may still use another build's summary.
+                        // Replace only our build's derived snapshots.
+                        let build = Self.currentBuildVersion
+                        let existingSnapshots = try modelContext.fetch(FetchDescriptor<SummarySnapshot>(
+                            predicate: #Predicate { $0.generatedBuildVersion == build }
+                        ))
                         for existing in existingSnapshots {
                             modelContext.delete(existing)
                         }
@@ -106,6 +122,10 @@ extension ContentView {
             }
         }
     }
+
+    static var currentBuildVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
+    }
 }
 
 private struct SummarySnapshotComputation: Sendable {
@@ -113,7 +133,15 @@ private struct SummarySnapshotComputation: Sendable {
     let averagePerDay: Double
     let averagePerMonth: Double
     let averagePerYear: Double
+    let averagePerActiveDay: Double
+    let activeDays: Int
+    let totalVisits: Int
+    let uniqueDomains: Int
+    let oldestVisitedAt: Date?
+    let newestVisitedAt: Date?
     let topSites: [SummaryTopSite]
+    let browserBreakdown: [SummaryBrowser]
+    let monthlyTrend: [SummaryMonth]
 }
 
 private actor SummarySnapshotGenerator {
@@ -133,6 +161,10 @@ private actor SummarySnapshotGenerator {
         var earliestVisitedAt: Date?
         var latestVisitedAt: Date?
         var hostVisitCount: [String: Int] = [:]
+        var browserVisitCount: [String: Int] = [:]
+        var activeDayKeys: Set<Date> = []
+        var monthlyVisitCount: [String: Int] = [:]
+        var totalVisits = 0
         var fetchOffset = 0
         var scannedRecords = 0
 
@@ -169,7 +201,14 @@ private actor SummarySnapshotGenerator {
                 }
 
                 let hostKey = Self.hostKey(from: item.url)
-                hostVisitCount[hostKey, default: 0] += 1
+                let visits = max(item.visitCount, 1)
+                totalVisits += visits
+                if hostKey != "(unknown)" {
+                    hostVisitCount[hostKey, default: 0] += visits
+                }
+                browserVisitCount[item.sourceBrowser, default: 0] += visits
+                activeDayKeys.insert(calendar.startOfDay(for: item.visitedAt))
+                monthlyVisitCount[Self.monthKey(from: item.visitedAt, calendar: calendar), default: 0] += visits
             }
 
             fetchOffset += batch.count
@@ -194,6 +233,13 @@ private actor SummarySnapshotGenerator {
             .prefix(10)
             .map { SummaryTopSite(host: $0.key, visits: $0.value) }
 
+        let browserBreakdown = browserVisitCount
+            .sorted { $0.value == $1.value ? $0.key < $1.key : $0.value > $1.value }
+            .map { SummaryBrowser(browser: $0.key, visits: $0.value) }
+        let monthlyTrend = monthlyVisitCount
+            .sorted { $0.key < $1.key }
+            .map { SummaryMonth(month: $0.key, visits: $0.value) }
+
         let daySpan = Self.daySpanCount(from: earliestVisitedAt, to: latestVisitedAt, calendar: calendar)
         let monthSpan = Self.monthSpanCount(from: earliestVisitedAt, to: latestVisitedAt, calendar: calendar)
         let yearSpan = Self.yearSpanCount(from: earliestVisitedAt, to: latestVisitedAt, calendar: calendar)
@@ -205,7 +251,15 @@ private actor SummarySnapshotGenerator {
             averagePerDay: Self.average(currentTotalRecords, over: daySpan),
             averagePerMonth: Self.average(currentTotalRecords, over: monthSpan),
             averagePerYear: Self.average(currentTotalRecords, over: yearSpan),
-            topSites: topSites
+            averagePerActiveDay: Self.average(currentTotalRecords, over: activeDayKeys.count),
+            activeDays: activeDayKeys.count,
+            totalVisits: totalVisits,
+            uniqueDomains: hostVisitCount.count,
+            oldestVisitedAt: earliestVisitedAt,
+            newestVisitedAt: latestVisitedAt,
+            topSites: topSites,
+            browserBreakdown: browserBreakdown,
+            monthlyTrend: monthlyTrend
         )
     }
 
@@ -216,6 +270,11 @@ private actor SummarySnapshotGenerator {
             return host.lowercased()
         }
         return "(unknown)"
+    }
+
+    private static func monthKey(from date: Date, calendar: Calendar) -> String {
+        let components = calendar.dateComponents([.year, .month], from: date)
+        return String(format: "%04d-%02d", components.year ?? 0, components.month ?? 0)
     }
 
     private static func average(_ total: Int, over bucketCount: Int) -> Double {

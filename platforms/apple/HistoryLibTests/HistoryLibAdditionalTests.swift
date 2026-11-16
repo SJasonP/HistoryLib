@@ -136,6 +136,7 @@ extension HistoryLibTests {
     func directoryCountSnapshotRoundTrips() throws {
         let snapshot = DirectoryCountSnapshot(
             schemaVersion: DirectoryCountCache.schemaVersion,
+            buildVersion: DirectoryCountCache.currentBuildVersion,
             timeZoneIdentifier: "America/New_York",
             totalCount: 7,
             days: [
@@ -148,6 +149,7 @@ extension HistoryLibTests {
         let decoded = try JSONDecoder().decode(DirectoryCountSnapshot.self, from: data)
 
         #expect(decoded.schemaVersion == DirectoryCountCache.schemaVersion)
+        #expect(decoded.buildVersion == DirectoryCountCache.currentBuildVersion)
         #expect(decoded.timeZoneIdentifier == "America/New_York")
         #expect(decoded.totalCount == 7)
         #expect(decoded.days.count == 2)

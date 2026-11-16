@@ -186,7 +186,10 @@ extension ContentView {
     var summaryContainer: some View {
         navigationContainer(title: "Summary") {
             SummaryView(
-                snapshot: latestSummarySnapshot
+                snapshot: latestSummarySnapshot,
+                onSearchHost: { host in
+                    applySearchFilter(HistorySearchFilter(domain: host))
+                }
             )
         }
     }
