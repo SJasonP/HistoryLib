@@ -81,11 +81,7 @@ struct ManageView: View {
                         }
                     }
                     .pickerStyle(.menu)
-                } else {
-                    Text("HistoryLib export always uses one optimized .hlz archive format.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-
+                } else if selectedExportFormat == .historyLib {
                     passwordField("Password (Optional)", text: $exportPassword)
 
                     if !normalizedExportPassword.isEmpty {

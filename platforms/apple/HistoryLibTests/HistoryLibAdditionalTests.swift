@@ -474,6 +474,38 @@ extension HistoryLibTests {
         #expect(abs(item.visitedAt.timeIntervalSince1970 - Double(timeUsec) / 1_000_000) < 0.001)
     }
 
+    @Test("Google Takeout export writes the Browser History JSON shape")
+    func googleTakeoutExportWritesCanonicalJSON() async throws {
+        let fixture = try TestFixture()
+        defer { fixture.cleanup() }
+
+        let visitedAt = Date(timeIntervalSince1970: 1_712_091_511.057699)
+        try fixture.insertItem(
+            url: "https://example.com/\"quoted\"",
+            title: "A title with \"quotes\"",
+            visitedAt: visitedAt,
+            browser: "Chrome",
+            uniqueKey: "takeout-key"
+        )
+
+        let prepared = try await HistoryExporter().prepareExportFile(
+            modelContext: fixture.context,
+            format: .googleTakeout,
+            split: .single,
+            password: "ignored"
+        )
+        defer { try? FileManager.default.removeItem(at: prepared.cleanupDirectoryURL) }
+
+        #expect(prepared.fileURL.pathExtension == "json")
+        let data = try Data(contentsOf: prepared.fileURL)
+        let object = try #require(try JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let records = try #require(object["Browser History"] as? [[String: Any]])
+        let record = try #require(records.first)
+        #expect(record["url"] as? String == "https://example.com/\"quoted\"")
+        #expect(record["title"] as? String == "A title with \"quotes\"")
+        #expect(record["time_usec"] as? Int64 == 1_712_091_511_057_699)
+    }
+
     @Test("Large Chrome Takeout files stream through multiple database batches")
     func chromeTakeoutStreamsLargeRecordSet() async throws {
         let fixture = try TestFixture()

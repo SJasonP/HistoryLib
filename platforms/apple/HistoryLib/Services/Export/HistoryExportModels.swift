@@ -5,6 +5,7 @@ import UniformTypeIdentifiers
 enum HistoryExportFormat: String, CaseIterable, Identifiable {
     case historyLib
     case safari
+    case googleTakeout
 
     var id: String { rawValue }
 
@@ -14,6 +15,8 @@ enum HistoryExportFormat: String, CaseIterable, Identifiable {
             return "HistoryLib"
         case .safari:
             return "Safari"
+        case .googleTakeout:
+            return "Google Takeout"
         }
     }
 
@@ -23,6 +26,8 @@ enum HistoryExportFormat: String, CaseIterable, Identifiable {
             return "historylib"
         case .safari:
             return "safari"
+        case .googleTakeout:
+            return "google-takeout"
         }
     }
 }

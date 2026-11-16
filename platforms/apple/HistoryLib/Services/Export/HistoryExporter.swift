@@ -46,6 +46,13 @@ struct HistoryExporter {
                     tempRoot: tempRoot,
                     progress: progress
                 )
+            case .googleTakeout:
+                return try await prepareGoogleTakeoutExport(
+                    modelContext: modelContext,
+                    totalRecords: totalRecords,
+                    tempRoot: tempRoot,
+                    progress: progress
+                )
             }
         } catch {
             try? fileManager.removeItem(at: tempRoot)

@@ -26,6 +26,18 @@ final class JSONHistoryFileWriter {
         hasWrittenRecord = true
     }
 
+    func appendGoogleTakeout(item: Item) throws {
+        guard format == .googleTakeout, !isFinished else { return }
+
+        if hasWrittenRecord {
+            try write(Data(",".utf8))
+        }
+
+        let record = try GoogleTakeoutExportRecord(from: item)
+        try write(try encoder.encode(record))
+        hasWrittenRecord = true
+    }
+
     func finish() throws {
         guard !isFinished else { return }
         try write(Data("]}".utf8))
@@ -56,6 +68,8 @@ final class JSONHistoryFileWriter {
             header = "{\"metadata\":{\"browser_name\":\"Safari\",\"browser_version\":\"HistoryLib\",\"data_type\":\"history\",\"export_time_usec\":\(exportTimeUsec),\"schema_version\":1},\"history\":["
         case .historyLib:
             header = "{\"metadata\":{\"format\":\"historylib\",\"app\":\"HistoryLib\",\"data_type\":\"history\",\"export_time_usec\":\(exportTimeUsec),\"schema_version\":1},\"history\":["
+        case .googleTakeout:
+            header = "{\"Browser History\":["
         }
 
         return Data(header.utf8)
@@ -95,5 +109,23 @@ private struct SafariExportRecord: Encodable {
         case destinationURL = "destination_url"
         case destinationTimeUsec = "destination_time_usec"
         case latestVisitWasHTTPGet = "latest_visit_was_http_get"
+    }
+}
+
+private struct GoogleTakeoutExportRecord: Encodable {
+    let url: String
+    let title: String
+    let timeUsec: Int64
+
+    init(from item: Item) throws {
+        url = item.url
+        title = item.title
+        timeUsec = try recordTimeUsec(from: item)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case url
+        case title
+        case timeUsec = "time_usec"
     }
 }
