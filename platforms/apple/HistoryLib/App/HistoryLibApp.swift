@@ -223,7 +223,12 @@ struct HistoryLibApp: App {
     var body: some Scene {
         WindowGroup {
             rootContent
-
+                .task {
+#if DEBUG
+                    guard !UITestStore.isUnitTesting else { return }
+#endif
+                    TipStore.shared.startObservingTransactions()
+                }
         }
         .modelContainer(sharedModelContainer)
 

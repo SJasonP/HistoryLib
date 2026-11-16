@@ -162,6 +162,7 @@ struct ContentView: View {
     @State var showingStorageModeAlert = false
     @State var showingCopyFeedback = false
     @State var copyFeedbackTask: Task<Void, Never>?
+    @State private var tipPurchaseActivity = TipPurchaseActivity()
     @State var isBackgroundDedupRunning = false
     @State var backgroundDedupTask: Task<Void, Never>?
     @State var lastBackgroundDedupRunAt: Date = .distantPast
@@ -177,6 +178,7 @@ struct ContentView: View {
 
     var body: some View {
         mainTabView
+            .environment(tipPurchaseActivity)
             .allowsHitTesting(!isPreparingExport && !isImporting)
             .overlay {
                 if isPreparingExport {
@@ -194,6 +196,14 @@ struct ContentView: View {
                         .floatingFeedbackSurface()
                         .padding(.bottom, isIPhone ? 96 : 24)
                         .transition(.opacity.combined(with: .scale(scale: 0.96)))
+                }
+            }
+            .overlay {
+                if tipPurchaseActivity.isActive {
+                    Color.clear
+                        .ignoresSafeArea()
+                        .contentShape(Rectangle())
+                        .onTapGesture { }
                 }
             }
             .fileImporter(

@@ -4,11 +4,13 @@ import StoreKit
 struct TipSupportView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
-    @State private var store = TipStore()
+    @Environment(TipPurchaseActivity.self) private var purchaseActivity
+    @State private var store = TipStore.shared
     @State private var selectedProduct: Product?
     @State private var showingConfirmation = false
     @State private var showingStatus = false
     @State private var showingThankYou = false
+    @State private var isVisible = false
 
     private var confirmationMessage: String {
         [
@@ -16,7 +18,7 @@ struct TipSupportView: View {
             String(localized: "It will not unlock anything, and not giving a tip will not restrict your use of HistoryLib."),
             String(localized: "Payment is processed by Apple. For payment-related questions, contact Apple."),
             String(localized: "Have you read, understood, and agreed to this information and still want to give a tip?")
-        ].joined(separator: "\n\n")
+        ].joined(separator: "\n")
     }
 
     var body: some View {
@@ -28,11 +30,11 @@ struct TipSupportView: View {
             }
 
             Section("Choose a Tip") {
-                if store.isLoading {
+                if store.isLoading && store.products.isEmpty {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                 } else if store.products.isEmpty {
-                    Text(store.statusMessage ?? String(localized: "Purchases are currently unavailable. Try again later."))
+                    Text(store.productLoadingMessage ?? String(localized: "Purchases are currently unavailable. Try again later."))
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(store.products) { product in
@@ -67,7 +69,9 @@ struct TipSupportView: View {
         }
         .navigationTitle("Support Us")
         .task {
-            await store.loadProducts()
+            isVisible = true
+            store.startObservingTransactions()
+            await store.loadProductsWhileVisible()
         }
         .alert("Confirm Tip", isPresented: $showingConfirmation, presenting: selectedProduct) { product in
             Button("No", role: .cancel) { }
@@ -79,14 +83,18 @@ struct TipSupportView: View {
         }
 #if os(macOS)
         .sheet(isPresented: $showingThankYou) {
-            TipThankYouView {
+            TipThankYouView(onReady: {
+                purchaseActivity.isActive = false
+            }) {
                 showingThankYou = false
                 dismiss()
             }
         }
 #else
         .fullScreenCover(isPresented: $showingThankYou) {
-            TipThankYouView {
+            TipThankYouView(onReady: {
+                purchaseActivity.isActive = false
+            }) {
                 showingThankYou = false
                 dismiss()
             }
@@ -97,16 +105,58 @@ struct TipSupportView: View {
         } message: {
             Text(store.statusMessage ?? "")
         }
-        .onChange(of: store.statusMessage) { _, message in
-            showingStatus = message != nil && selectedProduct != nil
+        .overlay {
+            if store.isPurchasing {
+                ZStack {
+                    Color.black.opacity(0.16)
+                        .ignoresSafeArea()
+                        .contentShape(Rectangle())
+
+                    VStack(spacing: 12) {
+                        ProgressView()
+                            .controlSize(.large)
+                        Text("Connecting to Apple...")
+                            .font(.subheadline.weight(.medium))
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 18)
+                    .frame(maxWidth: 280)
+                    .floatingFeedbackSurface()
+                }
+                .onTapGesture { }
+                .transition(.opacity)
+            }
         }
-        .onChange(of: store.successfulPurchase) { _, success in
-            if success { showingThankYou = true }
+        .interactiveDismissDisabled(store.isPurchasing)
+        .onChange(of: store.statusMessage) { _, message in
+            showingStatus = message != nil && selectedProduct != nil && !store.isPurchasing
+        }
+        .onChange(of: store.isPurchasing) { _, purchasing in
+            if purchasing {
+                purchaseActivity.isActive = true
+            } else if !store.successfulPurchase {
+                purchaseActivity.isActive = false
+            }
+            if !purchasing, store.statusMessage != nil, selectedProduct != nil {
+                showingStatus = true
+            }
+        }
+        .onChange(of: store.purchaseCompletionID) { _, completion in
+            guard completion != nil, isVisible else { return }
+            showingStatus = false
+            purchaseActivity.isActive = true
+            showingThankYou = true
+        }
+        .onDisappear {
+            isVisible = false
+            purchaseActivity.isActive = false
         }
     }
 }
 
 private struct TipThankYouView: View {
+    let onReady: () -> Void
     let onDone: () -> Void
 
     var body: some View {
@@ -137,5 +187,11 @@ private struct TipThankYouView: View {
             .padding(24)
         }
         .interactiveDismissDisabled()
+        .onAppear {
+            Task { @MainActor in
+                await Task.yield()
+                onReady()
+            }
+        }
     }
 }
