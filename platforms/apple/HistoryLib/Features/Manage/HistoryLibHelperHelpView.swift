@@ -1,9 +1,19 @@
 import SwiftUI
 
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
 struct HistoryLibHelperHelpView: View {
     private let helperDownloadURL = URL(
         string: "https://prods.notion.site/history-lib-helper"
     )!
+    private let issuesURL = URL(
+        string: "https://github.com/SJasonP/HistoryLib"
+    )!
+    private let developerEmail = "SJasonP@iCloud.com"
 
     var body: some View {
         List {
@@ -25,6 +35,16 @@ struct HistoryLibHelperHelpView: View {
                         title: "Want to lock this app?",
                         subtitle: "Learn how HistoryLib protects access on each platform.",
                         systemImage: "lock.shield"
+                    )
+                }
+
+                NavigationLink {
+                    feedbackDetail
+                } label: {
+                    helpTopicRow(
+                        title: "Have a problem or suggestion?",
+                        subtitle: "Tell us what happened or what you would like to see next.",
+                        systemImage: "bubble.left.and.bubble.right"
                     )
                 }
             }
@@ -69,29 +89,69 @@ struct HistoryLibHelperHelpView: View {
 
     private var privacyLockDetail: some View {
         List {
-            Section {
-                Text("HistoryLib does not add a second app lock on iOS or iPadOS. Use Apple's system Lock App feature instead.")
-                Text("Android uses the device or manufacturer's app lock or Private Space when available. HistoryLib does not add another Android app lock.")
-            }
-
-            Section("Desktop") {
-                Text("macOS: HistoryLib's privacy lock is enabled by default. Open HistoryLib Settings and turn off Require authentication at launch if you do not want it.")
-                Text("Windows: HistoryLib's privacy lock is enabled by default. Open Settings and turn off the authentication option if you do not want it.")
-            }
-
             Section("iOS and iPadOS") {
                 helpStep("On the Home Screen, touch and hold HistoryLib.", number: 1)
                 helpStep("Choose Require Face ID, Touch ID, or Passcode.", number: 2)
                 helpStep("Authenticate to lock or unlock the app. HistoryLib does not provide a second in-app lock.", number: 3)
             }
 
-            Section("Android") {
-                helpStep("Open your device's Security or Privacy settings.", number: 1)
-                helpStep("Use the device or manufacturer App Lock, or Private Space when available.", number: 2)
-                helpStep("Authenticate through the system feature before opening HistoryLib.", number: 3)
+            Section("macOS") {
+                Text("HistoryLib's privacy lock is enabled by default. Open HistoryLib Settings and turn off Require authentication at launch if you do not want it.")
             }
         }
         .navigationTitle("Want to lock this app?")
+    }
+
+    private var feedbackDetail: some View {
+        List {
+            Section {
+                Text("GitHub Issues is the best place for bug reports and suggestions. It keeps the conversation visible, makes it easier to follow updates, and helps avoid duplicate reports.")
+                    .foregroundStyle(.secondary)
+            } header: {
+                Text("Public feedback (recommended)")
+            }
+
+            Section {
+                Link(destination: issuesURL) {
+                    Label("Open GitHub Issues", systemImage: "arrow.up.right.square")
+                        .frame(maxWidth: .infinity)
+                        .foregroundStyle(.white)
+                }
+                .buttonStyle(.glassProminent)
+                .tint(.accentColor)
+            }
+
+            Section {
+                Text("If you prefer to share something privately, you can email the developer instead.")
+                    .foregroundStyle(.secondary)
+
+                Link(destination: URL(string: "mailto:\(developerEmail)")!) {
+                    Label("Email the Developer", systemImage: "envelope")
+                }
+
+                Text(developerEmail)
+                    .font(.body.monospaced())
+                    .textSelection(.enabled)
+                    .contextMenu {
+                        Button("Copy Email Address") {
+                            copyEmailAddress()
+                        }
+                    }
+            } header: {
+                Text("Private feedback")
+            }
+
+        }
+        .navigationTitle("Feedback")
+    }
+
+    private func copyEmailAddress() {
+#if os(macOS)
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(developerEmail, forType: .string)
+#else
+        UIPasteboard.general.string = developerEmail
+#endif
     }
 
     private func helpTopicRow(title: LocalizedStringKey, subtitle: LocalizedStringKey, systemImage: String) -> some View {
