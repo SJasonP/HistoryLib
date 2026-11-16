@@ -60,13 +60,25 @@
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
+			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string>Open Link On Tap/Click</string>
+			<string>Tap/Click Action</string>
 			<key>Key</key>
-			<string>open_record_in_browser_on_click</string>
+			<string>record_tap_action</string>
 			<key>DefaultValue</key>
-			<true/>
+			<string>openBrowser</string>
+			<key>Titles</key>
+			<array>
+				<string>Do Nothing</string>
+				<string>Copy Full URL</string>
+				<string>Open in Browser</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>none</string>
+				<string>copyURL</string>
+				<string>openBrowser</string>
+			</array>
 		</dict>
 		<dict>
 			<key>Type</key>

@@ -3,7 +3,10 @@
 "Enable Deletion" = "Habilitar eliminación";
 "Advanced Search" = "Búsqueda avanzada";
 "Show Results Directly While Searching" = "Mostrar resultados directamente durante la búsqueda";
-"Open Link On Tap/Click" = "Abrir enlace al tocar/hacer clic";
+"Tap/Click Action" = "Acción al tocar/hacer clic";
+"Do Nothing" = "No hacer nada";
+"Copy Full URL" = "Copiar URL completa";
+"Open in Browser" = "Abrir en el navegador";
 "Default Expand To" = "Predeterminado Expandir a";
 "Do Not Expand" = "No expandir";
 "Year" = "Año";

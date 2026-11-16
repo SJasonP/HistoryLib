@@ -3,7 +3,10 @@
 "Enable Deletion" = "تمكين الحذف";
 "Advanced Search" = "البحث المتقدم";
 "Show Results Directly While Searching" = "إظهار النتائج مباشرة أثناء البحث";
-"Open Link On Tap/Click" = "افتح الرابط عند النقر/النقر";
+"Tap/Click Action" = "إجراء النقر";
+"Do Nothing" = "لا تفعل شيئًا";
+"Copy Full URL" = "نسخ عنوان URL الكامل";
+"Open in Browser" = "فتح في المتصفح";
 "Default Expand To" = "التوسيع الافتراضي إلى";
 "Do Not Expand" = "لا توسع";
 "Year" = "سنة";

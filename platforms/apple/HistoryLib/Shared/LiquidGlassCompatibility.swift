@@ -24,6 +24,18 @@ private struct SearchFieldSurfaceModifier: ViewModifier {
     }
 }
 
+private struct FloatingFeedbackSurfaceModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, macOS 26.0, *) {
+            content
+                .glassEffect(.regular, in: .capsule)
+        } else {
+            content
+                .background(.regularMaterial, in: Capsule())
+        }
+    }
+}
+
 extension View {
     func exportProgressSurface() -> some View {
         modifier(ExportProgressSurfaceModifier())
@@ -31,5 +43,9 @@ extension View {
 
     func searchFieldSurface() -> some View {
         modifier(SearchFieldSurfaceModifier())
+    }
+
+    func floatingFeedbackSurface() -> some View {
+        modifier(FloatingFeedbackSurfaceModifier())
     }
 }

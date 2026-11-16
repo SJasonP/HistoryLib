@@ -3,7 +3,10 @@
 "Enable Deletion" = "Enable Deletion";
 "Advanced Search" = "Advanced Search";
 "Show Results Directly While Searching" = "Show Results Directly While Searching";
-"Open Link On Tap/Click" = "Open Link On Tap/Click";
+"Tap/Click Action" = "Tap/Click Action";
+"Do Nothing" = "Do Nothing";
+"Copy Full URL" = "Copy Full URL";
+"Open in Browser" = "Open in Browser";
 "Default Expand To" = "Default Expand To";
 "Do Not Expand" = "Do Not Expand";
 "Year" = "Year";

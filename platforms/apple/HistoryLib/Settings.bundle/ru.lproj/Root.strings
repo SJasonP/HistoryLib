@@ -3,7 +3,10 @@
 "Enable Deletion" = "Включить удаление";
 "Advanced Search" = "Расширенный поиск";
 "Show Results Directly While Searching" = "Показывать результаты прямо во время поиска";
-"Open Link On Tap/Click" = "Открыть ссылку по касанию/щелчку";
+"Tap/Click Action" = "Действие при нажатии/щелчке";
+"Do Nothing" = "Ничего не делать";
+"Copy Full URL" = "Скопировать полный URL";
+"Open in Browser" = "Открыть в браузере";
 "Default Expand To" = "По умолчанию Развернуть до";
 "Do Not Expand" = "Не расширяйте";
 "Year" = "Год";
