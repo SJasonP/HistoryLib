@@ -2,6 +2,6 @@
 /// and transfer failures never lock the primary store. Recovery stays read-only.
 enum HistoryStoragePolicy {
     static func canMutate(backend: String) -> Bool {
-        backend == "primary"
+        backend == "primary" || backend == "localOnly"
     }
 }

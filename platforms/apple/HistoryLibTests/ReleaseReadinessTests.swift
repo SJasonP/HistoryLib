@@ -65,3 +65,67 @@ struct ReleaseReadinessTests {
         #expect(FaviconRequestPolicy.fallbackURLs(for: origin).allSatisfy { $0.scheme == "https" })
     }
 }
+
+@MainActor
+struct BuildCompatibilityTests {
+    @Test func buildGateTreatsMissingBuildAsZeroAndHonorsCloudVersion() throws {
+        let firstName = "HistoryLib.Tests.First.\(UUID())"
+        let secondName = "HistoryLib.Tests.Second.\(UUID())"
+        let first = try #require(UserDefaults(suiteName: firstName))
+        let second = try #require(UserDefaults(suiteName: secondName))
+        defer {
+            first.removePersistentDomain(forName: firstName)
+            second.removePersistentDomain(forName: secondName)
+        }
+        #expect(first.integer(forKey: AppVersionGate.storedBuildKey) == 0)
+        guard case .normal = AppVersionGate.evaluate(defaults: first, currentBuild: 9) else {
+            Issue.record("First install must be allowed")
+            return
+        }
+        guard case .normal = AppVersionGate.evaluate(defaults: second, currentBuild: 8) else {
+            Issue.record("Another device's older build must be allowed")
+            return
+        }
+        guard case .requiresRecovery(currentBuild: 8, storedBuild: 9) = AppVersionGate.evaluate(defaults: first, currentBuild: 8) else {
+            Issue.record("A downgrade on the same device must be blocked")
+            return
+        }
+        #expect(first.integer(forKey: AppVersionGate.storedBuildKey) == 9)
+        guard case .requiresRecovery(currentBuild: 8, storedBuild: 9) = AppVersionGate.evaluate(defaults: second, currentBuild: 8, cloudBuild: 9) else {
+            Issue.record("A known newer cloud build must block the older client")
+            return
+        }
+        second.set(true, forKey: AppVersionGate.localOnlyKey)
+        guard case .normal = AppVersionGate.evaluate(defaults: second, currentBuild: 8, cloudBuild: 9) else {
+            Issue.record("An isolated local-only library must work without using the newer cloud store")
+            return
+        }
+        #expect(HistoryStoragePolicy.canMutate(backend: "localOnly"))
+    }
+
+    @Test func cloudBuildMarkersDoNotLetOlderClientsOverwriteNewerBuilds() {
+        let prefix = CloudBuildVersion.prefix
+        let values: [String: Any] = [prefix + "9": "1.4", prefix + "10": "1.4", prefix + "invalid": "ignored", "unrelated": 999]
+        #expect(CloudBuildVersion.builds(in: values).max() == 10)
+        #expect(Set(CloudBuildVersion.builds(in: values)) == Set([9, 10]))
+    }
+
+    @Test func localResetRemovesOnlyTheSpecifiedStoreAndSidecars() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let store = root.appendingPathComponent("fixture.store")
+        let names = ["fixture.store", "fixture.store-wal", "fixture.store-shm", "_fixture.store_SUPPORT"]
+        for name in names {
+            try Data("synthetic fixture".utf8).write(to: root.appendingPathComponent(name))
+        }
+        let other = root.appendingPathComponent("other.store")
+        try Data("another device fixture".utf8).write(to: other)
+        try LocalStoreReset.removeStore(at: store)
+        for name in names {
+            #expect(!FileManager.default.fileExists(atPath: root.appendingPathComponent(name).path))
+        }
+        #expect(FileManager.default.fileExists(atPath: other.path))
+        try LocalStoreReset.removeStore(at: store)
+    }
+}

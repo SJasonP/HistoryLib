@@ -37,6 +37,12 @@ final class ManageDiagnostics {
     }
 
     func monitorCloud() async {
+        guard !AppVersionGate.usesLocalOnlyStorage else {
+            cloudCount = nil
+            cloudRecordsState = .unavailable
+            accountMessage = String(localized: "Local Only")
+            return
+        }
         let container = CKContainer(identifier: "iCloud.com.SJasonP.HistoryLib")
         let counter = CloudHistoryCounter(database: container.privateCloudDatabase)
         cloudCount = nil

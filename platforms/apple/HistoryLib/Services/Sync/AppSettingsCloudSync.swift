@@ -37,6 +37,8 @@ final class AppSettingsCloudSync {
     }
 
     func startIfNeeded() {
+        guard !AppVersionGate.usesLocalOnlyStorage else { return }
+        guard CloudBuildVersion.shared.highestBuild <= AppVersionGate.currentBuild else { return }
         guard !didStart else { return }
         didStart = true
 

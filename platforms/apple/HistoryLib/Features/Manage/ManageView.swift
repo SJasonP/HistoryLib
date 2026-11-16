@@ -107,7 +107,11 @@ struct ManageView: View {
                 .disabled(isPreparingExport || !passwordsMatch || diagnostics.isClearing)
             }
 
-            syncSection
+            if AppVersionGate.usesLocalOnlyStorage {
+                LocalOnlyRecoverySection()
+            } else {
+                syncSection
+            }
             cacheSection
 
             if enableDelete && canMutateHistoryData {
