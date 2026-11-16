@@ -1,29 +1,37 @@
-# Intelligent Search, Siri, and Shortcuts
+# Search
+
+Apple v1.4 supports keyword search and manual advanced filters. Apple
+Intelligence interpretation and AI-backed Siri search are disabled. A keyword
+App Shortcut remains available; it opens the app rather than returning history
+records to the system. This page describes search and the boundary for future
+intelligence integration.
 
 ## User experience
 
-Open Library/Search and choose **Search Filters**. Enter a natural-language
-request, then choose **Interpret on Device**. Review and edit the proposed
-terms, domain, browser, and dates before choosing **Apply Filters**. You can
-also fill in the filters directly without a model. Each term occupies one
-line; a line can contain a literal multiword phrase. All terms must match.
+When **Advanced Search** is enabled in Settings, open Library/Search and choose
+**Search Filters**. Edit the terms, domain, browser, and dates directly, then
+choose **Search**. Each term occupies one line; a line can contain a literal
+multiword phrase. All terms must match. When the preference is disabled, the
+Library keeps the ordinary keyword search field and searches URL/title text
+directly.
 
 Active advanced filters remain visible through **Review Filters** and
 **Clear Filters**. Typing in the ordinary search field adds a literal term to
 those filters. Clearing advanced filters does not erase ordinary search text.
 
-Siri/Shortcuts actions:
+AI, Siri, and Shortcuts status:
 
-- **Search History** opens keyword results in the application.
-- **Prepare Natural Language Search** opens the editor with the spoken/requested
-  text; interpretation and application remain explicit user actions.
-- On iOS/macOS 27, the `.system.searchInApp` schema provides the standard Siri
-  application-search integration. It searches literal text; it does not claim
-  to implement unrestricted semantic or conversational retrieval.
+- No AI-backed Siri or Shortcuts search action is exposed by the production
+  build.
+- The keyword search field and manually edited advanced filters are unaffected
+  by this disabled integration.
+- A future reactivation must keep generated filters editable and require an
+  explicit user action before querying history.
 
-All UI copy, intent descriptions, and app shortcut phrases are localized in the
-six product languages. Model and system-language availability are separate from
-resource completeness.
+The current manual search UI is localized in the six product languages. Any
+future intent descriptions or app shortcut phrases must follow the same
+localization requirement; model and system-language availability are separate
+from resource completeness.
 
 ## Architecture and data boundary
 
@@ -33,7 +41,8 @@ between chunks, and keeps every match in a fetched chunk. View generations stop
 stale/cancelled pages from being published after a filter change. Search errors
 use generic messages rather than exposing URLs or low-level database errors.
 
-`NaturalLanguageHistorySearch` uses `SystemLanguageModel.default`, never
+If reactivated in a future release, `NaturalLanguageHistorySearch` must use
+`SystemLanguageModel.default`, never
 `PrivateCloudComputeLanguageModel` or third-party providers. A new session is
 created per interpretation. Only the request, local reference day/time zone,
 and fixed instructions are passed to it. Generated output is validated as a
@@ -42,10 +51,11 @@ at most 2,000 characters per request, sixteen filter terms, 2,000 characters per
 term, and 4,000 term characters in total. Inference output is bounded to 512
 tokens. Model errors and prompt contents are not logged.
 
-`HistorySearchRequests` is an in-memory foreground handoff. Intent execution
-requires local authentication. It stores no query in preferences, files,
-notifications, URL schemes, or the archive format. Cold-start and busy-state
-requests are consumed once; the latest queued request replaces older ones.
+If the future integration is reactivated, `HistorySearchRequests` is intended to
+remain an in-memory foreground handoff. Intent execution must require local
+authentication. It must store no query in preferences, files, notifications,
+URL schemes, or the archive format. Cold-start and busy-state requests must be
+consumed once; the latest queued request must replace older ones.
 There is no database-reading App Intent or separate intent extension, preventing
 an extra persistence container from opening with a divergent sync setting.
 
@@ -54,15 +64,12 @@ entities. Siri itself is a system service: the application's on-device model
 choice does not imply that every Siri request is processed locally by Apple.
 See the shared [search contract](../../../shared/specs/search.md).
 
-## Availability and fallback
+## Availability and fallback for a future capability
 
-The app retains its iOS/macOS 26 deployment targets. Conventional intents and
-manual filters work on that baseline; the new system search schema is gated to
-27. Device eligibility, whether Apple Intelligence is enabled, downloaded model
-state, supported languages, and system region policies can prevent inference or
-Siri AI from working. The app checks model availability and leaves manual
-filters available. Inference failures preserve the editor contents and expose
-a localized, non-sensitive error.
+The app retains its iOS/macOS 26 deployment targets. Manual filters work on
+that baseline. If the future capability returns, device eligibility, downloaded
+model state, supported languages, and system region policies may prevent
+inference or Siri AI from working; manual filters must remain available.
 
 ## Automated verification
 
@@ -92,22 +99,15 @@ ambiguous. Run the shared localization validator from the repository root too.
 
 ## Human acceptance
 
-Humans own simulator interaction, visual checks, model behavior, and real Siri
-acceptance. Check these in addition to automated tests:
+Humans own simulator interaction and visual checks. For the current release,
+also verify that disabled AI/Siri controls and actions are absent:
 
-1. Keyword, manual, and natural-language searches on supported Apple devices.
-   Include dates such as last month, domain restrictions, multiple terms, each
-   supported query language, unsupported requests, disabled AI, and model errors.
-2. Review generated conditions before applying. Check that invalid proposals do
-   not overwrite existing filters or execute a query. Compare returned records
-   to the visible conditions; no matching records is a valid result.
-3. Invoke both actions from Shortcuts and Siri, including cold launch, locked
-   device, repeated requests, and requests during transfers or document/password
-   sheets. Confirm that record details are not spoken or returned to Siri.
-4. Check the system `.searchInApp` action on 27 separately from conventional
-   shortcuts on 26. Compilation and direct `perform()` tests do not establish
-   that the OS recognizes phrases or that Siri AI is available in a region.
-5. Check macOS, compact/regular iOS layouts, Duo resizing, keyboard, large text,
+1. Keyword and manual structured searches on supported Apple devices. Include
+   dates, domain restrictions, multiple terms, each supported query language,
+   empty results, and cancellation.
+2. Confirm that the AI/Siri controls, production natural-language shortcut, and
+   system search schema are absent while manual filters remain usable.
+3. Check macOS, compact/regular iOS layouts, Duo resizing, keyboard, large text,
    Arabic RTL, cancellation, and all six UI languages.
 
 Primary API references:

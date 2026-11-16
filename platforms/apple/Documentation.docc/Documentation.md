@@ -1,4 +1,4 @@
-# History Lib
+# HistoryLib
 
 Collect, browse, search, summarize, deduplicate, and re-export browser history
 records on Apple platforms.
@@ -48,9 +48,15 @@ file that is handed to the system file exporter.
 
 ### Project Documentation
 
+- <doc:Apple-Client>
+- <doc:Apple-Client.zh-CN>
+- <doc:Adaptive-Layout>
+- <doc:Intelligent-Search>
+- <doc:THIRD-PARTY-NOTICES>
 - <doc:Project-Structure>
 - <doc:HistoryLib-Archive-Format>
 - <doc:Privacy-and-Data>
 - <doc:Localization>
 - <doc:Development>
 - <doc:Support-Tips>
+- <doc:Version-Compatibility>

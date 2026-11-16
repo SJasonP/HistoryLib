@@ -4,7 +4,8 @@ This document captures the practical development workflow for HistoryLib.
 
 ## Opening the Project
 
-Open `HistoryLib.xcodeproj` and use the `HistoryLib` scheme.
+Open `platforms/apple/HistoryLib.xcodeproj` from the repository root and use
+the `HistoryLib` scheme.
 
 The project currently contains three targets:
 
@@ -18,6 +19,12 @@ currently written for iOS and macOS.
 
 ## Command-Line Checks
 
+Run the following commands from `platforms/apple`:
+
+```sh
+cd platforms/apple
+```
+
 List schemes:
 
 ```sh
@@ -30,15 +37,16 @@ Build:
 xcodebuild -project HistoryLib.xcodeproj -scheme HistoryLib build
 ```
 
-Run tests with a local simulator destination that exists on your machine:
+Run isolated hosted unit tests with a simulator available on your machine:
 
 ```sh
-xcodebuild \
-  -project HistoryLib.xcodeproj \
-  -scheme HistoryLib \
-  -destination 'platform=iOS Simulator,name=iPhone 17' \
-  test
+./scripts/test-unit.sh 'platform=iOS Simulator,name=iPhone 17'
 ```
+
+The script configures an in-memory test host and runs `HistoryLibTests` without
+opening personal history or starting normal cloud synchronization. UI regression
+testing is described in <doc:Adaptive-Layout>. Build success and automated
+tests do not replace interactive device acceptance.
 
 ## Code Organization
 
@@ -160,10 +168,11 @@ The `primary` backend marker means the normal container opened, not that remote
 sync succeeded. If initialization fails, persistent and in-memory recovery modes
 remain read-only for history, with a storage-error message.
 
-From v1.4, system iCloud settings are the only sync control. Always initialize
-SwiftData with automatic CloudKit integration, keep the original store location,
-and explicitly use `.none` in recovery configurations. Do not restore the old
-app toggle or its relaunch gate.
+Normal v1.4 operation follows system iCloud settings and retains the original
+store location with automatic CloudKit integration. Build-compatibility recovery
+is an explicit exception: stage a reset, restart before removing local files,
+and open a separate local-only database with `.none`. Do not use cloud-backed
+model deletions to reset a device. See <doc:Version-Compatibility>.
 
 ## Performance and Data Loading
 

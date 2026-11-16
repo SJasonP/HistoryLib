@@ -16,12 +16,17 @@ HistoryLib/
 ├── Features/
 │   ├── Library/         # History browsing/search UI
 │   ├── Summary/         # Summary models and views
+│   ├── Search/          # Advanced-search editor
 │   └── Manage/          # Settings/manage actions UI
 ├── Models/              # Persistent data models
 ├── Services/
 │   ├── Import/          # Import pipelines and parsers
 │   ├── Export/          # Export pipelines and archive writers
 │   ├── Favicon/         # Favicon fetch/cache logic
+│   ├── Cache/           # Directory counts and storage measurements
+│   ├── Search/          # Search filters, engine, and request routing
+│   ├── Storage/         # Storage-write policy and journal maintenance
+│   ├── Store/           # StoreKit tips and local-store reset
 │   └── Sync/            # iCloud settings sync and duplicate cleanup
 ├── Shared/              # Shared view/action composition helpers
 ├── Assets.xcassets/     # App assets
@@ -55,10 +60,11 @@ HistoryLib/
   decoding, array chunking) live in one place here and are reused by every
   importer and by `Services/Sync/`; they are not duplicated per importer.
 - `Services/Export/`: exports Safari-compatible ZIP files and HistoryLib
-  `.hlz` archives.
+  `.hlz` archives, plus Google Takeout JSON.
 - `Services/Favicon/`: fetches, validates, caches, and clears site icons.
 - `Services/Sync/`: syncs settings through iCloud key-value storage and removes
-  duplicate history records after CloudKit changes.
+  duplicate history records after CloudKit changes; observes transfer activity,
+  counts cloud records, and tracks build compatibility markers.
 
 ## Naming Conventions
 

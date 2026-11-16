@@ -43,7 +43,7 @@ aggregate counts and top-site statistics derived from the imported records.
 From v1.4, system iCloud settings control synchronization. HistoryLib's own
 iCloud switch is removed, and its previously saved value is discarded. If
 system settings permit access, records may sync even when the former in-app
-switch was off. The release notes describe this behavior change. A local copy
+switch was off. The changelog describes this behavior change. A local copy
 remains in SwiftData. System backups and explicit exports are separate from sync.
 
 If local persistent storage cannot be initialized, the app can fall back to an
@@ -53,7 +53,7 @@ store can be opened after relaunch.
 
 ## iCloud and CloudKit
 
-HistoryLib initializes SwiftData with automatic CloudKit integration. The system
+Normal operation initializes SwiftData with automatic CloudKit integration. The system
 controls whether and when records sync; the app no longer maintains a second
 sync preference or app-toggle relaunch requirement. The existing store location
 and data model are retained. Recovery configurations explicitly use `.none`.
@@ -62,6 +62,19 @@ If the CloudKit-backed container cannot initialize and a recovery store is used,
 HistoryLib blocks history mutations instead of silently writing to that fallback.
 Temporary network loss alone does not block local changes in a working
 CloudKit-backed store; the system manages pending synchronization.
+
+Build protection checks this device's last-opened build and the highest known
+iCloud KVS build. It also observes later KVS changes. A known newer build blocks
+normal app UI and offers upgrade, exit, or a confirmed local-only reset. Reset
+is staged until restart, when the old store files are removed before opening a
+container. It never submits cloud record deletions. A separate local-only
+library disables history, settings sync, and cloud diagnostics. Cloud history
+and other devices remain intact. After upgrading, Manage can resume cloud sync
+with confirmation and restart; the isolated local library is retained.
+
+KVS updates are eventual. This gate cannot stop offline clients or older
+released binaries that do not implement it, so schema compatibility remains
+required. It does not claim to detect the system's per-app iCloud switch.
 
 User settings use `NSUbiquitousKeyValueStore` under the same system control.
 Manage reads cloud history counts using paginated zone changes, requesting no
@@ -81,8 +94,8 @@ This cache is device-local by design and never syncs to iCloud: it is not part
 of the SwiftData/CloudKit schema, day boundaries depend on the device's time
 zone, and it is excluded from device backups. It is recomputed whenever history
 records are imported or deleted, and it self-heals: on launch the cached total is
-compared against the live store count (and the recorded time zone), and any
-mismatch triggers a full rescan. Clearing the cache and rebuilding it never
+compared against the live store count, generating build, and recorded time zone.
+Any mismatch triggers a full rescan. Clearing the cache and rebuilding it never
 changes any history record.
 
 ## Favicon Fetching
@@ -104,8 +117,8 @@ Disable site icons if that is not acceptable for your use case.
 
 ## Exported Files
 
-HistoryLib can export records as Safari-compatible ZIP files and as HistoryLib
-`.hlz` archives. These exports contain browser history records and should be
+HistoryLib can export records as Safari-compatible ZIP files, Google Takeout
+JSON, and HistoryLib `.hlz` archives. These exports contain browser history records and should be
 handled as private data.
 
 Native `.hlz` archives are ZIP containers when no password is supplied. A
@@ -125,8 +138,9 @@ after success, failure, or cancellation.
 
 ## Cache Clearing
 
-Manage displays clearable cache, protected data, database size, and database
-journal size. Measurements refresh only while Manage is visible and active.
+Manage displays app size, clearable cache, protected data, and database size.
+Database size includes the SQLite database journals. Measurements refresh only
+while Manage is visible and active.
 
 Clear Cache removes Caches, known completed import/export/staging temporary
 folders, icon state, the directory-count cache, and loaded search/day results.
@@ -139,7 +153,8 @@ history databases or their journals, delete indexes or sync metadata, execute
 VACUUM, or remove history records. Reclaimable journal space may shrink; database
 files and system-reported app usage are not guaranteed to shrink.
 
-Protected data is sandbox data minus identified disposable caches. System
+Protected data is sandbox data minus identified disposable caches and database
+files, which are shown separately. System
 Settings may use different storage-accounting rules.
 
 ## Logging
