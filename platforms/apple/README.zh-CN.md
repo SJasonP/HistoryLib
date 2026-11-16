@@ -1,101 +1,26 @@
-# HistoryLib
+# HistoryLib Apple 客户端
 
 [English](README.md) | 简体中文
 
-> 本项目所有代码均由 AI 编写，介意者请勿使用。项目安全性亦不做任何保证，请自行承担使用风险。
+面向 iPhone、iPad 和 Mac 的原生 HistoryLib 应用，使用 SwiftUI、SwiftData 和 CloudKit 构建。
 
-HistoryLib 是一个 SwiftUI app，用于收集、浏览、搜索、去重并重新导出浏览器历史记录。目前它主要面向 Safari 历史记录导出文件、
-通过 Google Takeout 导出的 Chrome 历史记录，以及 HistoryLib 自己的 `.hlz` 归档格式。
+> HistoryLib 是一个 vibe coding 项目，绝大部分工作均由 AI 完成，介意者请勿使用。
+> 如果发现问题或有建议，请优先提 Issue，而不是直接提交 PR。
 
-导入的记录使用 SwiftData 存储。app 通过系统 iCloud 设置控制 CloudKit 同步，也可以将大数据集导出为基于 ZIP 的 `.hlz` 归档，内部包含
-JSONL 分块和校验索引。
+支持导入 Safari、Google Takeout 和 HistoryLib 归档，浏览和搜索历史记录、查看活动统计、
+通过 iCloud 同步，以及导出数据。原生归档可选密码保护。v1.4 还提供高级搜索、
+记录操作、存储诊断和自愿支持开发者的小费功能。
 
-## 状态
+最低支持 iOS/iPadOS 26 和 macOS 26。
 
-Apple 客户端是 1.4 的发布目标。公共归档格式在 `shared/specs` 中按版本维护；平台 UI 和实现细节可能继续演进。
+## 源码与文档
 
-在 iOS 和 iPadOS 上使用 Apple 的系统 App 锁定功能。在 macOS 上，HistoryLib 默认启用应用隐私锁；可在设置中关闭，并使用 Mac 的原生本地认证方式。
+- `HistoryLib/`：应用代码、资源和本地化文案。
+- `HistoryLibTests/`：数据处理和行为自动测试。
+- `HistoryLibUITests/`：界面回归测试。
+- `HistoryLib.xcodeproj`：Xcode 工程。
+- [`Documentation.docc`](Documentation.docc/Documentation.md)：Apple 文档。
 
-浏览器历史记录是敏感的个人数据。除非你已经检查过其中内容，否则不要发布导出的 `.hlz`、`.zip` 或 `.json` 历史记录文件。
-
-## 功能
-
-- 导入 Safari 历史记录 JSON 文件、文件夹和 ZIP 归档。
-- 导入通过 Google Takeout 导出的 Chrome 历史记录（JSON、文件夹或 ZIP）。
-- 导入 HistoryLib `.hlz` 归档。
-- 按年、月、日浏览记录。
-- 按 URL 或标题搜索。
-- 在系统浏览器中打开记录。
-- 显示已缓存的网站 favicon。
-- 生成汇总快照。
-- 导出 Safari 兼容的 ZIP 归档。
-- 导出优化后的 HistoryLib `.hlz` 归档。
-- 对导入或同步的记录去重。
-- 在系统设置允许时同步记录和 app 设置。
-
-## 平台
-
-- iOS
-- macOS
-
-项目当前的部署目标是 iOS 26.x 和 macOS 26.x。
-
-## 要求
-
-- 支持已配置部署目标的 Xcode，以及 Swift、SwiftUI、SwiftData 和 CloudKit 支持。
-- 如果你希望 CloudKit 同步能在设备上工作，需要 Apple Developer team 和有效的 iCloud entitlements。
-- 解析包依赖和获取 favicon 时需要网络访问。
-
-项目使用 Swift Package Manager，目前依赖 [ZIPFoundation](https://github.com/weichsel/ZIPFoundation) 0.9.20
-和 [Swift Sodium](https://github.com/jedisct1/swift-sodium)；后者为密码保护的 `.hlz` 归档提供内置的 libsodium。
-
-## 构建
-
-在 Xcode 中打开 `HistoryLib.xcodeproj`，然后运行 `HistoryLib` scheme。
-
-通过命令行：
-
-```sh
-xcodebuild -list -project HistoryLib.xcodeproj
-xcodebuild -project HistoryLib.xcodeproj -scheme HistoryLib build
-```
-
-对于模拟器或真机构建，请传入与你本地 Xcode 安装匹配的 destination，例如：
-
-```sh
-xcodebuild \
-  -project HistoryLib.xcodeproj \
-  -scheme HistoryLib \
-  -destination 'platform=iOS Simulator,name=iPhone 17' \
-  build
-```
-
-## 测试
-
-从 Xcode 运行测试，或使用 `xcodebuild`：
-
-```sh
-xcodebuild \
-  -project HistoryLib.xcodeproj \
-  -scheme HistoryLib \
-  -destination 'platform=iOS Simulator,name=iPhone 17' \
-  test
-```
-
-## 文档
-
-- [更新日志](../../CHANGELOG.md)
-- [智能搜索、Siri 与快捷指令](docs/Intelligent-Search.md)
-- [自适应布局与 iPhone Duo 验收](docs/Adaptive-Layout.md)
-- [项目文档](Documentation.docc/Documentation.md)
-- [公共归档格式](../../shared/specs/hlz-v1.md)
-- [公共规范](../../shared/specs/README.md)
-- [隐私和数据](Documentation.docc/Privacy-and-Data.md)
-- [项目结构](Documentation.docc/Project-Structure.md)
-- [开发说明](Documentation.docc/Development.md)
-
-## 许可证
-
-HistoryLib 使用 MIT License 授权。请参阅 [LICENSE](../../LICENSE)。
-
-第三方依赖声明列在 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
+使用说明见 [客户端概览](Documentation.docc/Apple-Client.zh-CN.md)，
+从源码构建请阅读 [开发说明](Documentation.docc/Development.md)。
+共享格式和产品规范位于 [`shared/specs`](../../shared/specs/README.md)。

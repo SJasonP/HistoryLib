@@ -1,11 +1,14 @@
 # HistoryLib for Android
 
-**Release status:** deferred. HistoryLib v1.4 ships for iOS and macOS only.
-The implementation below is retained for future releases and is not a v1.4
-shipping or acceptance claim.
+> HistoryLib is a vibe coding project; AI has done most of the work. If that
+> concerns you, please do not use it. Please open an Issue first rather than
+> submitting a pull request directly.
+
+The Android client is under development and is not included in the Apple-only
+v1.4 release.
 
 The Android client is the native Kotlin and Jetpack Compose implementation of
-HistoryLib. It targets Android API 36 and later, supports only the `arm64-v8a`
+HistoryLib. It requires Android API 36 or later, supports only the `arm64-v8a`
 ABI, and remains under development for a future release.
 Its product UI supports American English, Simplified Chinese, Arabic, French,
 Russian, and Spanish. Arabic uses Android's native right-to-left layout.
@@ -52,7 +55,7 @@ archives, explicit transfer cancellation, favicon caching, cache inspection,
 and confirmed destructive deletion. Sync is explicitly unavailable in Android
 1.4; the app does not show a non-functional sync switch.
 
-The detailed Android 1.4 product and implementation baseline is documented in
+The Android product and implementation baseline is documented in
 [`docs/Android-1.4-Specification.zh-CN.md`](docs/Android-1.4-Specification.zh-CN.md).
 It records settled decisions, required parity behavior, architecture, data,
 privacy, and testing requirements.

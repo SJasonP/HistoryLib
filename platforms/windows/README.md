@@ -1,62 +1,43 @@
 # HistoryLib for Windows
 
-**Release status:** deferred. HistoryLib v1.4 ships for iOS and macOS only.
-The implementation below is retained for future releases and is not a v1.4
-shipping or acceptance claim.
+> HistoryLib is a vibe coding project; AI has done most of the work. If that
+> concerns you, please do not use it. Please open an Issue first rather than
+> submitting a pull request directly.
 
-This directory contains the native Windows client for a future
-HistoryLib release. The implementation uses C# with WinUI 3 and the
-Windows App SDK. Product behavior follows `../../shared/specs`.
+This directory contains the Windows client built with C#, WinUI 3, and the
+Windows App SDK. It is under development and is not included in the Apple-only
+v1.4 release.
 
-Windows uses an app-owned privacy lock enabled by default. Settings can disable
-it. The implementation must use Windows Hello or another native local
-authentication mechanism and must keep the library unavailable until launch
-authentication succeeds.
+The client includes local history import, browsing, search, export, settings,
+and summary views. Shared formats and product behavior are defined in
+[`shared/specs`](../../shared/specs/README.md); source availability does not
+establish compatibility with every Apple feature or archive variant.
 
-## Build
+## Build and run
 
-Open `HistoryLib.Windows.sln` in Visual Studio, or run:
+Open `HistoryLib.Windows.sln` in Visual Studio, select `x64`, and run the
+Windows app project. From PowerShell:
 
 ```powershell
 dotnet build .\HistoryLib.Windows.sln -p:Platform=x64
 ```
 
-The current client provides a usable local workflow: import detected Safari,
-Chrome Takeout, and HistoryLib JSON files (or ZIP containers), deduplicate and
-persist records in the per-user application data directory, browse/search/delete
-records, open a URL in the default browser, view summary statistics, and export
-Safari or HistoryLib JSON. Unknown files are ignored without changing stored
-history. Page labels are read through the Windows RESW resource loader, using
-the checked-in six-language resource sets.
+The app is configured for self-contained Windows App SDK deployment. Runtime,
+packaging, archive interoperability, and native-authentication checks are
+required before a Windows release.
 
-Site icons are optional. They are fetched only when enabled, cached by host in
-the per-user application data directory, and removed by the cache-clear action;
-the setting is persisted independently from history records.
+## Source layout
 
-`Resources` contains the checked-in RESW baseline for American English,
-Simplified Chinese, Arabic, French, Russian, and Spanish. Their key and
-placeholder parity is covered by the shared localization validator.
+- `HistoryLib.Windows/`: desktop interface, persistence, and platform services.
+- `HistoryLib.Windows.sln`: Visual Studio solution.
 
-The remaining release work is full runtime smoke testing on a packaged Windows
-installation.
+The interface uses native Windows controls and localized RESW resources.
+The six product languages are English, Simplified Chinese, Arabic, French,
+Russian, and Spanish.
 
-## 运行
+## Development
 
-构建后直接运行生成的桌面程序：
-
-```powershell
-$exe = Resolve-Path .\HistoryLib.Windows\bin\x64\Debug\net8.0-windows10.0.19041.0\HistoryLib.Windows.exe
-Start-Process $exe
-```
-
-也可以在 Visual Studio 中打开 `HistoryLib.Windows.sln`，选择 `x64` 和 `Debug`，然后按 `F5`。
-
-本次实际启动验证已确认窗口标题为 `HistoryLib`，程序保持运行；首次直接启动失败的问题来自 Windows App SDK 运行时注册方式，项目现已配置为自包含桌面模式。
-
-## Interface
-
-The Windows client follows the Apple client information architecture: Manage is
-organized into Import, Export, Data, Settings, and Help sections instead of a
-flat button list. Export format and password fields stay in the Export card;
-Help explains HistoryLib Helper and supported browsers. The desktop shell uses a
-fixed-pixel Grid layout with layout rounding and PerMonitorV2 DPI awareness.
+Follow the [privacy contract](../../shared/specs/privacy-and-data.md) for local
+history, temporary files, website icons, and native authentication. Import and
+export implementations must use the [shared format contracts](../../shared/specs/README.md).
+Use synthetic history when testing or reporting a problem.

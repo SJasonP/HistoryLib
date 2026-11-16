@@ -1,54 +1,85 @@
 # HistoryLib
 
-[简体中文](README.zh-CN.md)
+English | [简体中文](README.zh-CN.md)
 
-> All project code was written by AI. If this concerns you, do not use
-> HistoryLib. No guarantee of security is provided. Use it at your own risk.
+HistoryLib gives your browser history a place of its own. Import records from
+Safari, Google Takeout, or a HistoryLib archive, then browse, search, and organize
+them without importing everything back into a browser.
 
-HistoryLib is a native, multi-platform application for importing, browsing,
-searching, deduplicating, syncing, and exporting browser history.
+The Apple app is free to use, open source, and ad-free. Optional tips support the
+developer and do not unlock features.
 
-Version 1.4 will ship only for Apple platforms (iOS and macOS). Android and
-Windows releases are deferred; their source remains in this repository for
-future work. Native clients share behavior contracts and synthetic fixtures.
+> This is a vibe coding project. AI has done most of the work. If that concerns
+> you, please do not use this project. For problems or suggestions, please open
+> an Issue first rather than submitting a pull request directly.
 
-All clients target the six United Nations official languages: American
-English, Simplified Chinese, Arabic, French, Russian, and Spanish. Arabic uses
-native right-to-left layout, and count-sensitive text follows each platform's
-plural rules.
+## Features
 
-## Repository layout
+- **Import your history:** recognize supported files, folders, and ZIP archives
+  automatically, and merge duplicate records.
+- **Find a page again:** browse by year, month, and day, search titles and URLs,
+  or enable Advanced Search for terms, domain, browser, and date filters.
+- **See the bigger picture:** view activity by month, browser and site rankings,
+  date coverage, and the difference between saved records and visit totals.
+- **Keep records across Apple devices:** sync history and settings through
+  iCloud when permitted by system settings.
+- **Take your data with you:** export Safari, Google Takeout, or HistoryLib
+  `.hlz` files. Native archives support optional password protection.
+- **Choose how records open:** open a page in your browser, copy its full URL,
+  or leave clicks inactive. Context menus provide quick record actions.
 
-- `platforms/apple`: Swift, SwiftUI, SwiftData, and CloudKit client.
-- `platforms/android`: Kotlin and Jetpack Compose client targeting API 36+.
-- `platforms/windows`: C# and WinUI 3 client sources, not included in v1.4.
-- `shared/specs`: cross-platform behavior and format contracts.
-- `shared/fixtures`: synthetic interoperability and rejection fixtures.
+Core history browsing and management work offline. Sync, site icons, and
+in-app purchases use network services.
 
-The repository has one Git history and one product version. Platform build
-numbers can differ. Released clients use the product version; deferred clients
-are not claimed as released or fully compatible.
+## Platforms
 
-Shared specifications are indexed in [`shared/specs/README.md`](shared/specs/README.md).
+Version 1.4 focuses on iPhone, iPad, and Mac, with iOS/iPadOS 26 and macOS 26
+as the minimum supported systems. Android and Windows clients are under
+development and are not included in this release.
 
-## Current status
+The Apple interface supports English, Simplified Chinese, Arabic, French,
+Russian, and Spanish.
 
-- Apple 1.4 security review and required fixes are complete; distribution
-  preparation and human acceptance remain release gates.
-- Android and Windows are development clients; their releases are deferred.
-- See [CHANGELOG.md](CHANGELOG.md) for the v1.4 changes and release scope.
+## Get started
 
-See each platform directory for platform-specific build instructions.
+Import an export from your browser in **Manage**, find records in **Library**,
+and explore your activity in **Summary**. HistoryLib archives let you move
+records between compatible installations.
 
-The detailed Android 1.4 product and implementation baseline is available in
-[`platforms/android/docs/Android-1.4-Specification.zh-CN.md`](platforms/android/docs/Android-1.4-Specification.zh-CN.md).
+See [Releases](https://github.com/SJasonP/HistoryLib/releases) for published
+versions and the [Changelog](CHANGELOG.md) for changes.
 
-## Privacy
+To build from source, start with the
+[Apple development guide](platforms/apple/Documentation.docc/Development.md).
+Android and Windows build instructions are in their platform directories.
 
-Browser history is sensitive personal data. Do not commit real browsing data to
-this repository. HistoryLib does not expose a product-level backup feature;
-exports are explicit, user-initiated data transfers.
+## Repository
+
+| Directory | Contents |
+| --- | --- |
+| [`platforms/apple`](platforms/apple) | SwiftUI app, SwiftData storage, CloudKit integration, and Apple documentation |
+| [`platforms/android`](platforms/android) | Android client built with Kotlin and Jetpack Compose |
+| [`platforms/windows`](platforms/windows) | Windows client built with C# and WinUI 3 |
+| [`shared/specs`](shared/specs/README.md) | Product behavior, archive formats, and compatibility contracts |
+| [`shared/fixtures`](shared/fixtures/README.md) | Synthetic data for import, export, and compatibility tests |
+
+Each client uses native platform tools. Shared specifications and fixtures
+define the data formats and behavior they implement.
+
+## Privacy and feedback
+
+History is stored on your device and may sync through your iCloud account.
+Optional site icons contact the corresponding websites. Exported files contain
+your browsing history; keep them private.
+See [Privacy and Data](platforms/apple/Documentation.docc/Privacy-and-Data.md)
+for details.
+
+Report bugs or suggest improvements through
+[GitHub Issues](https://github.com/SJasonP/HistoryLib/issues).
+For private feedback, email [SJasonP@iCloud.com](mailto:SJasonP@iCloud.com).
+Use fictional or redacted data when reporting a problem.
 
 ## License
 
-HistoryLib is released under the MIT License. See `LICENSE`.
+Distributed under the [MIT License](LICENSE), without warranty.
+Apple dependency notices are available [here](platforms/apple/Documentation.docc/THIRD-PARTY-NOTICES.md).

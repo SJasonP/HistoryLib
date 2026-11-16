@@ -1,6 +1,6 @@
 # Android Architecture
 
-This is the implementation boundary for the Android 1.4 client. Product
+This is the implementation boundary for the Android development client. Product
 behavior remains authoritative in `../../shared/specs`; this file defines where
 Android code belongs.
 
@@ -56,7 +56,7 @@ Navigation3 can be added when a feature gains an actual nested route stack.
   Password character arrays are cleared when a transfer completes or is
   cancelled.
 - Favicon retrieval is optional, bounded, cancellable, and clearable. Sync uses
-  an explicit unsupported service for Android 1.4 rather than pretending to be
+  an explicit unsupported service while sync is unavailable, rather than pretending to be
   enabled.
 
 Behavior remains authoritative in `../../shared/specs`; cross-platform changes
