@@ -1,16 +1,16 @@
 import Foundation
 
 struct ClearCacheStorageUsage: Sendable {
+    let applicationBytes: Int64
     let clearableCacheBytes: Int64
     let nonClearableDataBytes: Int64
     let databaseBytes: Int64
-    let databaseJournalBytes: Int64
 
-    nonisolated init(clearableCacheBytes: Int64, nonClearableDataBytes: Int64, databaseBytes: Int64 = 0, databaseJournalBytes: Int64 = 0) {
+    nonisolated init(applicationBytes: Int64 = 0, clearableCacheBytes: Int64, nonClearableDataBytes: Int64, databaseBytes: Int64 = 0) {
+        self.applicationBytes = applicationBytes
         self.clearableCacheBytes = clearableCacheBytes
         self.nonClearableDataBytes = nonClearableDataBytes
         self.databaseBytes = databaseBytes
-        self.databaseJournalBytes = databaseJournalBytes
     }
 }
 
@@ -29,6 +29,7 @@ enum ClearCacheStorageUsageCalculator {
         let caches = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first
         let temporaryDirectory = fileManager.temporaryDirectory
         let dataContainerDirectory = URL(fileURLWithPath: NSHomeDirectory(), isDirectory: true)
+        let applicationBundleDirectory = Bundle.main.bundleURL
         let directoryCountCacheURL = applicationSupport?
             .appendingPathComponent("directory-count-cache.json")
 
@@ -37,6 +38,7 @@ enum ClearCacheStorageUsageCalculator {
             temporaryDirectory: temporaryDirectory,
             directoryCountCacheURL: directoryCountCacheURL,
             dataContainerDirectory: dataContainerDirectory,
+            applicationBundleDirectory: applicationBundleDirectory,
             fileManager: fileManager,
             databaseURLs: databaseURLs
         )
@@ -47,6 +49,7 @@ enum ClearCacheStorageUsageCalculator {
         temporaryDirectory: URL?,
         directoryCountCacheURL: URL?,
         dataContainerDirectory: URL?,
+        applicationBundleDirectory: URL? = nil,
         fileManager: FileManager = .default,
         databaseURLs: [URL] = []
     ) -> ClearCacheStorageUsage {
@@ -69,20 +72,22 @@ enum ClearCacheStorageUsageCalculator {
             )
         }
 
+        let databaseBytes = databaseURLs.reduce(0) { total, url in
+            total + allocatedSize(of: url, fileManager: fileManager)
+                + ["-wal", "-shm"].reduce(0) {
+                    $0 + allocatedSize(of: URL(fileURLWithPath: url.path + $1), fileManager: fileManager)
+                }
+        }
         let dataContainerBytes = dataContainerDirectory.map {
             allocatedSize(of: $0, fileManager: fileManager)
         } ?? 0
-        let nonClearableDataBytes = max(0, dataContainerBytes - clearableCacheBytes)
+        let nonClearableDataBytes = max(0, dataContainerBytes - clearableCacheBytes - databaseBytes)
 
         return ClearCacheStorageUsage(
+            applicationBytes: applicationBundleDirectory.map { allocatedSize(of: $0, fileManager: fileManager) } ?? 0,
             clearableCacheBytes: clearableCacheBytes,
             nonClearableDataBytes: nonClearableDataBytes,
-            databaseBytes: databaseURLs.reduce(0) { $0 + allocatedSize(of: $1, fileManager: fileManager) },
-            databaseJournalBytes: databaseURLs.reduce(0) { total, url in
-                total + ["-wal", "-shm"].reduce(0) {
-                    $0 + allocatedSize(of: URL(fileURLWithPath: url.path + $1), fileManager: fileManager)
-                }
-            }
+            databaseBytes: databaseBytes
         )
     }
 

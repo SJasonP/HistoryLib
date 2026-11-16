@@ -5,6 +5,10 @@ import Observation
 @MainActor
 @Observable
 final class ManageDiagnostics {
+    private enum CloudCheckError: Error {
+        case timedOut
+    }
+
     enum CloudRecordsState: Equatable {
         case checking
         case unavailable
@@ -41,11 +45,15 @@ final class ManageDiagnostics {
         cloudMessage = String(localized: "Checking…")
         while !Task.isCancelled {
             do {
-                let status = try await container.accountStatus()
+                let status = try await withTimeout(.seconds(10)) {
+                    try await container.accountStatus()
+                }
                 try Task.checkCancellation()
                 accountMessage = Self.accountMessage(for: status)
                 if status == .available {
-                    let count = try await counter.count()
+                    let count = try await withTimeout(.seconds(20)) {
+                        try await counter.count()
+                    }
                     try Task.checkCancellation()
                     cloudCount = count
                     cloudRecordsState = .available(count)
@@ -64,6 +72,23 @@ final class ManageDiagnostics {
                 cloudMessage = String(localized: "Cloud records are unavailable.")
             }
             do { try await Task.sleep(for: .seconds(15)) } catch { return }
+        }
+    }
+
+    private func withTimeout<T: Sendable>(
+        _ duration: Duration,
+        operation: @escaping @Sendable () async throws -> T
+    ) async throws -> T {
+        try await withThrowingTaskGroup(of: T.self) { group in
+            group.addTask {
+                try await operation()
+            }
+            group.addTask {
+                try await Task.sleep(for: duration)
+                throw CloudCheckError.timedOut
+            }
+            defer { group.cancelAll() }
+            return try await group.next()!
         }
     }
 

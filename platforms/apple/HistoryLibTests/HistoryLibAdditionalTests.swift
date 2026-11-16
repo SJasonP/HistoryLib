@@ -260,11 +260,10 @@ extension HistoryLibTests {
         )
         #expect(
             usage.nonClearableDataBytes
-                == [store, wal, shm, cloudAsset, cloudMetadata, unrelated]
+                == [cloudAsset, cloudMetadata, unrelated]
                     .reduce(0) { $0 + allocatedSize($1) }
         )
-        #expect(usage.databaseBytes == allocatedSize(store))
-        #expect(usage.databaseJournalBytes == allocatedSize(wal) + allocatedSize(shm))
+        #expect(usage.databaseBytes == allocatedSize(store) + allocatedSize(wal) + allocatedSize(shm))
 
         ClearCacheStorageUsageCalculator.clearDirectoryContents(at: cachesDirectory)
         ClearCacheStorageUsageCalculator.clearDirectoryContents(at: temporaryDirectory)

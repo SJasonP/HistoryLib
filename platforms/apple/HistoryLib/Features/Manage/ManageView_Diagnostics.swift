@@ -34,16 +34,16 @@ extension ManageView {
         guard syncActivity.isBound else { return String(localized: "Unavailable") }
         if syncActivity.isSyncing { return String(localized: "Syncing…") }
         if syncActivity.hasObservedFailure { return String(localized: "Sync Issue Detected") }
-        return String(localized: "No Active Transfer Observed")
+        return String(localized: "Idle")
     }
 
     var cacheSection: some View {
         Section("Storage") {
             if let usage = diagnostics.storageUsage {
+                LabeledContent("App Size", value: byteCount(usage.applicationBytes))
                 LabeledContent("Clearable Cache", value: byteCount(usage.clearableCacheBytes))
                 LabeledContent("Protected Data", value: byteCount(usage.nonClearableDataBytes))
                 LabeledContent("Database", value: byteCount(usage.databaseBytes))
-                LabeledContent("Database Journals", value: byteCount(usage.databaseJournalBytes))
             } else {
                 Text("Calculating Cache Size...").foregroundStyle(.secondary)
             }
@@ -106,7 +106,7 @@ extension ManageView {
         }
     }
 
-    func byteCount(_ bytes: Int64) -> String {
+    func byteCount(_ bytes: Int64) -> String  {
         ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
     }
 
